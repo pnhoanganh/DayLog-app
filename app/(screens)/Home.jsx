@@ -1,18 +1,21 @@
 import { Text, View } from "react-native";
-import { FontFamily } from "../../constants/fonts";
+import { FontFamily } from "@/constants/fonts";
+import Header from "@/components/Header";
+import COLORS from "@/constants/colors";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const HomeScreen = () => {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        paddingTop: hp("10%"),
       }}
     >
-      <Text className="text-xl" style={{ fontFamily: FontFamily.Poetsen }}>
-        Home Screen
-      </Text>
+      <Header />
     </View>
   );
 };
