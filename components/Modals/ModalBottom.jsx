@@ -4,10 +4,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import COLORS from "@/constants/colors";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { FontFamily } from "@/constants/fonts";
 import Modal from "react-native-modal";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ModalBottom = ({
   visible,
@@ -29,11 +29,14 @@ const ModalBottom = ({
       swipeDirection={disableClose ? [] : ["down"]}
       style={{ justifyContent: "flex-end", margin: 0 }}
       avoidKeyboard
-      propagateSwipe // allow child modal can swipe
+      propagateSwipe // Allow the child modal to close by swiping down.
     >
-      <View
+      <LinearGradient
+        colors={["#FFFFFF", "rgba(217, 217, 217, 0.7)"]}
+        locations={[0.61, 1]} // 61% = 0.61, 100% = 1
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }} // From top to bottom
         style={{
-          backgroundColor: COLORS.white,
           borderTopLeftRadius: wp("6%"),
           borderTopRightRadius: wp("6%"),
           paddingHorizontal: wp("8%"),
@@ -60,7 +63,7 @@ const ModalBottom = ({
         </View>
 
         <View>{children}</View>
-      </View>
+      </LinearGradient>
     </Modal>
   );
 };

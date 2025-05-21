@@ -4,7 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import AddHabitModal from "@/components/AddHabit";
+import AddHabitModal from "@/components/Modals/AddHabit";
 import SafeScreen from "@/components/Layouts/SafeScreen";
 import useToggleModal from "@/hooks/useToggleModal";
 

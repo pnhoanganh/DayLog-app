@@ -65,7 +65,7 @@ const IconPickerModal = ({ isVisible, onClose, onSelectIcon }) => {
                 justifyContent: "center",
               }}
             >
-              <MaterialIcons name={item} size={30} color="#333" />
+              <MaterialIcons name={item} size={30} color="#5F6368" />
             </TouchableOpacity>
           )}
         />

@@ -27,9 +27,9 @@ const IconSelector = ({ isModalOpen, setModalOpen }) => {
         style={{ backgroundColor: COLORS.white, padding: wp("6%") }}
       >
         {selectedIcon ? (
-          <MaterialIcons name={selectedIcon} size={40} color="#000" />
+          <MaterialIcons name={selectedIcon} size={40} color="#5F6368" />
         ) : (
-          <MaterialIcons name="add" size={44} color="#000" />
+          <MaterialIcons name="add" size={44} color="#5F6368" />
         )}
       </TouchableOpacity>
 
