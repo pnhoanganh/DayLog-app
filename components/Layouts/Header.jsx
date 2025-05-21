@@ -1,12 +1,11 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { AddCircle, Setting2 } from "iconsax-react-nativejs";
-import { FontFamily } from "../constants/fonts";
-const Header = () => {
+import { FontFamily } from "@/constants/fonts";
+const Header = ({ toggleAddHabit }) => {
   return (
     <View
       style={{
@@ -23,7 +22,7 @@ const Header = () => {
       <Text style={{ fontFamily: FontFamily.Poetsen, fontSize: hp("3.5%") }}>
         DayLog
       </Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={toggleAddHabit}>
         <AddCircle size="32" color="#000000" variant="Outline" />
       </TouchableOpacity>
     </View>

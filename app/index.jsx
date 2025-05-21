@@ -1,4 +1,4 @@
-import SafeScreen from "@/components/SafeScreen";
+import SafeScreen from "@/components/Layouts/SafeScreen";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -30,10 +30,10 @@ const LaunchScreen = () => {
             <Text style={{ color: COLORS.darkOrange }}>Log</Text>
           </Text>
           <View
-            className=" absolute"
+            className="absolute"
             style={{
-              bottom: hp("-5%"),
-              right: wp("2%"),
+              bottom: hp("-4%"),
+              right: wp("3%"),
             }}
           >
             <Calendar3D width={wp("32%")} height={hp("10%")} />
