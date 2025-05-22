@@ -7,7 +7,13 @@ import {
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
 
-const TextInputwLabel = ({ label }) => {
+const TextInputwLabel = ({
+  label,
+  value,
+  onChangeText,
+
+  capitalize,
+}) => {
   return (
     <View className="mt-4 flex flex-col gap-1">
       <Text
@@ -34,6 +40,9 @@ const TextInputwLabel = ({ label }) => {
             paddingHorizontal: 10,
             fontSize: 16,
           }}
+          autoCapitalize={capitalize || "sentences"}
+          value={value}
+          onChangeText={onChangeText}
         />
       </View>
     </View>

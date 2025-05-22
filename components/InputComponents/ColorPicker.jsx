@@ -1,20 +1,15 @@
 import { View, Text, TouchableWithoutFeedback } from "react-native";
-import React, { useState } from "react";
 import { FontFamily } from "@/constants/fonts";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
-const ColorPicker = () => {
-  const [valueColor, setValueColor] = useState(0);
+const ColorPicker = ({ selectedColor, setSelectedColor }) => {
   const colors = [
-    "#393E46",
-    "#27548A",
-    "#5F8B4C",
-    "#E69DB8",
-    "#F2613F",
-    "#C62E2E",
+    "#FFE9BD",
+    "#D4F2FF",
+    "#DED4FF",
+    "#FFD4EE",
+    "#F0C4C3",
+    "#CAC5C5",
   ];
   const CIRCLE_SIZE = 40;
   const CIRCLE_RING_SIZE = 2;
@@ -35,11 +30,11 @@ const ColorPicker = () => {
           flexWrap: "wrap",
         }}
       >
-        {colors.map((item, index) => {
-          const isActive = valueColor == index;
+        {colors.map((item) => {
+          const isActive = selectedColor == item;
           return (
             <View key={item}>
-              <TouchableWithoutFeedback onPress={() => setValueColor(index)}>
+              <TouchableWithoutFeedback onPress={() => setSelectedColor(item)}>
                 <View
                   style={{
                     width: CIRCLE_SIZE + CIRCLE_RING_SIZE * 4,

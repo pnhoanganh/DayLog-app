@@ -9,9 +9,12 @@ import {
 import COLORS from "@/constants/colors";
 import IconPickerModal from "../Modals/IconPickerModal";
 
-const IconSelector = ({ isModalOpen, setModalOpen }) => {
-  const [selectedIcon, setSelectedIcon] = useState(null);
-
+const IconSelector = ({
+  isModalOpen,
+  setModalOpen,
+  selectedIcon,
+  setSelectedIcon,
+}) => {
   return (
     <View>
       <View className="opacity-55 relative items-center">
