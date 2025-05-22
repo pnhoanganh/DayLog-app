@@ -32,7 +32,7 @@ const ModalBottom = ({
       propagateSwipe // Allow the child modal to close by swiping down.
     >
       <LinearGradient
-        colors={["#FFFFFF", "rgba(217, 217, 217, 0.7)"]}
+        colors={["#FFFFFF", "rgba(217, 217, 217, 0.9)"]}
         locations={[0.61, 1]} // 61% = 0.61, 100% = 1
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }} // From top to bottom
