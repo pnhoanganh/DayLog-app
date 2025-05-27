@@ -1,16 +1,16 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import ModalBottom from "./ModalBottom";
-import IconSelector from "../InputComponents/IconSelector";
 import { useState } from "react";
-import TextInput from "../InputComponents/TextInputwLabel";
-import ColorPicker from "../InputComponents/ColorPicker";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import ModalBottom from "../Modals/ModalBottom";
+import IconSelector from "../Forms/IconSelector";
+import TextInput from "../Forms/TextInputwLabel";
+import ColorPicker from "../Forms/ColorPicker";
 
 const AddHabitModal = ({ isOpen, onClose }) => {
   const [isIconModalOpen, setIconModalOpen] = useState(false);
@@ -44,9 +44,6 @@ const AddHabitModal = ({ isOpen, onClose }) => {
 
       // Storing habits
       await AsyncStorage.setItem("habits", JSON.stringify(updateHabits));
-
-      console.log("New habit created:", newHabit);
-      console.log("Habit list: ", habits);
 
       // Reset form and close modal
       setHabitTitle("");

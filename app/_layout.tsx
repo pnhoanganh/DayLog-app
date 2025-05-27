@@ -5,9 +5,11 @@ import { useEffect } from "react";
 import { customFonts } from "../constants/fonts";
 import "../global.css";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { createTamagui, TamaguiProvider, View } from "tamagui";
+import { defaultConfig } from "@tamagui/config/v4";
 
 SplashScreen.preventAutoHideAsync();
-
+const config = createTamagui(defaultConfig);
 export default function RootLayout() {
   const [fontsLoaded] = useFonts(customFonts);
 
@@ -19,9 +21,11 @@ export default function RootLayout() {
 
   if (!fontsLoaded) return null;
 
-   return (
-    <SafeAreaProvider>
-      <Stack screenOptions={{ headerShown: false }} />
-    </SafeAreaProvider>
-  );;
+  return (
+    <TamaguiProvider config={config}>
+      <SafeAreaProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </SafeAreaProvider>
+    </TamaguiProvider>
+  );
 }

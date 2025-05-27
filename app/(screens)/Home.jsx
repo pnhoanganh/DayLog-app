@@ -4,12 +4,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import AddHabitModal from "@/components/Modals/AddHabit";
+import AddHabitModal from "@/components/Feature/AddHabit";
 import SafeScreen from "@/components/Layouts/SafeScreen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import HabitItem from "@/components/HabitItem";
+import HabitItem from "@/components/Common/HabitItem";
 
 const HomeScreen = () => {
   const addHabitModal = useToggleModal();
@@ -26,7 +26,6 @@ const HomeScreen = () => {
   useEffect(() => {
     loadHabits();
   }, []);
-  console.log(habitList);
 
   const handleDeleteHabit = async (id) => {
     const updateList = habitList.filter((habit) => habit.id !== id);
@@ -39,7 +38,11 @@ const HomeScreen = () => {
       <View style={{ flex: 1, paddingTop: hp("3%") }}>
         <Header toggleAddHabit={addHabitModal.open} />
         <FlatList
-          style={{ marginHorizontal: "auto", marginTop: hp("2%") }}
+          contentContainerStyle={{
+            alignItems: "center",
+            paddingTop: hp("3%"),
+            gap: hp("5%"),
+          }}
           data={habitList}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
