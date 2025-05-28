@@ -7,30 +7,55 @@ import {
 import AddHabitModal from "@/components/Feature/AddHabit";
 import SafeScreen from "@/components/Layouts/SafeScreen";
 import useToggleModal from "@/hooks/useToggleModal";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HabitItem from "@/components/Common/HabitItem";
+import { CheckinHabit } from "@/hooks/checkinHabit";
 
 const HomeScreen = () => {
   const addHabitModal = useToggleModal();
   const [habitList, setHabitList] = useState([]);
+  const { habitData, setHabitData } = useContext(CheckinHabit);
+
   const loadHabits = async () => {
     try {
       const stored = await AsyncStorage.getItem("habits");
       const habitList = stored ? JSON.parse(stored) : [];
       setHabitList(habitList);
+      // Initialize habitData for new habits
+      const updatedHabitData = { ...habitData };
+      habitList.forEach((habit) => {
+        if (!updatedHabitData[habit.id]) {
+          updatedHabitData[habit.id] = [];
+        }
+      });
+      setHabitData(updatedHabitData); // Update context
+      await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
     } catch (error) {
-      console.error("Error to loading habit list: ", error);
+      console.error("Error loading habit list:", error);
     }
   };
+
   useEffect(() => {
     loadHabits();
   }, []);
 
   const handleDeleteHabit = async (id) => {
-    const updateList = habitList.filter((habit) => habit.id !== id);
-    setHabitList(updateList);
-    await AsyncStorage.setItem("habits", JSON.stringify(updateList));
+    try {
+      // Update habitList
+      const updatedList = habitList.filter((habit) => habit.id !== id);
+      setHabitList(updatedList);
+      await AsyncStorage.setItem("habits", JSON.stringify(updatedList));
+
+      // Update habitData
+      const updatedHabitData = { ...habitData };
+      delete updatedHabitData[id];
+      setHabitData(updatedHabitData); // Update context
+      await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
+    } catch (error) {
+      console.error("Error deleting habit:", error);
+      alert("Failed to delete habit. Please try again.");
+    }
   };
 
   return (
@@ -40,8 +65,8 @@ const HomeScreen = () => {
         <FlatList
           contentContainerStyle={{
             alignItems: "center",
-            paddingTop: hp("3%"),
-            gap: hp("5%"),
+            paddingBottom: hp("10%"),
+            gap: hp("2%"),
           }}
           data={habitList}
           keyExtractor={(item) => item.id.toString()}

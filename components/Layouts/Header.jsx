@@ -14,6 +14,7 @@ const Header = ({ toggleAddHabit }) => {
         alignItems: "center",
         gap: 50,
         marginHorizontal: wp("8%"),
+        marginBottom: hp("2%"),
       }}
     >
       <TouchableOpacity>

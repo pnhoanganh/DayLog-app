@@ -11,6 +11,7 @@ import ModalBottom from "../Modals/ModalBottom";
 import IconSelector from "../Forms/IconSelector";
 import TextInput from "../Forms/TextInputwLabel";
 import ColorPicker from "../Forms/ColorPicker";
+// import { v4 as uuidv4 } from "uuid";
 
 const AddHabitModal = ({ isOpen, onClose }) => {
   const [isIconModalOpen, setIconModalOpen] = useState(false);
@@ -27,6 +28,7 @@ const AddHabitModal = ({ isOpen, onClose }) => {
 
     // Create new habit object
     const newHabit = {
+      // id: uuidv4(),
       id: Date.now(),
       title: habitTitle,
       description: description,
@@ -107,7 +109,10 @@ const AddHabitModal = ({ isOpen, onClose }) => {
             borderRadius: 8,
             bottom: hp("-2.2%"),
           }}
-          onPress={handleAddHabit}
+          onPress={() => {
+            handleAddHabit();
+            console.log("add");
+          }}
         >
           <Text
             style={{
