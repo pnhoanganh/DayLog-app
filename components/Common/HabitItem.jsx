@@ -12,8 +12,9 @@ import { Button, ScrollView } from "tamagui";
 import { CheckCircle } from "@tamagui/lucide-icons";
 import { CheckinHabit } from "@/hooks/checkinHabit";
 import Toast from "react-native-toast-message";
-import CalHeatMapCustom from "../Char/CalHeatMapCustom";
+import CalHeatMapYear from "../Char/CalHeatMapYear";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CalHeatMapMonth from "../Char/CalHeatMapMonth";
 
 const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
   const { habitData, habitCheck, setHabitData } = useContext(CheckinHabit);
@@ -32,6 +33,8 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
           count: item.count,
         }))
     : [];
+
+  // reset habitData (to check)
   const resetHabitData = async () => {
     setHabitData({});
     await AsyncStorage.setItem("habitData", JSON.stringify({}));
@@ -64,11 +67,12 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
             alignItems: "center",
           }}
         >
+          {/* ICON */}
           <View
             style={{
               backgroundColor: color,
-              width: wp("14%"),
-              height: wp("14%"),
+              width: wp("12%"),
+              height: wp("12%"),
               display: "flex",
               justifyContent: "center",
               borderRadius: "30%",
@@ -77,6 +81,7 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
           >
             <MaterialIcons name={icon} size={30} color={COLORS.darkGreen} />
           </View>
+          {/* TEXT */}
           <View>
             <Text
               style={{
@@ -98,22 +103,13 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
                 : description}
             </Text>
           </View>
+          {/* PREVIOUS & BACK */}
+          <View></View>
         </View>
-        <CalHeatMapCustom
-          key={id}
-          color={color}
-          // data={[heatmapData,
-          //   { date: "2025-05-01", count: 0 },
-          //   { date: "2025-05-02", count: 1 },
-          //   { date: "2025-05-03", count: 2 },
-          //   { date: "2025-05-04", count: 3 },
-          //   { date: "2025-05-05", count: 4 },
-          // ]}
-          data={heatmapData}
-        />
+        <CalHeatMapMonth key={id} id={id} color={color} data={heatmapData} />
 
         <Button
-          icon={<CheckCircle size={20} />}
+          icon={<CheckCircle size={wp("3%")} />}
           size="$4"
           style={{
             fontFamily: FontFamily.Poppins.Regular,

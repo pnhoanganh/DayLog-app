@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import HabitItem from "@/components/Common/HabitItem";
 import { CheckinHabit } from "@/hooks/checkinHabit";
 
-const HomeScreen = () => {
+const Home = () => {
   const addHabitModal = useToggleModal();
   const [habitList, setHabitList] = useState([]);
   const { habitData, setHabitData } = useContext(CheckinHabit);
@@ -93,4 +93,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default Home;
