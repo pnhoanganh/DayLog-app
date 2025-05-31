@@ -12,6 +12,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { toast } from "sonner-native";
 
 const SQUARE_SIZE = wp("4%"); // Size of each square
 const ITEM_MARGIN = wp("0.4%"); // Margin between squares
@@ -164,6 +165,14 @@ const CalHeatMapYear = ({ data = [], color }) => {
         ? `${date.toDateString()}\nCheck-ins: ${count}`
         : `${date.toDateString()}\nNo check-ins`
     );
+    // toast.success("Checkin notification!", {
+    //   duration: 6000,
+    //   description: `Checkin Date\n${
+    //     count != null
+    //       ? `${date.toDateString()}\nCheck-ins: ${count}`
+    //       : `${date.toDateString()}\nNo checkin`
+    //   }`,
+    // });
     console.log(
       "Pressed date:",
       date,
