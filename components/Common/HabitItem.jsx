@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
-import { Trash } from "iconsax-react-nativejs";
+import { ArrowLeft3, ArrowRight3, Trash } from "iconsax-react-nativejs";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -12,12 +12,15 @@ import { Button, ScrollView } from "tamagui";
 import { CheckCircle } from "@tamagui/lucide-icons";
 import { CheckinHabit } from "@/hooks/checkinHabit";
 import Toast from "react-native-toast-message";
-import CalHeatMapYear from "../Char/CalHeatMapYear";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CalHeatMapMonth from "../Char/CalHeatMapMonth";
+import useCalendarMonth from "@/hooks/useCalendarMonth";
 
 const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
   const { habitData, habitCheck, setHabitData } = useContext(CheckinHabit);
+  const { currentDate, goToPreviousDate, goToNextMonth, formattedLabel } =
+    useCalendarMonth();
+
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
         .filter(
@@ -56,57 +59,99 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
         elevation: 5,
       }}
     >
-      <View style={{ width: wp("86%"), display: "flex", gap: hp("1%") }}>
+      <View
+        style={{
+          width: wp("86%"),
+          display: "flex",
+          gap: hp("1%"),
+        }}
+      >
         <View
           style={{
             marginBottom: 4,
             borderRadius: 8,
             display: "flex",
             flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
           }}
         >
-          {/* ICON */}
           <View
             style={{
-              backgroundColor: color,
-              width: wp("12%"),
-              height: wp("12%"),
               display: "flex",
-              justifyContent: "center",
-              borderRadius: "30%",
-              alignItems: "center",
+              flexDirection: "row",
+              gap: 10,
             }}
           >
-            <MaterialIcons name={icon} size={30} color={COLORS.darkGreen} />
-          </View>
-          {/* TEXT */}
-          <View>
-            <Text
+            {/* ICON */}
+            <View
               style={{
-                fontSize: wp("4.7%"),
-                fontFamily: FontFamily.Poppins.Regular,
+                backgroundColor: color,
+                width: wp("12%"),
+                height: wp("12%"),
+                display: "flex",
+                justifyContent: "center",
+                borderRadius: "30%",
+                alignItems: "center",
               }}
             >
-              {title && title.length > 20 ? title.substr(0, 20) + "..." : title}
-            </Text>
+              <MaterialIcons name={icon} size={30} color={COLORS.darkGreen} />
+            </View>
+            {/* TEXT */}
+            <View>
+              <Text
+                style={{
+                  fontSize: wp("4.7%"),
+                  fontFamily: FontFamily.Poppins.Regular,
+                }}
+              >
+                {title && title.length > 12
+                  ? title.substr(0, 12) + "..."
+                  : title}
+              </Text>
+              <Text
+                style={{
+                  fontSize: wp("4%"),
+                  fontFamily: FontFamily.Poppins.Regular,
+                  color: COLORS.darkGreen,
+                }}
+              >
+                {description && description.length > 14
+                  ? description.substr(0, 14) + "..."
+                  : description}
+              </Text>
+            </View>
+          </View>
+          {/* PREVIOUS &  NEXT MONTH*/}
+          <View className="flex flex-row items-center">
+            <ArrowLeft3
+              size={24}
+              color={COLORS.darkGreen}
+              onPress={goToPreviousDate}
+            />
             <Text
               style={{
-                fontSize: wp("4%"),
-                fontFamily: FontFamily.Poppins.Regular,
                 color: COLORS.darkGreen,
+                fontFamily: FontFamily.Poppins.Regular,
+                fontSize: wp("3%"),
               }}
             >
-              {description && description.length > 25
-                ? description.substr(0, 25) + "..."
-                : description}
+              {formattedLabel}
             </Text>
+            <ArrowRight3
+              size={24}
+              color={COLORS.darkGreen}
+              onPress={goToNextMonth}
+            />
           </View>
-          {/* PREVIOUS & BACK */}
-          <View></View>
         </View>
-        <CalHeatMapMonth key={id} id={id} color={color} data={heatmapData} />
+        <CalHeatMapMonth
+          key={id}
+          id={id}
+          color={color}
+          data={heatmapData}
+          currentDate={currentDate}
+        />
 
         <Button
           icon={<CheckCircle size={wp("3%")} />}

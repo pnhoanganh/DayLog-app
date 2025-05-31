@@ -12,7 +12,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { toast } from "sonner-native";
+// import { toast } from "sonner-native";
 
 const SQUARE_SIZE = wp("4%"); // Size of each square
 const ITEM_MARGIN = wp("0.4%"); // Margin between squares

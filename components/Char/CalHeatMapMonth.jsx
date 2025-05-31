@@ -20,7 +20,7 @@ const formatDateKey = (date) => {
   return d.toISOString().split("T")[0];
 };
 
-const CalHeatMapMonth = ({ data = [], color, id }) => {
+const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   const [dates, setDates] = useState([]);
   const [numColumns, setNumColumns] = useState(1);
 
@@ -32,8 +32,9 @@ const CalHeatMapMonth = ({ data = [], color, id }) => {
   }, []);
 
   useEffect(() => {
+    if (!currentDate) return;
     // 1. Get the first and last day of the current month
-    const today = new Date();
+    const today = currentDate;
     const year = today.getFullYear();
     const month = today.getMonth();
 
@@ -47,7 +48,7 @@ const CalHeatMapMonth = ({ data = [], color, id }) => {
     }
 
     setDates(tempDates);
-  }, []);
+  }, [currentDate]);
 
   // Process input data
   const safeData = Array.isArray(data) ? data : [];
