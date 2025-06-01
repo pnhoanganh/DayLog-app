@@ -8,6 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createTamagui, TamaguiProvider, View } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import { CheckinProvider } from "@/hooks/checkinHabit";
+import { PortalProvider } from "@tamagui/portal";
 
 SplashScreen.preventAutoHideAsync();
 const config = createTamagui(defaultConfig);
@@ -25,9 +26,11 @@ export default function RootLayout() {
   return (
     <TamaguiProvider config={config}>
       <CheckinProvider>
-        <SafeAreaProvider>
-          <Stack screenOptions={{ headerShown: false }} />
-        </SafeAreaProvider>
+        <PortalProvider shouldAddRootHost>
+          <SafeAreaProvider>
+            <Stack screenOptions={{ headerShown: false }} />
+          </SafeAreaProvider>
+        </PortalProvider>
       </CheckinProvider>
     </TamaguiProvider>
   );

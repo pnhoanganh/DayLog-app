@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import tinycolor from "tinycolor2";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import useToggleModal from "@/hooks/useToggleModal";
+import { AlertDate } from "../Layouts/AlertDate";
 
 const SQUARE_SIZE = wp("4.5%");
 const ITEM_MARGIN = wp("0.5%");
@@ -23,6 +25,10 @@ const formatDateKey = (date) => {
 const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   const [dates, setDates] = useState([]);
   const [numColumns, setNumColumns] = useState(1);
+  const { open, toggle, isOpen } = useToggleModal();
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedCount, setSelectedCount] = useState(null);
+  const showAlert = useToggleModal();
 
   // Get container width and calculate number of columns
   const onLayout = useCallback((event) => {
@@ -82,12 +88,15 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   const onPressDay = (date) => {
     const key = formatDateKey(date);
     const count = rawCountMap[key];
-    Alert.alert(
-      "Check-in Date",
-      count != null
-        ? `${date.toDateString()}\nCheck-ins: ${count}`
-        : `${date.toDateString()}\nNo check-ins`
-    );
+    // Alert.alert(
+    //   "Check-in Date",
+    //   count != null
+    //     ? `${date.toDateString()}\nCheck-ins: ${count}`
+    //     : `${date.toDateString()}\nNo check-ins`
+    // );
+    setSelectedDate(date);
+    setSelectedCount(rawCountMap[key] ?? null);
+    showAlert.open();
   };
 
   // Render each day square
@@ -121,13 +130,20 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatListContent}
       />
+      <AlertDate
+        isOpen={showAlert.isOpen}
+        setIsOpen={showAlert.toggle}
+        date={selectedDate}
+        count={selectedCount}
+        habitId={id}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%", // Use full container width
+    width: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
