@@ -44,7 +44,7 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
   };
 
   return (
-    <View
+    <TouchableOpacity
       style={{
         borderColor: "#ebedf0",
         borderWidth: 1,
@@ -170,10 +170,9 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
         >
           Check In
         </Button>
-        {/* <Trash size="32" color="#FF8A65" onPress={() => deleteHabit(id)} />
-        <Button onPress={resetHabitData}>Reset All Habit Data</Button> */}
+        {/* <Trash size="32" color="#FF8A65" onPress={() => deleteHabit(id)} /> */}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

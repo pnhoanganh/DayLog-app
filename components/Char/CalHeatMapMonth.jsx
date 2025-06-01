@@ -25,7 +25,6 @@ const formatDateKey = (date) => {
 const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   const [dates, setDates] = useState([]);
   const [numColumns, setNumColumns] = useState(1);
-  const { open, toggle, isOpen } = useToggleModal();
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCount, setSelectedCount] = useState(null);
   const showAlert = useToggleModal();
@@ -88,14 +87,8 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   const onPressDay = (date) => {
     const key = formatDateKey(date);
     const count = rawCountMap[key];
-    // Alert.alert(
-    //   "Check-in Date",
-    //   count != null
-    //     ? `${date.toDateString()}\nCheck-ins: ${count}`
-    //     : `${date.toDateString()}\nNo check-ins`
-    // );
     setSelectedDate(date);
-    setSelectedCount(rawCountMap[key] ?? null);
+    setSelectedCount(count ?? null);
     showAlert.open();
   };
 
@@ -135,7 +128,6 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
         setIsOpen={showAlert.toggle}
         date={selectedDate}
         count={selectedCount}
-        habitId={id}
       />
     </View>
   );

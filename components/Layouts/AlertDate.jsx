@@ -1,6 +1,6 @@
 import { AlertDialog, Button, XStack, YStack } from "tamagui";
 
-export function AlertDate({ isOpen, setIsOpen, date, count, habitId }) {
+export function AlertDate({ isOpen, setIsOpen, date, count }) {
   // Không render dialog khi isOpen là false
   if (!isOpen) {
     return null;
