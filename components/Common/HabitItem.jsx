@@ -8,18 +8,18 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { FontFamily } from "@/constants/fonts";
-import { Button, ScrollView } from "tamagui";
+import { Button } from "tamagui";
 import { CheckCircle } from "@tamagui/lucide-icons";
 import { CheckinHabit } from "@/hooks/checkinHabit";
-import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CalHeatMapMonth from "../Char/CalHeatMapMonth";
 import useCalendarMonth from "@/hooks/useCalendarMonth";
-
+import { useToastController } from "@tamagui/toast";
 const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
   const { habitData, habitCheck, setHabitData } = useContext(CheckinHabit);
   const { currentDate, goToPreviousDate, goToNextMonth, formattedLabel } =
     useCalendarMonth();
+  const toast = useToastController();
 
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
@@ -162,9 +162,9 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
           textProps={{ style: { fontSize: wp("4%") } }}
           onPress={() => {
             habitCheck(id);
-            Toast.show({
-              type: "success",
-              text1: "Habit checked in!",
+            toast.show("Check-in saved 🥳", {
+              message: "Nice work keeping up the habit!",
+              duration: 3000,
             });
           }}
         >

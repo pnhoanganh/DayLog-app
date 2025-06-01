@@ -9,7 +9,8 @@ import { createTamagui, TamaguiProvider, View } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import { CheckinProvider } from "@/hooks/checkinHabit";
 import { PortalProvider } from "@tamagui/portal";
-
+import { ToastProvider, ToastViewport } from "@tamagui/toast";
+import ToastCus from "../components/Common/ToastCus";
 SplashScreen.preventAutoHideAsync();
 const config = createTamagui(defaultConfig);
 export default function RootLayout() {
@@ -27,9 +28,21 @@ export default function RootLayout() {
     <TamaguiProvider config={config}>
       <CheckinProvider>
         <PortalProvider shouldAddRootHost>
-          <SafeAreaProvider>
-            <Stack screenOptions={{ headerShown: false }} />
-          </SafeAreaProvider>
+          <ToastProvider>
+            <ToastViewport
+              flexDirection="column-reverse"
+              top={50} // 👈 chỉnh khoảng cách phía trên
+              left={0}
+              right={0}
+              position="absolute"
+              width="100%"
+              zIndex={999}
+            />
+            <SafeAreaProvider>
+              <Stack screenOptions={{ headerShown: false }} />
+              <ToastCus />
+            </SafeAreaProvider>
+          </ToastProvider>
         </PortalProvider>
       </CheckinProvider>
     </TamaguiProvider>

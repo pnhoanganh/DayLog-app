@@ -11,6 +11,7 @@ import ModalBottom from "../Modals/ModalBottom";
 import IconSelector from "../Forms/IconSelector";
 import TextInput from "../Forms/TextInputwLabel";
 import ColorPicker from "../Forms/ColorPicker";
+import { useToastController } from "@tamagui/toast";
 // import { v4 as uuidv4 } from "uuid";
 
 const AddHabitModal = ({ isOpen, onClose }) => {
@@ -19,13 +20,8 @@ const AddHabitModal = ({ isOpen, onClose }) => {
   const [description, setDescription] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const toast = useToastController();
   const handleAddHabit = async () => {
-    // Valid habit title
-    if (!habitTitle.trim()) {
-      console.log("Habit name is required");
-      return;
-    }
-
     // Create new habit object
     const newHabit = {
       // id: uuidv4(),
@@ -46,13 +42,20 @@ const AddHabitModal = ({ isOpen, onClose }) => {
 
       // Storing habits
       await AsyncStorage.setItem("habits", JSON.stringify(updateHabits));
-
-      // Reset form and close modal
+      // Reset form (modal sẽ đóng bên ngoài sau 100ms)
       setHabitTitle("");
       setDescription("");
       setSelectedColor("");
       setSelectedIcon("");
-      onClose();
+
+      toast.show("Habit is saved 🥳", {
+        message: "Nice work keeping up the habit!",
+        duration: 3000,
+      });
+
+      setTimeout(() => {
+        onClose();
+      }, 100);
     } catch (error) {
       console.error("Failed to save habit:", error);
     }
@@ -110,8 +113,14 @@ const AddHabitModal = ({ isOpen, onClose }) => {
             bottom: hp("-2.2%"),
           }}
           onPress={() => {
+            // Nếu không nhập tên habit → hiện toast, không lưu, không đóng modal
+            if (!habitTitle.trim()) {
+              console.log("Habit name is required");
+              return;
+            }
+
+            // Nếu hợp lệ thì lưu và đóng modal
             handleAddHabit();
-            console.log("add");
           }}
         >
           <Text
