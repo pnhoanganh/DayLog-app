@@ -1,12 +1,5 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  Alert,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { View, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import tinycolor from "tinycolor2";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
@@ -28,13 +21,20 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCount, setSelectedCount] = useState(null);
   const showAlert = useToggleModal();
+  const [containerWidth, setContainerWidth] = useState(null);
 
   // Get container width and calculate number of columns
-  const onLayout = useCallback((event) => {
-    const { width } = event.nativeEvent.layout;
-    const calculatedColumns = Math.floor(width / ITEM_TOTAL_SIZE);
-    setNumColumns(calculatedColumns > 0 ? calculatedColumns : 1);
-  }, []);
+  const onLayout = useCallback(
+    (event) => {
+      const width = event.nativeEvent.layout.width;
+      if (width && width !== containerWidth) {
+        setContainerWidth(width);
+        const calculatedColumns = Math.floor(width / ITEM_TOTAL_SIZE);
+        setNumColumns(calculatedColumns > 0 ? calculatedColumns : 1);
+      }
+    },
+    [containerWidth]
+  );
 
   useEffect(() => {
     if (!currentDate) return;
@@ -43,7 +43,7 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
     const year = today.getFullYear();
     const month = today.getMonth();
 
-    const firstDayOfMonth = new Date(year, month, 1);
+    //const firstDayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
 
     // 2. Create an array of all days in the current month
@@ -56,26 +56,30 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   }, [currentDate]);
 
   // Process input data
-  const safeData = Array.isArray(data) ? data : [];
-  const dataMap = {};
-  const rawCountMap = {};
-  safeData.forEach((item) => {
-    if (item.date && item.count != null) {
-      const key = formatDateKey(new Date(item.date));
-      rawCountMap[key] = item.count;
-      dataMap[key] = item.count;
-    }
-  });
+  const { dataMap, rawCountMap } = useMemo(() => {
+    const safeData = Array.isArray(data) ? data : [];
+    const dataMap = {};
+    const rawCountMap = {};
+    safeData.forEach((item) => {
+      if (item.date && item.count != null) {
+        const key = formatDateKey(new Date(item.date));
+        rawCountMap[key] = item.count;
+        dataMap[key] = item.count;
+      }
+    });
+    return { dataMap, rawCountMap };
+  }, [data]);
 
   // Generate color array from light to dark
-  const levelCount = 4;
-  const colorArray = ["#F0F2F5"];
-  for (let i = 1; i <= levelCount; i++) {
-    const darkenRatio = 4 + ((i - 1) * (70 - 35)) / (levelCount - 1);
-    const c = tinycolor(color).darken(darkenRatio).toHexString();
-    colorArray.push(c);
-  }
-
+  const colorArray = useMemo(() => {
+    const arr = ["#F0F2F5"];
+    for (let i = 1; i <= 4; i++) {
+      const darkenRatio = 4 + ((i - 1) * (70 - 35)) / (4 - 1);
+      const c = tinycolor(color).darken(darkenRatio).toHexString();
+      arr.push(c);
+    }
+    return arr;
+  }, [color]);
   // Determine color level based on count
   const getLevel = (count) => {
     if (!count) return 0;
@@ -84,45 +88,53 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
   };
 
   // Handle day press
-  const onPressDay = (date) => {
-    const key = formatDateKey(date);
-    const count = rawCountMap[key];
-    setSelectedDate(date);
-    setSelectedCount(count ?? null);
-    showAlert.open();
-  };
+  const onPressDay = useCallback(
+    (date) => {
+      const key = formatDateKey(date);
+      const count = rawCountMap[key];
+      setSelectedDate(date);
+      setSelectedCount(count ?? null);
+      showAlert.open();
+    },
+    [rawCountMap, showAlert]
+  );
 
   // Render each day square
-  const renderItem = ({ item }) => {
-    const key = formatDateKey(item);
-    const level = getLevel(dataMap[key]);
-    return (
-      <TouchableOpacity
-        onPress={() => onPressDay(item)}
-        style={[
-          styles.square,
-          {
-            backgroundColor: colorArray[level],
-            width: SQUARE_SIZE,
-            height: SQUARE_SIZE,
-          },
-        ]}
-      />
-    );
-  };
+  const renderItem = useCallback(
+    ({ item }) => {
+      const key = formatDateKey(item);
+      const level = getLevel(dataMap[key]);
+      return (
+        <TouchableOpacity
+          onPress={() => onPressDay(item)}
+          style={[
+            styles.square,
+            {
+              backgroundColor: colorArray[level],
+              width: SQUARE_SIZE,
+              height: SQUARE_SIZE,
+            },
+          ]}
+        />
+      );
+    },
+    [dataMap, colorArray, onPressDay]
+  );
 
   return (
     <View style={styles.container} onLayout={onLayout}>
-      <FlatList
-        data={dates}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.toISOString()}
-        numColumns={numColumns}
-        key={numColumns.toString()}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.flatListContent}
-      />
+      {containerWidth && (
+        <FlatList
+          data={dates}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.toISOString()}
+          numColumns={numColumns}
+          key={numColumns.toString()}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.flatListContent}
+        />
+      )}
       <AlertDate
         isOpen={showAlert.isOpen}
         setIsOpen={showAlert.toggle}
