@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
 import { ArrowLeft3, ArrowRight3, Trash } from "iconsax-react-nativejs";
@@ -15,11 +15,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CalHeatMapMonth from "../Char/CalHeatMapMonth";
 import useCalendarMonth from "@/hooks/useCalendarMonth";
 import { useToastController } from "@tamagui/toast";
+import useToggleModal from "../../hooks/useToggleModal";
+import HabitDetail from "../Feature/HabitDetail";
+
 const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
-  const { habitData, habitCheck, setHabitData } = useContext(CheckinHabit);
+  const { habitData, habitCheck, setHabitData, removeCheckin } =
+    useContext(CheckinHabit);
   const { currentDate, goToPreviousDate, goToNextMonth, formattedLabel } =
     useCalendarMonth();
   const toast = useToastController();
+  const habitDetailModal = useToggleModal();
 
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
@@ -44,135 +49,155 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
   };
 
   return (
-    <TouchableOpacity
-      style={{
-        borderColor: "#ebedf0",
-        borderWidth: 1,
-        padding: 12,
-        borderRadius: 12,
-
-        backgroundColor: "#fff",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        elevation: 5,
-      }}
-    >
-      <View
+    <View>
+      <TouchableOpacity
         style={{
-          width: wp("86%"),
-          display: "flex",
-          gap: hp("1%"),
+          borderColor: "#ebedf0",
+          borderWidth: 1,
+          padding: 12,
+          borderRadius: 12,
+          backgroundColor: "#fff",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.1,
+          shadowRadius: 6,
+          elevation: 5,
         }}
+        onPress={habitDetailModal.open}
       >
         <View
           style={{
-            marginBottom: 4,
-            borderRadius: 8,
+            width: wp("86%"),
             display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
+            gap: hp("1%"),
           }}
         >
           <View
             style={{
+              marginBottom: 4,
+              borderRadius: 8,
               display: "flex",
               flexDirection: "row",
-              gap: 10,
+              alignItems: "flex-start",
+              justifyContent: "space-between",
             }}
           >
-            {/* ICON */}
             <View
               style={{
-                backgroundColor: color,
-                width: wp("12%"),
-                height: wp("12%"),
                 display: "flex",
-                justifyContent: "center",
-                borderRadius: "30%",
-                alignItems: "center",
+                flexDirection: "row",
+                gap: 10,
               }}
             >
-              <MaterialIcons name={icon} size={30} color={COLORS.darkGreen} />
-            </View>
-            {/* TEXT */}
-            <View>
-              <Text
+              {/* ICON */}
+              <View
                 style={{
-                  fontSize: wp("4.7%"),
-                  fontFamily: FontFamily.Poppins.Regular,
+                  backgroundColor: color,
+                  width: wp("12%"),
+                  height: wp("12%"),
+                  display: "flex",
+                  justifyContent: "center",
+                  borderRadius: "30%",
+                  alignItems: "center",
                 }}
               >
-                {title && title.length > 12
-                  ? title.substr(0, 12) + "..."
-                  : title}
-              </Text>
+                <MaterialIcons name={icon} size={30} color={COLORS.darkGreen} />
+              </View>
+              {/* TEXT */}
+              <View>
+                <Text
+                  style={{
+                    fontSize: wp("4.7%"),
+                    fontFamily: FontFamily.Poppins.Regular,
+                  }}
+                >
+                  {title && title.length > 12
+                    ? title.substr(0, 12) + "..."
+                    : title}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: wp("4%"),
+                    fontFamily: FontFamily.Poppins.Regular,
+                    color: COLORS.darkGreen,
+                  }}
+                >
+                  {description && description.length > 14
+                    ? description.substr(0, 14) + "..."
+                    : description}
+                </Text>
+              </View>
+            </View>
+            {/* PREVIOUS &  NEXT MONTH*/}
+            <View className="flex flex-row items-center">
+              <ArrowLeft3
+                size={24}
+                color={COLORS.darkGreen}
+                onPress={goToPreviousDate}
+              />
               <Text
                 style={{
-                  fontSize: wp("4%"),
-                  fontFamily: FontFamily.Poppins.Regular,
                   color: COLORS.darkGreen,
+                  fontFamily: FontFamily.Poppins.Regular,
+                  fontSize: wp("3%"),
                 }}
               >
-                {description && description.length > 14
-                  ? description.substr(0, 14) + "..."
-                  : description}
+                {formattedLabel}
               </Text>
+              <ArrowRight3
+                size={24}
+                color={COLORS.darkGreen}
+                onPress={goToNextMonth}
+              />
             </View>
           </View>
-          {/* PREVIOUS &  NEXT MONTH*/}
-          <View className="flex flex-row items-center">
-            <ArrowLeft3
-              size={24}
-              color={COLORS.darkGreen}
-              onPress={goToPreviousDate}
-            />
-            <Text
-              style={{
-                color: COLORS.darkGreen,
-                fontFamily: FontFamily.Poppins.Regular,
-                fontSize: wp("3%"),
-              }}
-            >
-              {formattedLabel}
-            </Text>
-            <ArrowRight3
-              size={24}
-              color={COLORS.darkGreen}
-              onPress={goToNextMonth}
-            />
-          </View>
-        </View>
-        <CalHeatMapMonth
-          key={id}
-          id={id}
-          color={color}
-          data={heatmapData}
-          currentDate={currentDate}
-        />
+          <CalHeatMapMonth
+            key={id}
+            id={id}
+            color={color}
+            data={heatmapData}
+            currentDate={currentDate}
+            removeCheckin={(dateKey) => {
+              removeCheckin(id, dateKey);
+              toast.show("Check-in removed 😢", {
+                message: "Don’t worry, you can always check in again!",
+                duration: 3000,
+              });
+            }}
+          />
 
-        <Button
-          icon={<CheckCircle size={wp("3%")} />}
-          size="$4"
-          style={{
-            fontFamily: FontFamily.Poppins.Regular,
-          }}
-          textProps={{ style: { fontSize: wp("4%") } }}
-          onPress={() => {
-            habitCheck(id);
-            toast.show("Check-in saved 🥳", {
-              message: "Nice work keeping up the habit!",
-              duration: 3000,
-            });
-          }}
-        >
-          Check In
-        </Button>
-        {/* <Trash size="32" color="#FF8A65" onPress={() => deleteHabit(id)} /> */}
-      </View>
-    </TouchableOpacity>
+          <Button
+            icon={<CheckCircle size={wp("3%")} />}
+            size="$4"
+            style={{
+              fontFamily: FontFamily.Poppins.Regular,
+            }}
+            textProps={{ style: { fontSize: wp("4%") } }}
+            onPress={() => {
+              habitCheck(id);
+              toast.show("Check-in saved 🥳", {
+                message: "Nice work keeping up the habit!",
+                duration: 3000,
+              });
+            }}
+          >
+            Check In
+          </Button>
+          {/* <Trash size="32" color="#FF8A65" onPress={() => deleteHabit(id)} /> */}
+        </View>
+      </TouchableOpacity>
+      <HabitDetail
+        key={id}
+        isOpen={habitDetailModal.isOpen}
+        onClose={habitDetailModal.close}
+        icon={icon}
+        description={description}
+        title={title}
+        id={id}
+        color={color}
+        data={heatmapData}
+      />
+    </View>
   );
 };
 

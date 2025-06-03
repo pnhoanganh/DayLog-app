@@ -15,7 +15,7 @@ const formatDateKey = (date) => {
   return d.toISOString().split("T")[0];
 };
 
-const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
+const CalHeatMapMonth = ({ data = [], color, currentDate, removeCheckin }) => {
   const [dates, setDates] = useState([]);
   const [numColumns, setNumColumns] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -94,9 +94,9 @@ const CalHeatMapMonth = ({ data = [], color, id, currentDate }) => {
       const count = rawCountMap[key];
       setSelectedDate(date);
       setSelectedCount(count ?? null);
-      showAlert.open();
+      if (count > 0) removeCheckin(formatDateKey(date));
     },
-    [rawCountMap, showAlert]
+    [rawCountMap, removeCheckin]
   );
 
   // Render each day square
