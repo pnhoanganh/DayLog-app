@@ -40,16 +40,76 @@ export const CheckinProvider = ({ children }) => {
 
     const updatedHabitData = { ...habitData, [habitId]: newData };
     setHabitData(updatedHabitData);
+
     try {
       await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
     } catch (error) {
       console.error("Error saving habitData:", error);
     }
-    console.log("Updated habitData:", updatedHabitData);
+  };
+
+  const removeCheckin = async (habitId) => {
+    const today = dayjs().format("YYYY-MM-DD");
+    const currentData = Array.isArray(habitData[habitId])
+      ? habitData[habitId]
+      : [];
+    const todayCheckin = currentData.find((item) => item.date === today);
+    if (!todayCheckin || todayCheckin.count <= 0) {
+      return;
+    }
+
+    const updatedData = currentData.map((item) => {
+      if (item.date === today) {
+        return { ...item, count: item.count - 1 };
+      }
+      return item;
+    });
+    const updatedHabitData = { ...habitData, [habitId]: updatedData };
+    setHabitData(updatedHabitData);
+
+    try {
+      await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
+    } catch (error) {
+      console.error("Error saving habitData: ", error);
+    }
+  };
+
+  const removeAllCheckin = async (habitId) => {
+    const today = dayjs().format("YYYY-MM-DD");
+    const currentData = Array.isArray(habitData[habitId])
+      ? habitData[habitId]
+      : [];
+    const todayCheckin = currentData.find((item) => item.date === today);
+    if (!todayCheckin || todayCheckin.count <= 0) {
+      return;
+    }
+
+    const updatedData = currentData.map((item) => {
+      if (item.date === today) {
+        return { ...item, count: 0 };
+      }
+      return item;
+    });
+    const updatedHabitData = { ...habitData, [habitId]: updatedData };
+    setHabitData(updatedHabitData);
+
+    try {
+      await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
+    } catch (error) {
+      console.error("Error saving habitData: ", error);
+    }
   };
 
   return (
-    <CheckinHabit.Provider value={{ habitData, habitCheck, setHabitData }}>
+    <CheckinHabit.Provider
+      value={{
+        habitData,
+        habitCheck,
+        setHabitData,
+        removeAllCheckin,
+        removeCheckin,
+      }}
+    >
       {children}
     </CheckinHabit.Provider>
   );
