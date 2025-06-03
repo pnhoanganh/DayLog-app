@@ -1,14 +1,13 @@
 import { AlertDialog, Button, XStack, YStack } from "tamagui";
 
 export function AlertDate({ isOpen, setIsOpen, date, count }) {
-  // Không render dialog khi isOpen là false
   if (!isOpen) {
     return null;
   }
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialog.Portal>
+      <AlertDialog.Portal zIndex={1000}>
         <AlertDialog.Overlay
           key="overlay"
           animation="quick"
@@ -34,6 +33,7 @@ export function AlertDate({ isOpen, setIsOpen, date, count }) {
           scale={1}
           opacity={1}
           y={0}
+          zIndex={100001}
         >
           <YStack padding="$4" gap="$3">
             <AlertDialog.Title size="$6" fontWeight="700">
