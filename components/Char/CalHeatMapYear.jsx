@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import {
   View,
   FlatList,
@@ -8,15 +8,10 @@ import {
   ScrollView,
 } from "react-native";
 import tinycolor from "tinycolor2"; // Library for generating color shades
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-// import { toast } from "sonner-native";
 
-const SQUARE_SIZE = wp("4%"); // Size of each square
-const ITEM_MARGIN = wp("0.4%"); // Margin between squares
-const ITEM_TOTAL_WIDTH = SQUARE_SIZE + ITEM_MARGIN; // Total width of each square (size + margin)
+const SQUARE_SIZE = 16;
+const ITEM_MARGIN = 2;
+const ITEM_TOTAL_WIDTH = SQUARE_SIZE + ITEM_MARGIN;
 
 // Function to generate dates for a single week, starting from Sunday and ending on Saturday
 const generateWeekDates = (endDate) => {
@@ -39,7 +34,7 @@ const generateWeekDates = (endDate) => {
 // Format date to YYYY-MM-DD string for use as a key
 const formatDateKey = (date) => {
   const d = new Date(date);
-  d.setHours(0, 0, 0, 0); // Đặt về 00:00:00 để tránh sai ngày do timezone
+  d.setHours(0, 0, 0, 0);
   return d.toISOString().split("T")[0];
 };
 
@@ -76,7 +71,7 @@ const CalHeatMapYear = ({ data = [], color }) => {
     weeks.push(dates.slice(i, i + 7));
   }
 
-  // Rearrange into column-major (Chủ nhật đến Thứ 7 theo cột)
+  // Rearrange into column-major (Sunday to Saturday in column)
   const arrangedDates = [];
   for (let row = 0; row < 7; row++) {
     for (let col = 0; col < weeks.length; col++) {
@@ -102,7 +97,7 @@ const CalHeatMapYear = ({ data = [], color }) => {
           const filteredNewDates = newWeekDates.filter(
             (date) => !existingKeys.has(formatDateKey(date))
           );
-          // if don't have new date =>don't update state
+          // if don't have new date => don't update state
           if (filteredNewDates.length === 0) return prevDates;
           return [...prevDates, ...filteredNewDates];
         });
@@ -113,7 +108,7 @@ const CalHeatMapYear = ({ data = [], color }) => {
     checkNewWeek();
     const interval = setInterval(checkNewWeek, 24 * 60 * 60 * 1000); // Check every 24 hours
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, []);
+  }, [dates]);
 
   // Auto-scroll to the last column when the date list updates
   useEffect(() => {
@@ -122,70 +117,61 @@ const CalHeatMapYear = ({ data = [], color }) => {
     }
   }, [dates]); // Trigger when dates change
 
-  // Ensure input data is an array
-  const safeData = Array.isArray(data) ? data : [];
-
   // Generate 5 color levels: from background to progressively darker shades
-  const levelCount = 4;
-  const colorArray = ["#F0F2F5"]; // Background color for level 0 (no check-ins)
-  for (let i = 1; i <= levelCount; i++) {
-    const darkenRatio = 4 + ((i - 1) * (70 - 35)) / (levelCount - 1); // Calculate darkening ratio
-    const c = tinycolor(color).darken(darkenRatio).toHexString(); // Generate darker shade
-    colorArray.push(c);
-  }
+  const colorArray = useMemo(() => {
+    const arr = ["#EFF2F5"];
+    for (let i = 1; i <= 4; i++) {
+      const darkenRatio = 4 + ((i - 1) * (70 - 35)) / (4 - 1);
+      const c = tinycolor(color).darken(darkenRatio).toHexString();
+      arr.push(c);
+    }
+    return arr;
+  }, [color]);
 
-  // Function to determine check-in level (0-4) based on count
+  // Determine color level based on count
   const getLevel = (count) => {
-    if (count === 0 || count == null) return 0;
-    if (count === 1) return 1;
-    if (count === 2) return 2;
-    if (count === 3) return 3;
+    if (!count) return 0;
     if (count >= 4) return 4;
-    return 0;
+    return count;
   };
 
-  // Create maps for check-in data
-  const dataMap = {}; // Stores check-in levels (0-4)
-  const rawCountMap = {}; // Stores raw check-in counts
-  safeData.forEach((item) => {
-    if (item.date && item.count != null) {
-      const key = formatDateKey(new Date(item.date));
-      rawCountMap[key] = item.count; // Store raw count
-      dataMap[key] = getLevel(item.count); // Store level
-    }
-  });
+  // Process input data
+  const { dataMap, rawCountMap } = useMemo(() => {
+    const safeData = Array.isArray(data) ? data : [];
+    const dataMap = {};
+    const rawCountMap = {};
+    safeData.forEach((item) => {
+      if (item.date && item.count != null) {
+        const key = formatDateKey(new Date(item.date));
+        rawCountMap[key] = item.count;
+        dataMap[key] = item.count;
+      }
+    });
+    return { dataMap, rawCountMap };
+  }, [data]);
 
   // Handle press on a day square
   const onPressDay = (date) => {
     const key = formatDateKey(date);
     const count = rawCountMap[key];
-    Alert.alert(
-      "Check-in Date",
-      count != null
-        ? `${date.toDateString()}\nCheck-ins: ${count}`
-        : `${date.toDateString()}\nNo check-ins`
-    );
-    // toast.success("Checkin notification!", {
-    //   duration: 6000,
-    //   description: `Checkin Date\n${
-    //     count != null
-    //       ? `${date.toDateString()}\nCheck-ins: ${count}`
-    //       : `${date.toDateString()}\nNo checkin`
-    //   }`,
-    // });
+    // Alert.alert(
+    //   "Check-in Date",
+    //   count != null
+    //     ? `${date.toDateString()}\nCheck-ins: ${count}`
+    //     : `${date.toDateString()}\nNo check-ins`
+    // );
     console.log(
       "Pressed date:",
       date,
       "Raw count:",
       rawCountMap[formatDateKey(date)]
     );
-    // console.log("Week: ", weeks);
   };
 
   // Render function for each day square
   const renderItem = ({ item }) => {
     const key = formatDateKey(item);
-    const level = dataMap[key] || 0; // Get check-in level, default to 0
+    const level = getLevel(dataMap[key]); // Get check-in level, default to 0
     return (
       <TouchableOpacity
         onPress={() => onPressDay(item)} // Call onPressDay when square is pressed
@@ -202,25 +188,24 @@ const CalHeatMapYear = ({ data = [], color }) => {
   };
 
   return (
-    // Horizontal ScrollView to scroll through columns
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={true}
-      ref={scrollViewRef} // Attach ref for scroll control
+      ref={scrollViewRef}
     >
       <View>
         <FlatList
-          key={numCols.toString()} // Key to force re-render when column count changes
-          data={arrangedDates} // Data is the column-major arranged dates
-          renderItem={renderItem} // Render function for each square
-          keyExtractor={(item) => item.toISOString()} // Unique key for each date
-          numColumns={numCols} // Number of columns = number of weeks
-          scrollEnabled={false} // Disable scrolling in FlatList (handled by ScrollView)
+          key={numCols.toString()}
+          data={arrangedDates}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.toISOString()}
+          numColumns={numCols}
+          scrollEnabled={false}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
-            width: numCols * ITEM_TOTAL_WIDTH, // Total width of FlatList
-            height: numRows * ITEM_TOTAL_WIDTH, // Total height of FlatList
+            width: numCols * ITEM_TOTAL_WIDTH,
+            height: numRows * ITEM_TOTAL_WIDTH,
           }}
         />
       </View>
@@ -231,8 +216,8 @@ const CalHeatMapYear = ({ data = [], color }) => {
 // Styles for the day squares
 const styles = StyleSheet.create({
   square: {
-    margin: ITEM_MARGIN / 2, // Margin between squares
-    borderRadius: 4, // Rounded corners for squares
+    margin: ITEM_MARGIN / 2,
+    borderRadius: 4,
   },
 });
 
