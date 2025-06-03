@@ -19,6 +19,7 @@ const ToastCus = () => {
       opacity={1}
       scale={1}
       viewportName={currentToast.viewportName}
+      width={280}
     >
       <YStack alignItems="center" justifyContent="center">
         <Toast.Title
