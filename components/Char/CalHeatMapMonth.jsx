@@ -4,18 +4,21 @@ import tinycolor from "tinycolor2";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { AlertDate } from "../Layouts/AlertDate";
+import dayjs from "dayjs";
 
 const SQUARE_SIZE = wp("4.5%");
 const ITEM_MARGIN = wp("0.5%");
 const ITEM_TOTAL_SIZE = SQUARE_SIZE + ITEM_MARGIN;
 
-const formatDateKey = (date) => {
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  return d.toISOString().split("T")[0];
-};
+const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
 
-const CalHeatMapMonth = ({ data = [], color, currentDate, removeCheckin }) => {
+const CalHeatMapMonth = ({
+  data = [],
+  color,
+  currentDate,
+  removeCheckinForHabit,
+  habitId,
+}) => {
   const [dates, setDates] = useState([]);
   const [numColumns, setNumColumns] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -94,9 +97,11 @@ const CalHeatMapMonth = ({ data = [], color, currentDate, removeCheckin }) => {
       const count = rawCountMap[key];
       setSelectedDate(date);
       setSelectedCount(count ?? null);
-      if (count > 0) removeCheckin(formatDateKey(date));
+      if (count > 0) removeCheckinForHabit(key);
+      console.log(key, count);
+      // showAlert.open();
     },
-    [rawCountMap, removeCheckin]
+    [rawCountMap, removeCheckinForHabit]
   );
 
   // Render each day square
