@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import tinycolor from "tinycolor2"; // Library for generating color shades
+import dayjs from "dayjs";
 
 const SQUARE_SIZE = 16;
 const ITEM_MARGIN = 2;
@@ -32,11 +33,7 @@ const generateWeekDates = (endDate) => {
 };
 
 // Format date to YYYY-MM-DD string for use as a key
-const formatDateKey = (date) => {
-  const d = new Date(date);
-  d.setHours(0, 0, 0, 0);
-  return d.toISOString().split("T")[0];
-};
+const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
 
 const CalHeatMapYear = ({ data = [], color }) => {
   // State to store the list of dates in years
@@ -162,7 +159,7 @@ const CalHeatMapYear = ({ data = [], color }) => {
     // );
     console.log(
       "Pressed date:",
-      date,
+      key,
       "Raw count:",
       rawCountMap[formatDateKey(date)]
     );
