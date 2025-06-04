@@ -24,8 +24,9 @@ const HabitDetail = ({
   color,
   id,
   data,
+  currentDate,
 }) => {
-  const { habitCheck, removeAllCheckin, habitData } = useContext(CheckinHabit);
+  const { habitCheck, habitData, removeCheckin } = useContext(CheckinHabit);
   const today = dayjs().format("YYYY-MM-DD");
   const checkins = habitData?.[id] || [];
   const isComplete = checkins.some(
@@ -117,7 +118,7 @@ const HabitDetail = ({
                 }}
                 textProps={{ style: { fontSize: wp("3.5%") } }}
                 onPress={() => {
-                  removeAllCheckin(id);
+                  removeCheckin(id, currentDate);
                   console.log("Removed check-in in detail");
                 }}
               >

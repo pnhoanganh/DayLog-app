@@ -153,11 +153,11 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
           </View>
           <CalHeatMapMonth
             key={id}
-            id={id}
+            habitId={id}
             color={color}
             data={heatmapData}
             currentDate={currentDate}
-            removeCheckin={(dateKey) => {
+            removeCheckinForHabit={(dateKey) => {
               removeCheckin(id, dateKey);
               toast.show("Check-in removed 😢", {
                 message: "Don’t worry, you can always check in again!",
@@ -196,6 +196,7 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
         id={id}
         color={color}
         data={heatmapData}
+        date={currentDate}
       />
     </View>
   );
