@@ -1,42 +1,34 @@
 import React from "react";
-import { View } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { View, TouchableWithoutFeedback } from "react-native";
 import Modal from "react-native-modal";
 
 const ModalFull = ({ visible, onClose, children }) => {
   return (
-    <View style={{ zIndex: 99 }}>
-      <Modal
-        isVisible={visible}
-        animationOut="slideOutDown"
-        style={{ margin: 0 }}
-        backdropOpacity={0.5}
-        swipeDirection={[]}
-        onBackdropPress={() => {}}
-        onBackButtonPress={() => {}}
-        avoidKeyboard
-        propagateSwipe
+    <Modal
+      isVisible={visible}
+      animationOut="slideOutDown"
+      style={{
+        margin: 0,
+        backgroundColor: "white",
+        width: "100%",
+        height: "100%",
+      }}
+      backdropOpacity={0.5}
+      swipeDirection={[]}
+      onBackdropPress={onClose}
+      onBackButtonPress={onClose}
+      avoidKeyboard
+      propagateSwipe
+    >
+      <TouchableWithoutFeedback
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "white",
-            borderTopLeftRadius: wp("6%"),
-            borderTopRightRadius: wp("6%"),
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {children}
-        </View>
-      </Modal>
-    </View>
+        <View>{children}</View>
+      </TouchableWithoutFeedback>
+    </Modal>
   );
 };
 
