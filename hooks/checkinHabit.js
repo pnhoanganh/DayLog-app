@@ -47,16 +47,15 @@ export const CheckinProvider = ({ children }) => {
       console.error("Error saving habitData:", error);
     }
   };
+  const removeCheckin = async (habitId, targetDate) => {
+    const today = targetDate ?? dayjs().format("YYYY-MM-DD");
 
-  const removeCheckin = async (habitId) => {
-    const today = dayjs().format("YYYY-MM-DD");
     const currentData = Array.isArray(habitData[habitId])
       ? habitData[habitId]
       : [];
     const todayCheckin = currentData.find((item) => item.date === today);
-    if (!todayCheckin || todayCheckin.count <= 0) {
-      return;
-    }
+
+    if (!todayCheckin || todayCheckin.count <= 0) return;
 
     const updatedData = currentData.map((item) => {
       if (item.date === today) {
@@ -64,39 +63,14 @@ export const CheckinProvider = ({ children }) => {
       }
       return item;
     });
+
     const updatedHabitData = { ...habitData, [habitId]: updatedData };
     setHabitData(updatedHabitData);
 
     try {
       await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
     } catch (error) {
-      console.error("Error saving habitData: ", error);
-    }
-  };
-
-  const removeAllCheckin = async (habitId) => {
-    const today = dayjs().format("YYYY-MM-DD");
-    const currentData = Array.isArray(habitData[habitId])
-      ? habitData[habitId]
-      : [];
-    const todayCheckin = currentData.find((item) => item.date === today);
-    if (!todayCheckin || todayCheckin.count <= 0) {
-      return;
-    }
-
-    const updatedData = currentData.map((item) => {
-      if (item.date === today) {
-        return { ...item, count: 0 };
-      }
-      return item;
-    });
-    const updatedHabitData = { ...habitData, [habitId]: updatedData };
-    setHabitData(updatedHabitData);
-
-    try {
-      await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
-    } catch (error) {
-      console.error("Error saving habitData: ", error);
+      console.error("Error saving habitData:", error);
     }
   };
 
@@ -106,7 +80,6 @@ export const CheckinProvider = ({ children }) => {
         habitData,
         habitCheck,
         setHabitData,
-        removeAllCheckin,
         removeCheckin,
       }}
     >
