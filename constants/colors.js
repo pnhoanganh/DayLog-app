@@ -2,11 +2,12 @@ const COLORS = {
   white: "#ffffff",
   black: "#000000",
   red: "#AE0F0F",
-  gray: "#968E8E",
   darkOrange: "#DC5B04",
+  orange: "#E86C19",
   lightOrange: "#FFE9BD",
   darkGreen: "#0E3E3E",
   darkGray: "#3E3E3E",
+  gray: "#968E8E",
 };
 
 export default COLORS;
