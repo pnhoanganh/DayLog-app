@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import Modal from "react-native-modal";
+import { PortalProvider } from "tamagui";
 
 const ModalFull = ({ visible, onClose, children }) => {
   return (
@@ -10,8 +11,6 @@ const ModalFull = ({ visible, onClose, children }) => {
       style={{
         margin: 0,
         backgroundColor: "white",
-        width: "100%",
-        height: "100%",
       }}
       backdropOpacity={0.5}
       swipeDirection={[]}
@@ -26,7 +25,9 @@ const ModalFull = ({ visible, onClose, children }) => {
           justifyContent: "center",
         }}
       >
-        <View>{children}</View>
+        <PortalProvider>
+          <View>{children}</View>
+        </PortalProvider>
       </TouchableWithoutFeedback>
     </Modal>
   );

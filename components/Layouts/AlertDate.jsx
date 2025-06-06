@@ -4,7 +4,7 @@ export function AlertDate({ isOpen, setIsOpen, date, count }) {
   if (!isOpen) {
     return null;
   }
-
+  console.log("Alert Date show: ", isOpen);
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialog.Portal zIndex={1000}>
