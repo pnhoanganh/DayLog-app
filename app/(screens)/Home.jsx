@@ -1,4 +1,4 @@
-import { View, FlatList } from "react-native";
+import { View } from "react-native";
 import Header from "@/components/Layouts/Header";
 import {
   widthPercentageToDP as wp,
@@ -9,8 +9,8 @@ import SafeScreen from "@/components/Layouts/SafeScreen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import HabitItem from "@/components/Common/HabitItem";
 import { CheckinHabit } from "@/hooks/checkinHabit";
+import HabitList from "@/components/Feature/HabitList";
 
 const Home = () => {
   const addHabitModal = useToggleModal();
@@ -62,24 +62,9 @@ const Home = () => {
     <SafeScreen>
       <View style={{ flex: 1, paddingTop: hp("3%") }}>
         <Header toggleAddHabit={addHabitModal.open} />
-        <FlatList
-          contentContainerStyle={{
-            alignItems: "center",
-            paddingBottom: hp("10%"),
-            gap: hp("2%"),
-          }}
-          data={habitList}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <HabitItem
-              icon={item.icon}
-              color={item.color}
-              title={item.title}
-              description={item.description}
-              id={item.id}
-              deleteHabit={() => handleDeleteHabit(item.id)}
-            />
-          )}
+        <HabitList
+          habitList={habitList}
+          handleDeleteHabit={handleDeleteHabit}
         />
         <AddHabitModal
           isOpen={addHabitModal.isOpen}
