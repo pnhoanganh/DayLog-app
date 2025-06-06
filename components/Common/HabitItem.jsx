@@ -42,12 +42,6 @@ const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
         }))
     : [];
 
-  // reset habitData (to check)
-  const resetHabitData = async () => {
-    setHabitData({});
-    await AsyncStorage.setItem("habitData", JSON.stringify({}));
-  };
-
   return (
     <View>
       <TouchableOpacity
