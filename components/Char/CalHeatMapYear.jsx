@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import tinycolor from "tinycolor2"; // Library for generating color shades
 import dayjs from "dayjs";
+import useToggleModal from "@/hooks/useToggleModal";
+import { AlertDate } from "../Layouts/AlertDate";
 
 const SQUARE_SIZE = 16;
 const ITEM_MARGIN = 2;
@@ -36,6 +38,10 @@ const generateWeekDates = (endDate) => {
 const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
 
 const CalHeatMapYear = ({ data = [], color }) => {
+  const showAlert = useToggleModal();
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedCount, setSelectedCount] = useState(null);
+
   // State to store the list of dates in years
   const [dates, setDates] = useState(() => {
     // Initialize with dates from the start of the year
@@ -163,6 +169,9 @@ const CalHeatMapYear = ({ data = [], color }) => {
       "Raw count:",
       rawCountMap[formatDateKey(date)]
     );
+    showAlert.open();
+    setSelectedDate(date);
+    setSelectedCount(count ?? null);
   };
 
   // Render function for each day square
@@ -185,12 +194,12 @@ const CalHeatMapYear = ({ data = [], color }) => {
   };
 
   return (
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={true}
-      ref={scrollViewRef}
-    >
-      <View>
+    <View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={true}
+        ref={scrollViewRef}
+      >
         <FlatList
           key={numCols.toString()}
           data={arrangedDates}
@@ -205,8 +214,14 @@ const CalHeatMapYear = ({ data = [], color }) => {
             height: numRows * ITEM_TOTAL_WIDTH,
           }}
         />
-      </View>
-    </ScrollView>
+      </ScrollView>
+      <AlertDate
+        isOpen={showAlert.isOpen}
+        setIsOpen={showAlert.toggle}
+        count={selectedCount}
+        date={selectedDate}
+      />
+    </View>
   );
 };
 
