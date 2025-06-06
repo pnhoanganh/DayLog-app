@@ -87,8 +87,8 @@ const HabitDetail = ({
                     fontFamily: FontFamily.Poppins.Regular,
                   }}
                 >
-                  {title && title.length > 12
-                    ? title.substr(0, 12) + "..."
+                  {title && title.length > 30
+                    ? title.substr(0, 30) + "..."
                     : title}
                 </Text>
               </View>
@@ -107,8 +107,8 @@ const HabitDetail = ({
                   color: COLORS.darkGray,
                 }}
               >
-                {description && description.length > 14
-                  ? description.substr(0, 14) + "..."
+                {description && description.length > 45
+                  ? description.substr(0, 45) + "..."
                   : description}
               </Text>
             </View>
