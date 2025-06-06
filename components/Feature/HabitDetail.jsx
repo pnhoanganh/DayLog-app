@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import ModalFull from "../Modals/ModalFull";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -12,8 +12,16 @@ import { MaterialIcons } from "@expo/vector-icons";
 import CalHeatMapYear from "../Char/CalHeatMapYear";
 import { CheckinHabit } from "@/hooks/checkinHabit";
 import { Button, XStack } from "tamagui";
-import { CheckCircle, Circle } from "@tamagui/lucide-icons";
+import {
+  CheckCircle,
+  Circle,
+  CalendarFold,
+  Pencil,
+  Trash2,
+} from "@tamagui/lucide-icons";
 import dayjs from "dayjs";
+import useToggleModal from "../../hooks/useToggleModal";
+import { AlertWarn } from "../Layouts/AlertWarn";
 
 const HabitDetail = ({
   isOpen,
@@ -25,25 +33,29 @@ const HabitDetail = ({
   id,
   data,
   currentDate,
+  deleteHabit,
 }) => {
   const { habitCheck, habitData, removeCheckin } = useContext(CheckinHabit);
   const today = dayjs().format("YYYY-MM-DD");
   const checkins = habitData?.[id] || [];
-  const isComplete = checkins.some(
-    (item) => item.date === today && item.count > 0
-  );
+  const isComplete =
+    Array.isArray(checkins) &&
+    checkins.some((item) => item.date === today && item.count > 0);
+  const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
+  const deleteConfirmModal = useToggleModal();
 
   return (
-    <>
+    <View>
       <ModalFull visible={isOpen} onClose={onClose}>
         <View
           style={{
             height: hp("35%"),
             width: wp("100%"),
+            // justifyContent: "center",
             padding: 20,
           }}
         >
-          {/* HEADER = ICON + TITLE + CLOSEBTN*/}
+          {/* HEADER = ICON + TITLE + CLOSEBTN */}
           <View
             style={{
               flexDirection: "row",
@@ -106,7 +118,11 @@ const HabitDetail = ({
             <CalHeatMapYear color={color} data={data} />
           </View>
           {/* FUNCTION BTN */}
-          <XStack paddingTop="$3">
+          <XStack
+            paddingTop="$3"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             {/* COMPLETE BTN */}
             {isComplete ? (
               <Button
@@ -118,14 +134,17 @@ const HabitDetail = ({
                 }}
                 textProps={{ style: { fontSize: wp("3.5%") } }}
                 onPress={() => {
-                  removeCheckin(id, currentDate);
-                  console.log("Removed check-in in detail");
+                  removeCheckin(id, formatDateKey(currentDate));
+                  console.log(
+                    "Removed check-in in detail",
+                    id,
+                    formatDateKey(currentDate)
+                  );
                 }}
               >
                 Uncomplete
               </Button>
             ) : (
-              // CHƯA hoàn thành → hiện nút Complete
               <Button
                 icon={CheckCircle}
                 size="$3"
@@ -145,10 +164,22 @@ const HabitDetail = ({
             )}
 
             {/* DETAIL BTN */}
+            <XStack gap="$6">
+              <CalendarFold color={COLORS.darkGreen} />
+              <Pencil color={COLORS.darkGreen} />
+              <TouchableOpacity onPress={deleteConfirmModal.open}>
+                <Trash2 color={COLORS.darkGreen} />
+              </TouchableOpacity>
+            </XStack>
           </XStack>
         </View>
+        <AlertWarn
+          isOpen={deleteConfirmModal.isOpen}
+          setIsOpen={deleteConfirmModal.toggle}
+          action={deleteHabit}
+        />
       </ModalFull>
-    </>
+    </View>
   );
 };
 

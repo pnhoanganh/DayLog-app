@@ -1,4 +1,4 @@
-import { View, FlatList, Text, TouchableOpacity } from "react-native";
+import { View, FlatList } from "react-native";
 import Header from "@/components/Layouts/Header";
 import {
   widthPercentageToDP as wp,
@@ -77,7 +77,7 @@ const Home = () => {
               title={item.title}
               description={item.description}
               id={item.id}
-              deleteHabit={handleDeleteHabit}
+              deleteHabit={() => handleDeleteHabit(item.id)}
             />
           )}
         />

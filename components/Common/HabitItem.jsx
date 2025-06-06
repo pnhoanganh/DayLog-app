@@ -18,7 +18,7 @@ import { useToastController } from "@tamagui/toast";
 import useToggleModal from "../../hooks/useToggleModal";
 import HabitDetail from "../Feature/HabitDetail";
 
-const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
+const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
   const { habitData, habitCheck, setHabitData, removeCheckin } =
     useContext(CheckinHabit);
   const { currentDate, goToPreviousDate, goToNextMonth, formattedLabel } =
@@ -196,7 +196,8 @@ const HabitItem = ({ icon, title, description, color, deleteHabit, id }) => {
         id={id}
         color={color}
         data={heatmapData}
-        date={currentDate}
+        currentDate={currentDate}
+        deleteHabit={deleteHabit}
       />
     </View>
   );
