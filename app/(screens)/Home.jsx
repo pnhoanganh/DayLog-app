@@ -1,16 +1,14 @@
 import { View } from "react-native";
 import Header from "@/components/Layouts/Header";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import AddHabitModal from "@/components/Feature/AddHabit";
 import SafeScreen from "@/components/Layouts/SafeScreen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CheckinHabit } from "@/hooks/checkinHabit";
-import HabitList from "@/components/Feature/HabitList";
+import HabitList from "@/components/Layouts/HabitList";
+import EmptyHabitState from "@/components/Layouts/EmptyHabitState";
 
 const Home = () => {
   const addHabitModal = useToggleModal();
@@ -40,6 +38,12 @@ const Home = () => {
     loadHabits();
   }, []);
 
+  // reset habitData (to check)
+  const resetHabitData = async () => {
+    setHabitData({});
+    await AsyncStorage.setItem("habitData", JSON.stringify({}));
+  };
+
   const handleDeleteHabit = async (id) => {
     try {
       // Update habitList
@@ -57,15 +61,26 @@ const Home = () => {
       alert("Failed to delete habit. Please try again.");
     }
   };
+  useEffect(() => {
+    console.log("habitData updated:", habitData);
+  }, [habitData]);
 
   return (
     <SafeScreen>
       <View style={{ flex: 1, paddingTop: hp("3%") }}>
-        <Header toggleAddHabit={addHabitModal.open} />
-        <HabitList
-          habitList={habitList}
-          handleDeleteHabit={handleDeleteHabit}
+        <Header
+          toggleAddHabit={addHabitModal.open}
+          resetHabitData={resetHabitData}
         />
+
+        {habitList.length > 0 ? (
+          <HabitList
+            habitList={habitList}
+            handleDeleteHabit={handleDeleteHabit}
+          />
+        ) : (
+          <EmptyHabitState />
+        )}
         <AddHabitModal
           isOpen={addHabitModal.isOpen}
           onClose={() => {
