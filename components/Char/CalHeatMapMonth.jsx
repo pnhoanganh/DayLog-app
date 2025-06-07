@@ -1,14 +1,22 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { View, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+} from "react-native";
 import tinycolor from "tinycolor2";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { AlertDate } from "../Layouts/AlertDate";
 import dayjs from "dayjs";
 
-const SQUARE_SIZE = wp("4.5%");
-const ITEM_MARGIN = wp("0.5%");
-const ITEM_TOTAL_SIZE = SQUARE_SIZE + ITEM_MARGIN;
+const SQUARE_SIZE = wp("5%");
+const ITEM_MARGIN = wp("0.8%");
+const NUM_COLUMNS = 7;
+const NUM_ROWS = 6;
+const TOTAL_CELLS = NUM_COLUMNS * NUM_ROWS;
 
 const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
 
@@ -20,25 +28,9 @@ const CalHeatMapMonth = ({
   habitId,
 }) => {
   const [dates, setDates] = useState([]);
-  const [numColumns, setNumColumns] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCount, setSelectedCount] = useState(null);
   const showAlert = useToggleModal();
-  const [containerWidth, setContainerWidth] = useState(null);
-
-  // Get container width and calculate number of columns
-  const onLayout = useCallback(
-    (event) => {
-      const width = event.nativeEvent.layout.width;
-      if (width && width !== containerWidth) {
-        setContainerWidth(width);
-        const calculatedColumns = Math.floor(width / ITEM_TOTAL_SIZE);
-        setNumColumns(calculatedColumns > 0 ? calculatedColumns : 1);
-      }
-    },
-    [containerWidth]
-  );
-
   useEffect(() => {
     if (!currentDate) return;
     // 1. Get the first and last day of the current month
@@ -46,13 +38,32 @@ const CalHeatMapMonth = ({
     const year = today.getFullYear();
     const month = today.getMonth();
 
-    //const firstDayOfMonth = new Date(year, month, 1);
+    const firstDayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
 
-    // 2. Create an array of all days in the current month
+    // startDay: 0 (Sunday) → 6 (Saturday), map so week starts on Monday
+    let startDay = firstDayOfMonth.getDay(); // Use getDay() (take day in week)
+    startDay = startDay === 0 ? 6 : startDay - 1;
+
+    // 2. Create an array of all days in the heatmap month
     const tempDates = [];
-    for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
-      tempDates.push(new Date(year, month, day));
+    // Fill previous month
+    for (let i = startDay; i > 0; i--) {
+      const prevDate = new Date(year, month, 1 - i);
+      tempDates.push(prevDate);
+    }
+
+    // Fill current month
+    for (let d = 1; d <= lastDayOfMonth.getDate(); d++) {
+      tempDates.push(new Date(year, month, d));
+    }
+
+    // Fill next month
+    while (tempDates.length < TOTAL_CELLS) {
+      const lastDate = tempDates[tempDates.length - 1];
+      const nextDate = new Date(lastDate);
+      nextDate.setDate(lastDate.getDate() + 1);
+      tempDates.push(nextDate);
     }
 
     setDates(tempDates);
@@ -127,19 +138,48 @@ const CalHeatMapMonth = ({
   );
 
   return (
-    <View style={styles.container} onLayout={onLayout}>
-      {containerWidth && (
-        <FlatList
-          data={dates}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.toISOString()}
-          numColumns={numColumns}
-          key={numColumns.toString()}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.flatListContent}
-        />
-      )}
+    <View style={styles.container}>
+      <View
+        style={{
+          flexDirection: "row",
+          width: "100%",
+          gap: ITEM_MARGIN,
+        }}
+      >
+        {["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map((day, index) => (
+          <View
+            key={index}
+            style={{
+              width: SQUARE_SIZE,
+              height: SQUARE_SIZE,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: wp("2.5%"),
+                color: "#333",
+                textAlign: "center",
+                lineHeight: SQUARE_SIZE,
+              }}
+            >
+              {day}
+            </Text>
+          </View>
+        ))}
+      </View>
+
+      <FlatList
+        data={dates}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.toISOString()}
+        numColumns={NUM_COLUMNS}
+        key={NUM_COLUMNS.toString()}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.flatListContent}
+      />
       <AlertDate
         isOpen={showAlert.isOpen}
         setIsOpen={showAlert.toggle}
@@ -152,7 +192,6 @@ const CalHeatMapMonth = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
