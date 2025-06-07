@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { customFonts } from "../constants/fonts";
 import "../global.css";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { createTamagui, TamaguiProvider, View } from "tamagui";
+import { createTamagui, TamaguiProvider } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import { CheckinProvider } from "@/hooks/checkinHabit";
 import { PortalProvider } from "@tamagui/portal";
@@ -31,12 +31,12 @@ export default function RootLayout() {
           <ToastProvider>
             <ToastViewport
               flexDirection="column-reverse"
-              top={50}
+              bottom={50}
               left={0}
               right={0}
               position="absolute"
               width="100%"
-              zIndex={999}
+              zIndex={99999}
             />
             <SafeAreaProvider>
               <Stack screenOptions={{ headerShown: false }} />
