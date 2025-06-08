@@ -5,7 +5,7 @@ import {
 } from "react-native-responsive-screen";
 import { AddCircle, Setting2 } from "iconsax-react-nativejs";
 import { FontFamily } from "@/constants/fonts";
-const Header = ({ toggleAddHabit }) => {
+const Header = ({ toggleAddHabit, resetHabitData }) => {
   return (
     <View
       style={{
@@ -17,7 +17,7 @@ const Header = ({ toggleAddHabit }) => {
         marginBottom: hp("2%"),
       }}
     >
-      <TouchableOpacity>
+      <TouchableOpacity onPress={resetHabitData}>
         <Setting2 size="32" color="#000000" variant="Outline" />
       </TouchableOpacity>
       <Text style={{ fontFamily: FontFamily.Poetsen, fontSize: hp("3.5%") }}>

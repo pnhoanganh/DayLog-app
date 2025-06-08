@@ -1,36 +1,45 @@
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import Header from "@/components/Layouts/Header";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import AddHabitModal from "@/components/Feature/AddHabit";
 import SafeScreen from "@/components/Layouts/SafeScreen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { useEffect, useState, useContext } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CheckinHabit } from "@/hooks/checkinHabit";
 import HabitList from "@/components/Layouts/HabitList";
 import EmptyHabitState from "@/components/Layouts/EmptyHabitState";
+import { useSQLiteContext } from "expo-sqlite";
 
 const Home = () => {
   const addHabitModal = useToggleModal();
   const [habitList, setHabitList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { habitData, setHabitData } = useContext(CheckinHabit);
+  const db = useSQLiteContext();
 
   const loadHabits = async () => {
     try {
-      const stored = await AsyncStorage.getItem("habits");
-      const habitList = stored ? JSON.parse(stored) : [];
-      setHabitList(habitList);
-      // Initialize habitData for new habits
-      const updatedHabitData = { ...habitData };
-      habitList.forEach((habit) => {
-        if (!updatedHabitData[habit.id]) {
-          updatedHabitData[habit.id] = [];
-        }
+      const habits = await db.getAllAsync(`SELECT * FROM habit`);
+      const checkIns = await db.getAllAsync(`SELECT * FROM check_ins_log`);
+
+      const updatedHabitData = {};
+      habits.forEach((habit) => {
+        updatedHabitData[habit.habit_id] = checkIns
+          .filter((log) => log.habit_id === habit.habit_id)
+          .map((log) => ({
+            log_id: log.log_id,
+            count: log.count,
+            created_at: log.created_at,
+            updated_at: log.updated_at,
+          }));
       });
-      setHabitData(updatedHabitData); // Update context
-      await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
+
+      setHabitList(habits);
+      setHabitData(updatedHabitData);
     } catch (error) {
-      console.error("Error loading habit list:", error);
+      console.log("Database error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,32 +47,40 @@ const Home = () => {
     loadHabits();
   }, []);
 
-  // reset habitData (to check)
+  if (isLoading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
   const resetHabitData = async () => {
-    setHabitData({});
-    await AsyncStorage.setItem("habitData", JSON.stringify({}));
+    try {
+      await db.runAsync("DELETE FROM check_ins_log");
+      setHabitData({});
+    } catch (error) {
+      console.error("Error resetting habit data:", error);
+      alert("Failed to reset habit data. Please try again.");
+    }
   };
 
-  const handleDeleteHabit = async (id) => {
+  const handleDeleteHabit = async (habit_id) => {
     try {
-      // Update habitList
-      const updatedList = habitList.filter((habit) => habit.id !== id);
-      setHabitList(updatedList);
-      await AsyncStorage.setItem("habits", JSON.stringify(updatedList));
+      await db.runAsync("DELETE FROM habit WHERE habit_id = ?", [habit_id]);
+      await db.runAsync("DELETE FROM check_ins_log WHERE habit_id = ?", [
+        habit_id,
+      ]);
 
-      // Update habitData
+      const updatedList = habitList.filter(
+        (habit) => habit.habit_id !== habit_id
+      );
+      setHabitList(updatedList);
+
       const updatedHabitData = { ...habitData };
-      delete updatedHabitData[id];
-      setHabitData(updatedHabitData); // Update context
-      await AsyncStorage.setItem("habitData", JSON.stringify(updatedHabitData));
+      delete updatedHabitData[habit_id];
+      setHabitData(updatedHabitData);
     } catch (error) {
       console.error("Error deleting habit:", error);
       alert("Failed to delete habit. Please try again.");
     }
   };
-  useEffect(() => {
-    console.log("habitData updated:", habitData);
-  }, [habitData]);
 
   return (
     <SafeScreen>
@@ -72,7 +89,6 @@ const Home = () => {
           toggleAddHabit={addHabitModal.open}
           resetHabitData={resetHabitData}
         />
-
         {habitList.length > 0 ? (
           <HabitList
             habitList={habitList}

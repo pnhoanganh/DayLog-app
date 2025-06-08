@@ -12,15 +12,15 @@ const HabitList = ({ habitList, handleDeleteHabit }) => {
         gap: hp("2%"),
       }}
       data={habitList}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item.habit_id.toString()}
       renderItem={({ item }) => (
         <HabitItem
           icon={item.icon}
-          color={item.color}
+          color={item.color_code}
           title={item.title}
           description={item.description}
           id={item.id}
-          deleteHabit={() => handleDeleteHabit(item.id)}
+          deleteHabit={() => handleDeleteHabit(item.habit_id)}
         />
       )}
     />
