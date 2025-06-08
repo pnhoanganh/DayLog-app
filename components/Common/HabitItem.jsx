@@ -145,20 +145,22 @@ const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
               />
             </View>
           </View>
-          <CalHeatMapMonth
-            key={id}
-            habitId={id}
-            color={color}
-            data={heatmapData}
-            currentDate={currentDate}
-            removeCheckinForHabit={(dateKey) => {
-              removeCheckin(id, dateKey);
-              toast.show("Check-in removed 😢", {
-                message: "Don’t worry, you can always check in again!",
-                duration: 3000,
-              });
-            }}
-          />
+          <View className="flex-row justify-between">
+            <CalHeatMapMonth
+              key={id}
+              habitId={id}
+              color={color}
+              data={heatmapData}
+              currentDate={currentDate}
+              removeCheckinForHabit={(dateKey) => {
+                removeCheckin(id, dateKey);
+                toast.show("Check-in removed 😢", {
+                  message: "Don’t worry, you can always check in again!",
+                  duration: 3000,
+                });
+              }}
+            />
+          </View>
 
           <Button
             icon={<CheckCircle size={wp("3%")} />}
