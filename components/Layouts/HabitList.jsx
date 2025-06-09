@@ -19,7 +19,7 @@ const HabitList = ({ habitList, handleDeleteHabit }) => {
           color={item.color_code}
           title={item.title}
           description={item.description}
-          id={item.id}
+          id={item.habit_id}
           deleteHabit={() => handleDeleteHabit(item.habit_id)}
         />
       )}

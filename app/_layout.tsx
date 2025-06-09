@@ -12,9 +12,10 @@ import { defaultConfig } from "@tamagui/config/v4";
 import { PortalProvider } from "@tamagui/portal";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import ToastCus from "../components/Common/ToastCus";
-import { CheckinProvider } from "@/hooks/checkinHabit";
+import { HabitProvider } from "@/hooks/HabitContext";
 import { customFonts } from "../constants/fonts";
 import { useFonts } from "expo-font";
+
 SplashScreen.preventAutoHideAsync();
 const config = createTamagui(defaultConfig);
 
@@ -36,7 +37,9 @@ const loadDatabase = async () => {
       await FileSystem.downloadAsync(dbUri, dbFilePath);
       console.log("Database loaded from assets.");
     } else {
-      console.log("Database already exists, skipping download.");
+      console.log("Database already exists.");
+      // delete old database
+      // await FileSystem.deleteAsync(dbFilePath);
     }
   } catch (e) {
     console.error("Error loading database:", e);
@@ -70,7 +73,7 @@ export default function RootLayout() {
   return (
     <SQLiteProvider databaseName="mySQLiteDB.db">
       <TamaguiProvider config={config}>
-        <CheckinProvider>
+        <HabitProvider>
           <PortalProvider shouldAddRootHost>
             <ToastProvider>
               <ToastViewport
@@ -88,7 +91,7 @@ export default function RootLayout() {
               </SafeAreaProvider>
             </ToastProvider>
           </PortalProvider>
-        </CheckinProvider>
+        </HabitProvider>
       </TamaguiProvider>
     </SQLiteProvider>
   );

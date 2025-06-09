@@ -1,10 +1,9 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
 import ModalBottom from "../Modals/ModalBottom";
@@ -50,15 +49,6 @@ const AddHabitModal = ({ isOpen, onClose }) => {
 
     // Log for debugging
     console.log("Inserting habit:", habitToSave);
-    console.log("Types:", {
-      habit_id: typeof habitToSave.habit_id,
-      title: typeof habitToSave.title,
-      description: typeof habitToSave.description,
-      color_code: typeof habitToSave.color_code,
-      icon: typeof habitToSave.icon,
-      created_at: typeof habitToSave.created_at,
-      updated_at: typeof habitToSave.updated_at,
-    });
 
     try {
       await db.runAsync(
@@ -96,59 +86,10 @@ const AddHabitModal = ({ isOpen, onClose }) => {
     }
   };
 
-  // const [habitTitle, setHabitTitle] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [selectedIcon, setSelectedIcon] = useState("");
-  // const [selectedColor, setSelectedColor] = useState("");
-
-  // const handleAddHabit = async () => {
-  //   // Create new habit object
-  //   const newHabit = {
-  //     // id: uuidv4(),
-  //     id: Date.now(),
-  //     title: habitTitle,
-  //     description: description,
-  //     icon: selectedIcon || "add",
-  //     color: selectedColor || "#C3F0C8",
-  //   };
-
-  //   try {
-  //     // Get old habits list (if any)
-  //     const existingHabits = await AsyncStorage.getItem("habits");
-  //     const habits = existingHabits ? JSON.parse(existingHabits) : [];
-
-  //     // Adding new habits
-  //     const updateHabits = [...habits, newHabit];
-
-  //     // Storing habits
-  //     await AsyncStorage.setItem("habits", JSON.stringify(updateHabits));
-  //     // Reset form (modal sẽ đóng bên ngoài sau 100ms)
-  //     setHabitTitle("");
-  //     setDescription("");
-  //     setSelectedColor("");
-  //     setSelectedIcon("");
-
-  //     toast.show("Habit is saved 🥳", {
-  //       message: "Nice work keeping up the habit!",
-  //       duration: 3000,
-  //     });
-
-  //     setTimeout(() => {
-  //       onClose();
-  //     }, 100);
-  //   } catch (error) {
-  //     console.error("Failed to save habit:", error);
-  //   }
-  // };
   return (
     <ModalBottom
       visible={isOpen}
       onClose={() => {
-        // reset form when modal close
-        // setHabitTitle("");
-        // setDescription("");
-        // setSelectedColor("");
-        // setSelectedIcon("");
         onClose();
       }}
       disableClose={isIconModalOpen}
@@ -160,8 +101,6 @@ const AddHabitModal = ({ isOpen, onClose }) => {
           <IconSelector
             isModalOpen={isIconModalOpen}
             setModalOpen={setIconModalOpen}
-            // selectedIcon={selectedIcon}
-            // setSelectedIcon={setSelectedIcon}
             selectedIcon={newHabit.icon}
             setSelectedIcon={(icon) => {
               setNewHabit((prev) => ({ ...prev, icon }));
@@ -171,8 +110,6 @@ const AddHabitModal = ({ isOpen, onClose }) => {
           <View className="flex flex-col gap-4 mt-4 mb-8">
             <TextInput
               label="New Habit"
-              // value={habitTitle}
-              // onChangeText={setHabitTitle}
               value={newHabit.title}
               onChangeText={(text) =>
                 setNewHabit((prev) => ({ ...prev, title: text }))

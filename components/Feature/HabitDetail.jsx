@@ -10,7 +10,7 @@ import COLORS from "../../constants/colors";
 import { FontFamily } from "@/constants/fonts";
 import { MaterialIcons } from "@expo/vector-icons";
 import CalHeatMapYear from "../Char/CalHeatMapYear";
-import { CheckinHabit } from "@/hooks/checkinHabit";
+import { HabitContext } from "@/hooks/HabitContext";
 import { Button, XStack } from "tamagui";
 import {
   CheckCircle,
@@ -35,7 +35,7 @@ const HabitDetail = ({
   currentDate,
   deleteHabit,
 }) => {
-  const { habitCheck, habitData, removeCheckin } = useContext(CheckinHabit);
+  const { habitCheck, habitData, removeCheckin } = useContext(HabitContext);
   const today = dayjs().format("YYYY-MM-DD");
   const checkins = habitData?.[id] || [];
   const isComplete =
@@ -51,7 +51,6 @@ const HabitDetail = ({
           style={{
             height: hp("35%"),
             width: wp("100%"),
-            // justifyContent: "center",
             padding: 20,
           }}
         >

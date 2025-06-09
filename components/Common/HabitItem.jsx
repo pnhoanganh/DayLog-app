@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
-import { ArrowLeft3, ArrowRight3, Trash } from "iconsax-react-nativejs";
+import { ArrowLeft3, ArrowRight3 } from "iconsax-react-nativejs";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -10,8 +10,7 @@ import {
 import { FontFamily } from "@/constants/fonts";
 import { Button } from "tamagui";
 import { CheckCircle } from "@tamagui/lucide-icons";
-import { CheckinHabit } from "@/hooks/checkinHabit";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { HabitContext } from "@/hooks/HabitContext";
 import CalHeatMapMonth from "../Char/CalHeatMapMonth";
 import useCalendarMonth from "@/hooks/useCalendarMonth";
 import { useToastController } from "@tamagui/toast";
@@ -19,8 +18,7 @@ import useToggleModal from "../../hooks/useToggleModal";
 import HabitDetail from "../Feature/HabitDetail";
 
 const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
-  const { habitData, habitCheck, setHabitData, removeCheckin } =
-    useContext(CheckinHabit);
+  const { habitData, habitCheck, removeCheckin } = useContext(HabitContext);
   const { currentDate, goToPreviousDate, goToNextMonth, formattedLabel } =
     useCalendarMonth();
   const toast = useToastController();
@@ -179,7 +177,6 @@ const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
           >
             Check In
           </Button>
-          {/* <Trash size="32" color="#FF8A65" onPress={() => deleteHabit(id)} /> */}
         </View>
       </TouchableOpacity>
       <HabitDetail
