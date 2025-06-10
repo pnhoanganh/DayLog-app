@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import dayjs from "dayjs";
 import { useSQLiteContext } from "expo-sqlite";
+import { useToastController } from "@tamagui/toast";
+import uuid from "react-native-uuid";
 
 export const HabitContext = createContext();
 
@@ -10,6 +12,7 @@ export const HabitProvider = ({ children }) => {
   const [habitList, setHabitList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const db = useSQLiteContext();
+  const toast = useToastController();
 
   // Load habitData from SQLite
   const loadHabitsList = async () => {
@@ -170,6 +173,65 @@ export const HabitProvider = ({ children }) => {
     }
   };
 
+  const handleAddHabit = async (newHabit) => {
+    const newId = uuid.v4();
+    const timestamp = new Date().toISOString();
+
+    // Validate required fields
+    if (!newHabit.title || typeof newHabit.title !== "string") {
+      alert("Failed to Add Habit. Habit name is required!");
+      return false;
+    }
+
+    const isDuplicated = habitList.some(
+      (habit) => habit.title.toLowerCase() === newHabit.title.toLowerCase()
+    );
+    if (isDuplicated) {
+      alert("Failed to Add Habit. Habit name already exists!");
+      return false;
+    }
+    const habitToSave = {
+      habit_id: String(newId),
+      title: String(newHabit.title),
+      description: newHabit.description ? String(newHabit.description) : "",
+      color_code: newHabit.color_code ? String(newHabit.color_code) : "#C3F0C8",
+      icon: newHabit.icon ? String(newHabit.icon) : "add",
+      created_at: String(timestamp),
+      updated_at: String(timestamp),
+    };
+
+    // Log for debugging
+    console.log("Inserting habit:", habitToSave);
+
+    try {
+      await db.runAsync(
+        "INSERT INTO habit (habit_id, title, description, color_code, icon, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [
+          habitToSave.habit_id,
+          habitToSave.title,
+          habitToSave.description,
+          habitToSave.color_code,
+          habitToSave.icon,
+          habitToSave.created_at,
+          habitToSave.updated_at,
+        ]
+      );
+
+      toast.show("Habit is saved 🥳", {
+        message: "Nice work keeping up the habit!",
+        duration: 3000,
+      });
+      return true;
+    } catch (error) {
+      console.error("Failed to save habit:", error, error.stack);
+      toast.show("Error", {
+        message: "Failed to save habit. Please try again.",
+        duration: 3000,
+      });
+      return false;
+    }
+  };
+
   const handleDeleteHabit = async (habit_id) => {
     try {
       await db.runAsync("DELETE FROM habit WHERE habit_id = ?", [habit_id]);
@@ -192,21 +254,24 @@ export const HabitProvider = ({ children }) => {
   };
 
   return (
-    <HabitContext.Provider
-      value={{
-        habitData,
-        habitCheck,
-        setHabitData,
-        removeCheckin,
-        resetHabitData,
-        habitList,
-        handleDeleteHabit,
-        loadHabitsList,
-        loadAllData,
-        loadHabitsData,
-      }}
-    >
-      {children}
-    </HabitContext.Provider>
+    <>
+      <HabitContext.Provider
+        value={{
+          habitData,
+          habitCheck,
+          setHabitData,
+          removeCheckin,
+          resetHabitData,
+          habitList,
+          handleDeleteHabit,
+          loadHabitsList,
+          loadAllData,
+          loadHabitsData,
+          handleAddHabit,
+        }}
+      >
+        {children}
+      </HabitContext.Provider>
+    </>
   );
 };

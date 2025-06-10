@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
 import { ArrowLeft3, ArrowRight3 } from "iconsax-react-nativejs";
@@ -14,15 +14,14 @@ import { HabitContext } from "@/hooks/HabitContext";
 import CalHeatMapMonth from "../Char/CalHeatMapMonth";
 import useCalendarMonth from "@/hooks/useCalendarMonth";
 import { useToastController } from "@tamagui/toast";
-import useToggleModal from "../../hooks/useToggleModal";
-import HabitDetail from "../Feature/HabitDetail";
+import { router } from "expo-router";
 
-const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
+const HabitItem = ({ icon, title, description, color, id }) => {
   const { habitData, habitCheck, removeCheckin } = useContext(HabitContext);
   const { currentDate, goToPreviousDate, goToNextMonth, formattedLabel } =
     useCalendarMonth();
   const toast = useToastController();
-  const habitDetailModal = useToggleModal();
+  const [selectedHabit, setSelectedHabit] = useState(null);
 
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
@@ -39,6 +38,24 @@ const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
           count: item.count,
         }))
     : [];
+  const handleSelectedItem = (id) => {
+    if (!id) {
+      console.error("Invalid habit");
+    }
+    setSelectedHabit(id);
+    const pathname = "/(screens)/HabitDetailPanel";
+    router.push({
+      pathname,
+      params: {
+        id: id,
+        icon: icon,
+        title: title,
+        description: description,
+        color: color,
+        currentDate: currentDate,
+      },
+    });
+  };
 
   return (
     <View>
@@ -55,7 +72,9 @@ const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
           shadowRadius: 6,
           elevation: 5,
         }}
-        onPress={habitDetailModal.open}
+        onPress={() => {
+          handleSelectedItem(id);
+        }}
       >
         <View
           style={{
@@ -179,19 +198,6 @@ const HabitItem = ({ icon, title, description, color, id, deleteHabit }) => {
           </Button>
         </View>
       </TouchableOpacity>
-      <HabitDetail
-        key={id}
-        isOpen={habitDetailModal.isOpen}
-        onClose={habitDetailModal.close}
-        icon={icon}
-        description={description}
-        title={title}
-        id={id}
-        color={color}
-        data={heatmapData}
-        currentDate={currentDate}
-        deleteHabit={deleteHabit}
-      />
     </View>
   );
 };
