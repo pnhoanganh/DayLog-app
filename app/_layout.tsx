@@ -11,7 +11,7 @@ import { createTamagui, TamaguiProvider, Text, View } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import { PortalProvider } from "@tamagui/portal";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
-import ToastCus from "../components/Common/ToastCus";
+import ToastCus from "../components/Common/Toast/ToastCus";
 import { HabitProvider } from "@/hooks/HabitContext";
 import { customFonts } from "../constants/fonts";
 import { useFonts } from "expo-font";
@@ -71,28 +71,29 @@ export default function RootLayout() {
     );
 
   return (
-    <SQLiteProvider databaseName="mySQLiteDB.db">
-      <TamaguiProvider config={config}>
-        <HabitProvider>
-          <PortalProvider shouldAddRootHost>
-            <ToastProvider>
-              <ToastViewport
-                flexDirection="column-reverse"
-                bottom={50}
-                left={0}
-                right={0}
-                position="absolute"
-                width="100%"
-                zIndex={99999}
-              />
+    <TamaguiProvider config={config}>
+      <SQLiteProvider databaseName="mySQLiteDB.db">
+        <PortalProvider shouldAddRootHost>
+          <ToastProvider>
+            <ToastViewport
+              flexDirection="column-reverse"
+              bottom={50}
+              left={0}
+              right={0}
+              position="absolute"
+              width="100%"
+              zIndex={99999}
+            />
+            <HabitProvider>
               <SafeAreaProvider>
-                <Stack screenOptions={{ headerShown: false }} />
+                <Stack screenOptions={{ headerShown: false }}></Stack>
+
                 <ToastCus />
               </SafeAreaProvider>
-            </ToastProvider>
-          </PortalProvider>
-        </HabitProvider>
-      </TamaguiProvider>
-    </SQLiteProvider>
+            </HabitProvider>
+          </ToastProvider>
+        </PortalProvider>
+      </SQLiteProvider>
+    </TamaguiProvider>
   );
 }

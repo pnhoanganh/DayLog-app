@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import ModalFull from "../Modals/ModalFull";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -21,7 +21,7 @@ import {
 } from "@tamagui/lucide-icons";
 import dayjs from "dayjs";
 import useToggleModal from "../../hooks/useToggleModal";
-import { AlertWarn } from "../Layouts/AlertWarn";
+import { AlertWarn } from "../Common/Alert/AlertWarn";
 
 const HabitDetail = ({
   isOpen,
