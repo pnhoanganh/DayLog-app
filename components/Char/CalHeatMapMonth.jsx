@@ -9,7 +9,7 @@ import {
 import tinycolor from "tinycolor2";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
-import { AlertDate } from "../Layouts/AlertDate";
+import { AlertDate } from "../Common/Alert/AlertDate";
 import dayjs from "dayjs";
 
 const SQUARE_SIZE = wp("5%");

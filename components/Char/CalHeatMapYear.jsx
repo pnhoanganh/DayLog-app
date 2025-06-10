@@ -10,7 +10,7 @@ import {
 import tinycolor from "tinycolor2"; // Library for generating color shades
 import dayjs from "dayjs";
 import useToggleModal from "@/hooks/useToggleModal";
-import { AlertDate } from "../Layouts/AlertDate";
+import { AlertDate } from "../Common/Alert/AlertDate";
 
 const SQUARE_SIZE = 16;
 const ITEM_MARGIN = 2;
@@ -122,7 +122,7 @@ const CalHeatMapYear = ({ data = [], color }) => {
 
   // Generate 5 color levels: from background to progressively darker shades
   const colorArray = useMemo(() => {
-    const arr = ["#EFF2F5"];
+    const arr = ["#F0F2F5"];
     for (let i = 1; i <= 4; i++) {
       const darkenRatio = 4 + ((i - 1) * (70 - 35)) / (4 - 1);
       const c = tinycolor(color).darken(darkenRatio).toHexString();
@@ -157,12 +157,6 @@ const CalHeatMapYear = ({ data = [], color }) => {
   const onPressDay = (date) => {
     const key = formatDateKey(date);
     const count = rawCountMap[key];
-    // Alert.alert(
-    //   "Check-in Date",
-    //   count != null
-    //     ? `${date.toDateString()}\nCheck-ins: ${count}`
-    //     : `${date.toDateString()}\nNo check-ins`
-    // );
     console.log(
       "Pressed date:",
       key,
