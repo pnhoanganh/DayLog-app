@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import {
@@ -23,12 +23,12 @@ import { AlertWarn } from "@/components/Common/Alert/AlertWarn";
 import useToggleModal from "@/hooks/useToggleModal";
 import { useLocalSearchParams, router } from "expo-router";
 import { useToastController } from "@tamagui/toast";
+import EditHabitModal from "@/components/Feature/EditHabit";
 
 const HabitDetailPanel = () => {
-  const { habitCheck, habitData, removeCheckin, handleDeleteHabit } =
+  const { habitCheck, habitData, removeCheckin, handleDeleteHabit, habitList } =
     useContext(HabitContext);
-  const { icon, title, description, color, id, currentDate } =
-    useLocalSearchParams();
+  const { id, currentDate } = useLocalSearchParams();
   const today = dayjs().format("YYYY-MM-DD");
   const checkins = habitData?.[id] || [];
   const isComplete =
@@ -36,8 +36,19 @@ const HabitDetailPanel = () => {
     checkins.some((item) => item.date === today && item.count > 0);
   const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
   const deleteConfirmModal = useToggleModal();
+  const editHabitModal = useToggleModal();
   const toast = useToastController();
+  const habitToEdit = habitList.find((habit) => habit.habit_id === id);
+  const habit = habitList.find(
+    (habit) => String(habit.habit_id) === String(id)
+  );
+  useEffect(() => {
+    if (!habit) {
+      router.push("/(screens)/Home");
+    }
+  }, [habit]);
 
+  if (!habit) return null;
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
         .filter(
@@ -78,7 +89,7 @@ const HabitDetailPanel = () => {
             {/* ICON */}
             <View
               style={{
-                backgroundColor: color,
+                backgroundColor: habit.color_code,
                 width: wp("12%"),
                 height: wp("12%"),
                 display: "flex",
@@ -87,7 +98,11 @@ const HabitDetailPanel = () => {
                 alignItems: "center",
               }}
             >
-              <MaterialIcons name={icon} size={30} color={COLORS.darkGreen} />
+              <MaterialIcons
+                name={habit.icon}
+                size={30}
+                color={COLORS.darkGreen}
+              />
             </View>
             {/* TEXT */}
             <View>
@@ -97,9 +112,9 @@ const HabitDetailPanel = () => {
                   fontFamily: FontFamily.Poppins.Regular,
                 }}
               >
-                {title && title.length > 30
-                  ? title.substr(0, 30) + "..."
-                  : title}
+                {habit.title && habit.title.length > 30
+                  ? habit.title.substr(0, 30) + "..."
+                  : habit.title}
               </Text>
             </View>
           </View>
@@ -108,7 +123,7 @@ const HabitDetailPanel = () => {
           </TouchableOpacity>
         </View>
         {/* DESCRIPTION */}
-        {description && (
+        {habit.description && (
           <View className="mb-2">
             <Text
               style={{
@@ -117,15 +132,15 @@ const HabitDetailPanel = () => {
                 color: COLORS.darkGray,
               }}
             >
-              {description && description.length > 45
-                ? description.substr(0, 45) + "..."
-                : description}
+              {habit.description && habit.description.length > 45
+                ? habit.description.substr(0, 45) + "..."
+                : habit.description}
             </Text>
           </View>
         )}
         {/* CAL-HEATMAP YEAR */}
         <View className="mt-2">
-          <CalHeatMapYear color={color} data={heatmapData} />
+          <CalHeatMapYear color={habit.color_code} data={heatmapData} />
         </View>
         {/* FUNCTION BTN */}
         <XStack
@@ -176,7 +191,9 @@ const HabitDetailPanel = () => {
           {/* DETAIL BTN */}
           <XStack gap="$6">
             <CalendarFold color={COLORS.darkGreen} />
-            <Pencil color={COLORS.darkGreen} />
+            <TouchableOpacity onPress={editHabitModal.open}>
+              <Pencil color={COLORS.darkGreen} />
+            </TouchableOpacity>
             <TouchableOpacity onPress={deleteConfirmModal.open}>
               <Trash2 color={COLORS.darkGreen} />
             </TouchableOpacity>
@@ -188,12 +205,17 @@ const HabitDetailPanel = () => {
         setIsOpen={deleteConfirmModal.toggle}
         action={() => {
           handleDeleteHabit(id);
-          toast.show(`Successfully removed habit 🗑️ "`, {
+          // router.push("/(screens)/Home");
+          toast.show(`Successfully removed habit`, {
             message: "This habit is no longer in your tracker.",
             duration: 3000,
           });
-          router.push("/(screens)/Home");
         }}
+      />
+      <EditHabitModal
+        isOpen={editHabitModal.isOpen}
+        onClose={() => editHabitModal.close()}
+        habitToEdit={habitToEdit}
       />
     </View>
   );

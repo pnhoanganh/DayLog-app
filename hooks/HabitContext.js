@@ -13,6 +13,7 @@ export const HabitProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const db = useSQLiteContext();
   const toast = useToastController();
+  const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
   // Load habitData from SQLite
   const loadHabitsList = async () => {
@@ -87,16 +88,16 @@ export const HabitProvider = ({ children }) => {
   }
   const habitCheck = async (habit_id) => {
     const today = dayjs().format("YYYY-MM-DD");
+    const newLog = uuid.v4();
     if (!habit_id) {
       console.error("habitCheck called without valid habit_id");
       return;
     }
     try {
-      const timestamp = new Date().toISOString();
       // Insert check-in into DB
       await db.runAsync(
         `INSERT INTO check_ins_log (habit_id, log_id, created_at, updated_at) VALUES (?, ?, ?, ?)`,
-        [habit_id, timestamp, timestamp, timestamp]
+        [habit_id, newLog, timestamp, timestamp]
       );
 
       const currentData = Array.isArray(habitData[habit_id])
@@ -114,10 +115,10 @@ export const HabitProvider = ({ children }) => {
       }
       setHabitData({ ...habitData, [habit_id]: newData });
 
-      await db.runAsync(
-        `UPDATE habit SET updated_at = CURRENT_TIMESTAMP WHERE habit_id = ? `,
-        [habit_id]
-      );
+      await db.runAsync(`UPDATE habit SET updated_at = ? WHERE habit_id = ? `, [
+        timestamp,
+        habit_id,
+      ]);
     } catch (error) {
       console.error("Error in habitCheck:", error);
     }
@@ -154,10 +155,10 @@ export const HabitProvider = ({ children }) => {
         ]);
       }
 
-      await db.runAsync(
-        `UPDATE habit SET updated_at = CURRENT_TIMESTAMP WHERE habit_id = ?`,
-        [habit_id]
-      );
+      await db.runAsync(`UPDATE habit SET updated_at = ? WHERE habit_id = ?`, [
+        timestamp,
+        habit_id,
+      ]);
     } catch (error) {
       console.error("Error saving habitData:", error);
     }
@@ -175,16 +176,16 @@ export const HabitProvider = ({ children }) => {
 
   const handleAddHabit = async (newHabit) => {
     const newId = uuid.v4();
-    const timestamp = new Date().toISOString();
+    const trimmedTitle = newHabit.title.trim();
 
     // Validate required fields
-    if (!newHabit.title || typeof newHabit.title !== "string") {
+    if (!trimmedTitle || typeof trimmedTitle !== "string") {
       alert("Failed to Add Habit. Habit name is required");
       return false;
     }
 
     const isDuplicated = habitList.some(
-      (habit) => habit.title.toLowerCase() === newHabit.title.toLowerCase()
+      (habit) => habit.title.toLowerCase() === trimmedTitle.toLowerCase()
     );
     if (isDuplicated) {
       alert("Failed to Add Habit. Habit name already exists!");
@@ -192,7 +193,7 @@ export const HabitProvider = ({ children }) => {
     }
     const habitToSave = {
       habit_id: String(newId),
-      title: String(newHabit.title),
+      title: String(trimmedTitle),
       description: newHabit.description ? String(newHabit.description) : "",
       color_code: newHabit.color_code ? String(newHabit.color_code) : "#C3F0C8",
       icon: newHabit.icon ? String(newHabit.icon) : "add",
@@ -249,6 +250,48 @@ export const HabitProvider = ({ children }) => {
       alert("Failed to delete habit. Please try again");
     }
   };
+  const handleUpdateHabit = async (id, updatedFields) => {
+    const { title, description, color_code, icon } = updatedFields;
+    const trimmedTitle = title?.trim();
+    const isDuplicated = habitList.some(
+      (habit) =>
+        habit.habit_id !== id &&
+        habit.title.toLowerCase() === trimmedTitle.toLowerCase()
+    );
+    if (isDuplicated) {
+      alert("Failed to update, Habit name already exists!");
+      return false;
+    }
+    if (!trimmedTitle) {
+      alert("Failed to update, Habit name is required!");
+      return false;
+    }
+
+    try {
+      await db.runAsync(
+        `UPDATE habit 
+       SET title = ?, description = ?, color_code = ?, icon = ?, updated_at = ? 
+       WHERE habit_id = ?`,
+        [trimmedTitle, description, color_code, icon, timestamp, id]
+      );
+
+      const updatedList = habitList.map((habit) =>
+        habit.habit_id === id
+          ? { ...habit, title: trimmedTitle, description, color_code, icon }
+          : habit
+      );
+      setHabitList(updatedList);
+      toast.show("Habit is updated 🥳", {
+        message: "Nice work keeping up the habit!",
+        duration: 3000,
+      });
+      return true;
+    } catch (error) {
+      console.error("Error updating habit:", error);
+      alert("Failed to update habit. Please try again");
+      return false;
+    }
+  };
 
   return (
     <HabitContext.Provider
@@ -264,6 +307,7 @@ export const HabitProvider = ({ children }) => {
         loadAllData,
         loadHabitsData,
         handleAddHabit,
+        handleUpdateHabit,
       }}
     >
       {children}

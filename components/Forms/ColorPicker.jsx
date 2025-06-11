@@ -31,7 +31,7 @@ const ColorPicker = ({ selectedColor, setSelectedColor }) => {
         }}
       >
         {colors.map((item) => {
-          const isActive = selectedColor == item;
+          const isActive = selectedColor === item;
           return (
             <View key={item}>
               <TouchableWithoutFeedback onPress={() => setSelectedColor(item)}>
