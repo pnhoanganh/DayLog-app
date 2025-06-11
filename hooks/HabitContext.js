@@ -179,7 +179,7 @@ export const HabitProvider = ({ children }) => {
 
     // Validate required fields
     if (!newHabit.title || typeof newHabit.title !== "string") {
-      alert("Failed to Add Habit. Habit name is required!");
+      alert("Failed to Add Habit. Habit name is required");
       return false;
     }
 
@@ -224,10 +224,7 @@ export const HabitProvider = ({ children }) => {
       return true;
     } catch (error) {
       console.error("Failed to save habit:", error, error.stack);
-      toast.show("Error", {
-        message: "Failed to save habit. Please try again.",
-        duration: 3000,
-      });
+      alert("Failed to save habit. Please try again.");
       return false;
     }
   };
@@ -249,29 +246,27 @@ export const HabitProvider = ({ children }) => {
       setHabitData(updatedHabitData);
     } catch (error) {
       console.error("Error deleting habit:", error);
-      alert("Failed to delete habit. Please try again.");
+      alert("Failed to delete habit. Please try again");
     }
   };
 
   return (
-    <>
-      <HabitContext.Provider
-        value={{
-          habitData,
-          habitCheck,
-          setHabitData,
-          removeCheckin,
-          resetHabitData,
-          habitList,
-          handleDeleteHabit,
-          loadHabitsList,
-          loadAllData,
-          loadHabitsData,
-          handleAddHabit,
-        }}
-      >
-        {children}
-      </HabitContext.Provider>
-    </>
+    <HabitContext.Provider
+      value={{
+        habitData,
+        habitCheck,
+        setHabitData,
+        removeCheckin,
+        resetHabitData,
+        habitList,
+        handleDeleteHabit,
+        loadHabitsList,
+        loadAllData,
+        loadHabitsData,
+        handleAddHabit,
+      }}
+    >
+      {children}
+    </HabitContext.Provider>
   );
 };

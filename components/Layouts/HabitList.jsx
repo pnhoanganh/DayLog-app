@@ -3,7 +3,7 @@ import React from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import HabitItem from "@/components/Common/HabitItem";
 
-const HabitList = ({ habitList, handleDeleteHabit }) => {
+const HabitList = ({ habitList }) => {
   return (
     <FlatList
       contentContainerStyle={{

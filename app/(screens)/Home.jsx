@@ -11,7 +11,7 @@ import EmptyHabitState from "@/components/Layouts/EmptyHabitState";
 
 const Home = () => {
   const addHabitModal = useToggleModal();
-  const { habitList, resetHabitData, handleDeleteHabit, loadHabitsList } =
+  const { habitList, resetHabitData, loadHabitsList } =
     useContext(HabitContext);
 
   useEffect(() => {
@@ -26,10 +26,7 @@ const Home = () => {
           resetHabitData={resetHabitData}
         />
         {habitList.length > 0 ? (
-          <HabitList
-            habitList={habitList}
-            handleDeleteHabit={handleDeleteHabit}
-          />
+          <HabitList habitList={habitList} />
         ) : (
           <EmptyHabitState />
         )}

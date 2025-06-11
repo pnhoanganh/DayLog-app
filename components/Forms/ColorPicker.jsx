@@ -43,7 +43,8 @@ const ColorPicker = ({ selectedColor, setSelectedColor }) => {
                     backgroundColor: "white",
                     borderWidth: CIRCLE_RING_SIZE,
                     borderColor: isActive ? item : "transparent",
-                    marginRight: 8,
+                    marginRight: wp("1%"),
+                    marginBottom: 8,
                   }}
                 >
                   <View

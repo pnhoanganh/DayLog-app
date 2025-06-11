@@ -73,7 +73,7 @@ export default function RootLayout() {
   return (
     <TamaguiProvider config={config}>
       <SQLiteProvider databaseName="mySQLiteDB.db">
-        <PortalProvider shouldAddRootHost>
+        <PortalProvider>
           <ToastProvider>
             <ToastViewport
               flexDirection="column-reverse"

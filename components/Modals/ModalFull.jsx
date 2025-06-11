@@ -16,7 +16,7 @@ const ModalFull = ({ visible, onClose, children }) => {
       swipeDirection={[]}
       onBackdropPress={onClose}
       onBackButtonPress={onClose}
-      avoidKeyboard
+      avoidKeyboard={false}
       propagateSwipe
     >
       <TouchableWithoutFeedback

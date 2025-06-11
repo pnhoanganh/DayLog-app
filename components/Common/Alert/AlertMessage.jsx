@@ -1,24 +1,19 @@
-import { AlertDialog, Button, XStack, YStack } from "tamagui";
+import { AlertDialog, Button, YStack } from "tamagui";
 
-const AlertMessage = ({
-  isOpen,
-  setIsOpen,
-  description,
-  title,
-  colorTitle,
-}) => {
+const AlertMessage = ({ isOpen, setIsOpen, message, title, colorTitle }) => {
   if (!isOpen) {
     return null;
   }
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialog.Portal zIndex={1000}>
+      <AlertDialog.Portal>
         <AlertDialog.Overlay
           key="overlay"
           animation="quick"
           opacity={0.8}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
+          zIndex={99999}
         />
         <AlertDialog.Content
           bordered
@@ -39,21 +34,25 @@ const AlertMessage = ({
           opacity={1}
           y={0}
           zIndex={100001}
+          width={"80%"}
         >
-          <YStack padding="$4" gap="$3">
-            <AlertDialog.Title size="$6" fontWeight="700" color={colorTitle}>
+          <YStack padding="$1" gap="$3">
+            <AlertDialog.Title
+              size="$6"
+              fontWeight="700"
+              color={colorTitle}
+              textAlign="center"
+            >
               {title}
             </AlertDialog.Title>
-            <AlertDialog.Description textAlign="center">
-              {description}
+            <AlertDialog.Description textAlign="center" fontSize="$3">
+              {message}
             </AlertDialog.Description>
-            <XStack gap="$3" justifyContent="center">
-              <AlertDialog.Cancel asChild>
-                <Button size="$2" width="50%">
-                  Ok
-                </Button>
-              </AlertDialog.Cancel>
-            </XStack>
+            <AlertDialog.Cancel asChild alignSelf="center">
+              <Button size="$3" width="30%">
+                Ok
+              </Button>
+            </AlertDialog.Cancel>
           </YStack>
         </AlertDialog.Content>
       </AlertDialog.Portal>

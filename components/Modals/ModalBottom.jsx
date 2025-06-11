@@ -28,7 +28,7 @@ const ModalBottom = ({
       onSwipeComplete={handleClose}
       swipeDirection={disableClose ? [] : ["down"]}
       style={{ justifyContent: "flex-end", margin: 0 }}
-      avoidKeyboard
+      avoidKeyboard={false}
       propagateSwipe // Allow the child modal to close by swiping down.
     >
       <LinearGradient

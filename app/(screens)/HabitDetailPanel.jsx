@@ -53,9 +53,6 @@ const HabitDetailPanel = () => {
           count: item.count,
         }))
     : [];
-  console.log("habitData[id]", habitData[id]);
-  console.log("heatmapData", heatmapData);
-  console.log("habitData", habitData);
 
   return (
     <View
