@@ -58,111 +58,123 @@ const HabitItem = ({ icon, title, description, color, id }) => {
   };
 
   return (
-    <View>
-      <TouchableOpacity
+    <TouchableOpacity
+      style={{
+        borderColor: "#ebedf0",
+        borderWidth: 1,
+        padding: 12,
+        borderRadius: 12,
+        backgroundColor: "#fff",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 5,
+      }}
+      onPress={() => {
+        handleSelectedItem(id);
+      }}
+    >
+      <View
         style={{
-          borderColor: "#ebedf0",
-          borderWidth: 1,
-          padding: 12,
-          borderRadius: 12,
-          backgroundColor: "#fff",
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: 0.1,
-          shadowRadius: 6,
-          elevation: 5,
-        }}
-        onPress={() => {
-          handleSelectedItem(id);
+          width: wp("86%"),
+          display: "flex",
+          gap: hp("1%"),
+          flexDirection: "row",
+          justifyContent: "space-between",
+          overflow: "hidden",
         }}
       >
         <View
           style={{
-            width: wp("86%"),
             display: "flex",
-            gap: hp("1%"),
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            maxWidth: wp("50%"),
           }}
         >
+          {/* ICON */}
           <View
             style={{
-              marginBottom: 4,
-              borderRadius: 8,
+              backgroundColor: color,
+              width: wp("10%"),
+              height: wp("10%"),
               display: "flex",
-              flexDirection: "row",
-              alignItems: "flex-start",
-              justifyContent: "space-between",
+              justifyContent: "center",
+              borderRadius: "60%",
+              alignItems: "center",
+              marginBottom: 2,
             }}
           >
-            <View
+            <MaterialIcons
+              name={icon}
+              size={wp("6%")}
+              color={COLORS.darkGreen}
+            />
+          </View>
+          {/* TEXT */}
+          <View>
+            <Text
               style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 10,
+                fontSize: wp("3.5%"),
+                fontFamily: FontFamily.Poppins.Regular,
+                textAlign: "left",
               }}
             >
-              {/* ICON */}
-              <View
-                style={{
-                  backgroundColor: color,
-                  width: wp("12%"),
-                  height: wp("12%"),
-                  display: "flex",
-                  justifyContent: "center",
-                  borderRadius: "30%",
-                  alignItems: "center",
-                }}
-              >
-                <MaterialIcons name={icon} size={30} color={COLORS.darkGreen} />
-              </View>
-              {/* TEXT */}
-              <View>
-                <Text
-                  style={{
-                    fontSize: wp("4.7%"),
-                    fontFamily: FontFamily.Poppins.Regular,
-                  }}
-                >
-                  {title && title.length > 12
-                    ? title.substr(0, 12) + "..."
-                    : title}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: wp("4%"),
-                    fontFamily: FontFamily.Poppins.Regular,
-                    color: COLORS.darkGreen,
-                  }}
-                >
-                  {description && description.length > 14
-                    ? description.substr(0, 14) + "..."
-                    : description}
-                </Text>
-              </View>
-            </View>
-            {/* PREVIOUS &  NEXT MONTH*/}
-            <View className="flex flex-row items-center">
-              <ArrowLeft3
-                size={24}
-                color={COLORS.darkGreen}
-                onPress={goToPreviousDate}
-              />
-              <Text
-                style={{
-                  color: COLORS.darkGreen,
-                  fontFamily: FontFamily.Poppins.Regular,
-                  fontSize: wp("3%"),
-                }}
-              >
-                {formattedLabel}
-              </Text>
-              <ArrowRight3
-                size={24}
-                color={COLORS.darkGreen}
-                onPress={goToNextMonth}
-              />
-            </View>
+              {title && title.length > 13 ? title.substr(0, 13) + "..." : title}
+            </Text>
+            <Text
+              style={{
+                fontSize: wp("3%"),
+                fontFamily: FontFamily.Poppins.Regular,
+                color: COLORS.darkGreen,
+                textAlign: "left",
+              }}
+            >
+              {description && description.length > 16
+                ? description.substr(0, 16) + "..."
+                : description}
+            </Text>
           </View>
-          <View className="flex-row justify-between">
+          {/* BUTTON */}
+          <Button
+            icon={<CheckCircle size={wp("3%")} />}
+            size="$3"
+            themeInverse
+            style={{
+              fontFamily: FontFamily.Poppins.Regular,
+              marginTop: hp("2%"),
+            }}
+            textProps={{ style: { fontSize: wp("3.5%") } }}
+            onPress={() => {
+              habitCheck(id);
+              toast.show("Check-in saved 🥳", {
+                message: "Nice work keeping up the habit!",
+                duration: 3000,
+              });
+            }}
+          >
+            Check In
+          </Button>
+        </View>
+        <View className="flex flex-col gap-1">
+          <Text
+            style={{
+              color: COLORS.darkGreen,
+              fontFamily: FontFamily.Poppins.SemiBold,
+              fontSize: wp("3.4%"),
+              textAlign: "center",
+            }}
+          >
+            {formattedLabel}
+          </Text>
+          <View className="flex flex-row items-center gap-2">
+            <ArrowLeft3
+              size={20}
+              color={COLORS.darkGreen}
+              onPress={goToPreviousDate}
+            />
             <CalHeatMapMonth
               key={id}
               habitId={id}
@@ -177,28 +189,15 @@ const HabitItem = ({ icon, title, description, color, id }) => {
                 });
               }}
             />
+            <ArrowRight3
+              size={20}
+              color={COLORS.darkGreen}
+              onPress={goToNextMonth}
+            />
           </View>
-
-          <Button
-            icon={<CheckCircle size={wp("3%")} />}
-            size="$4"
-            style={{
-              fontFamily: FontFamily.Poppins.Regular,
-            }}
-            textProps={{ style: { fontSize: wp("4%") } }}
-            onPress={() => {
-              habitCheck(id);
-              toast.show("Check-in saved 🥳", {
-                message: "Nice work keeping up the habit!",
-                duration: 3000,
-              });
-            }}
-          >
-            Check In
-          </Button>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
