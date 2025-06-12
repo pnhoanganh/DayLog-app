@@ -18,6 +18,8 @@ config.transformer.babelTransformerPath = require.resolve(
 // .db file support
 config.resolver.assetExts.push("db");
 
+config.resolver.unstable_enablePackageExports = false;
+
 // NativeWind
 config = withNativeWind(config, { input: "./global.css" });
 
