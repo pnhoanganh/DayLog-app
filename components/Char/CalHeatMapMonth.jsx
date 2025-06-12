@@ -11,12 +11,14 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { AlertDate } from "../Common/Alert/AlertDate";
 import dayjs from "dayjs";
+import { FontFamily } from "@/constants/fonts";
+import COLOR from "../../constants/colors";
 
-const SQUARE_SIZE = wp("5%");
-const ITEM_MARGIN = wp("0.8%");
-const NUM_COLUMNS = 7;
-const NUM_ROWS = 6;
-const TOTAL_CELLS = NUM_COLUMNS * NUM_ROWS;
+const SQUARE_SIZE = wp("4.5%");
+const ITEM_MARGIN = wp("0.4%");
+// const NUM_COLUMNS = 8;
+const NUM_ROWS = 7;
+// const TOTAL_CELLS = NUM_COLUMNS * NUM_ROWS;
 
 const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
 
@@ -31,45 +33,43 @@ const CalHeatMapMonth = ({
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCount, setSelectedCount] = useState(null);
   const showAlert = useToggleModal();
+
+  // Generate column-major calendar (week-based)
   useEffect(() => {
     if (!currentDate) return;
-    // 1. Get the first and last day of the current month
-    const today = currentDate;
-    const year = today.getFullYear();
-    const month = today.getMonth();
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
 
     const firstDayOfMonth = new Date(year, month, 1);
     const lastDayOfMonth = new Date(year, month + 1, 0);
 
-    // startDay: 0 (Sunday) → 6 (Saturday), map so week starts on Monday
-    let startDay = firstDayOfMonth.getDay(); // Use getDay() (take day in week)
-    startDay = startDay === 0 ? 6 : startDay - 1;
+    // Bắt đầu từ thứ Hai gần nhất (hoặc Chủ Nhật trước đó nếu là Chủ Nhật)
+    const offset =
+      firstDayOfMonth.getDay() === 0 ? -6 : 1 - firstDayOfMonth.getDay();
+    const calendarStart = new Date(year, month, 1 + offset);
 
-    // 2. Create an array of all days in the heatmap month
-    const tempDates = [];
-    // Fill previous month
-    for (let i = startDay; i > 0; i--) {
-      const prevDate = new Date(year, month, 1 - i);
-      tempDates.push(prevDate);
+    const totalDays = 6 * 7; // 6 tuần * 7 ngày = 42 ô
+    const allDates = [];
+    const current = new Date(calendarStart);
+
+    for (let i = 0; i < totalDays; i++) {
+      allDates.push(new Date(current));
+      current.setDate(current.getDate() + 1);
     }
 
-    // Fill current month
-    for (let d = 1; d <= lastDayOfMonth.getDate(); d++) {
-      tempDates.push(new Date(year, month, d));
+    // Sắp xếp theo column-major: mỗi cột là 1 tuần (6 cột x 7 hàng)
+    const rearranged = [];
+    for (let row = 0; row < 7; row++) {
+      for (let col = 0; col < 6; col++) {
+        rearranged.push(allDates[col * 7 + row]);
+      }
     }
 
-    // Fill next month
-    while (tempDates.length < TOTAL_CELLS) {
-      const lastDate = tempDates[tempDates.length - 1];
-      const nextDate = new Date(lastDate);
-      nextDate.setDate(lastDate.getDate() + 1);
-      tempDates.push(nextDate);
-    }
-
-    setDates(tempDates);
+    setDates(rearranged);
   }, [currentDate]);
 
-  // Process input data
+  // 🔁 KEEP THIS: dataMap and color logic
   const { dataMap, rawCountMap } = useMemo(() => {
     const safeData = Array.isArray(data) ? data : [];
     const dataMap = {};
@@ -84,7 +84,6 @@ const CalHeatMapMonth = ({
     return { dataMap, rawCountMap };
   }, [data]);
 
-  // Generate color array from light to dark
   const colorArray = useMemo(() => {
     const arr = ["#F0F2F5"];
     for (let i = 1; i <= 4; i++) {
@@ -94,28 +93,26 @@ const CalHeatMapMonth = ({
     }
     return arr;
   }, [color]);
-  // Determine color level based on count
+
   const getLevel = (count) => {
     if (!count) return 0;
     if (count >= 4) return 4;
     return count;
   };
 
-  // Handle day press
   const onPressDay = useCallback(
     (date) => {
       const key = formatDateKey(date);
       const count = rawCountMap[key];
       setSelectedDate(date);
       setSelectedCount(count ?? null);
-      if (count > 0) removeCheckinForHabit(key);
+      // if (count > 0) removeCheckinForHabit(key);
       console.log(key, count);
       // showAlert.open();
     },
     [rawCountMap, removeCheckinForHabit]
   );
 
-  // Render each day square
   const renderItem = useCallback(
     ({ item }) => {
       const key = formatDateKey(item);
@@ -137,31 +134,24 @@ const CalHeatMapMonth = ({
     [dataMap, colorArray, onPressDay]
   );
 
+  const numColumns = 6; // each column is a week
+
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%",
-          gap: ITEM_MARGIN,
-        }}
-      >
-        {["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map((day, index) => (
+      <View className="mr-1">
+        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, index) => (
           <View
             key={index}
             style={{
-              width: SQUARE_SIZE,
-              height: SQUARE_SIZE,
+              height: SQUARE_SIZE + ITEM_MARGIN,
               justifyContent: "center",
-              alignItems: "center",
             }}
           >
             <Text
               style={{
                 fontSize: wp("2.5%"),
-                color: "#333",
-                textAlign: "center",
-                lineHeight: SQUARE_SIZE,
+                color: COLOR.gray,
+                fontFamily: FontFamily.Poppins.SemiBold,
               }}
             >
               {day}
@@ -171,15 +161,19 @@ const CalHeatMapMonth = ({
       </View>
 
       <FlatList
+        key={numColumns}
         data={dates}
         renderItem={renderItem}
         keyExtractor={(item) => item.toISOString()}
-        numColumns={NUM_COLUMNS}
-        key={NUM_COLUMNS.toString()}
+        numColumns={numColumns}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.flatListContent}
+        contentContainerStyle={[
+          styles.flatListContent,
+          { paddingLeft: SQUARE_SIZE },
+        ]}
       />
+
       <AlertDate
         isOpen={showAlert.isOpen}
         setIsOpen={showAlert.toggle}
@@ -192,8 +186,7 @@ const CalHeatMapMonth = ({
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    justifyContent: "center",
+    flexDirection: "row",
     alignItems: "center",
   },
   flatListContent: {
