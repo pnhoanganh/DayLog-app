@@ -33,7 +33,6 @@ const loadDatabase = async () => {
         { intermediates: true }
       );
 
-      // Only download the DB once (first install)
       await FileSystem.downloadAsync(dbUri, dbFilePath);
       console.log("Database loaded from assets.");
     } else {

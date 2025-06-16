@@ -12,13 +12,10 @@ import useToggleModal from "@/hooks/useToggleModal";
 import { AlertDate } from "../Common/Alert/AlertDate";
 import dayjs from "dayjs";
 import { FontFamily } from "@/constants/fonts";
-import COLOR from "../../constants/colors";
+import COLOR from "@/constants/colors";
 
 const SQUARE_SIZE = wp("4.5%");
 const ITEM_MARGIN = wp("0.4%");
-// const NUM_COLUMNS = 8;
-const NUM_ROWS = 7;
-// const TOTAL_CELLS = NUM_COLUMNS * NUM_ROWS;
 
 const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
 
@@ -106,7 +103,7 @@ const CalHeatMapMonth = ({
       const count = rawCountMap[key];
       setSelectedDate(date);
       setSelectedCount(count ?? null);
-      // if (count > 0) removeCheckinForHabit(key);
+      if (count > 0) removeCheckinForHabit(key);
       console.log(key, count);
       // showAlert.open();
     },

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { Image } from "expo-image";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
@@ -8,6 +7,7 @@ import {
 } from "react-native-responsive-screen";
 import COLORS from "@/constants/colors";
 import IconPickerModal from "../Modals/IconPickerModal";
+import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 
 const IconSelector = ({
   isModalOpen,
@@ -30,7 +30,11 @@ const IconSelector = ({
         style={{ backgroundColor: COLORS.white, padding: wp("6%") }}
       >
         {selectedIcon ? (
-          <MaterialIcons name={selectedIcon} size={40} color="#5F6368" />
+          MaterialIconsGlyphs[selectedIcon] ? (
+            <MaterialIcons name={selectedIcon} size={40} color="#5F6368" />
+          ) : (
+            <Text style={{ fontSize: 40 }}>{selectedIcon}</Text>
+          )
         ) : (
           <MaterialIcons name="add" size={44} color="#5F6368" />
         )}

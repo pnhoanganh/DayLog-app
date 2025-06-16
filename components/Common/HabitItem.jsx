@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useContext, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import COLORS from "@/constants/colors";
-import { ArrowLeft3, ArrowRight3 } from "iconsax-react-nativejs";
+import { ArrowLeft2, ArrowRight2 } from "iconsax-react-nativejs";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -15,6 +15,7 @@ import CalHeatMapMonth from "../Char/CalHeatMapMonth";
 import useCalendarMonth from "@/hooks/useCalendarMonth";
 import { useToastController } from "@tamagui/toast";
 import { router } from "expo-router";
+import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 
 const HabitItem = ({ icon, title, description, color, id }) => {
   const { habitData, habitCheck, removeCheckin } = useContext(HabitContext);
@@ -104,21 +105,25 @@ const HabitItem = ({ icon, title, description, color, id }) => {
               justifyContent: "center",
               borderRadius: "60%",
               alignItems: "center",
-              marginBottom: 2,
+              marginBottom: hp("1%"),
             }}
           >
-            <MaterialIcons
-              name={icon}
-              size={wp("6%")}
-              color={COLORS.darkGreen}
-            />
+            {MaterialIconsGlyphs[icon] ? (
+              <MaterialIcons
+                name={icon}
+                size={wp("6%")}
+                color={COLORS.darkGreen}
+              />
+            ) : (
+              <Text style={{ fontSize: 20 }}>{icon}</Text>
+            )}
           </View>
           {/* TEXT */}
           <View>
             <Text
               style={{
                 fontSize: wp("3.5%"),
-                fontFamily: FontFamily.Poppins.Regular,
+                fontFamily: FontFamily.Poppins.SemiBold,
                 textAlign: "left",
               }}
             >
@@ -140,7 +145,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
           {/* BUTTON */}
           <Button
             icon={<CheckCircle size={wp("3%")} />}
-            size="$3"
+            size="$2.5"
             themeInverse
             style={{
               fontFamily: FontFamily.Poppins.Regular,
@@ -170,7 +175,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
             {formattedLabel}
           </Text>
           <View className="flex flex-row items-center gap-2">
-            <ArrowLeft3
+            <ArrowLeft2
               size={20}
               color={COLORS.darkGreen}
               onPress={goToPreviousDate}
@@ -189,7 +194,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
                 });
               }}
             />
-            <ArrowRight3
+            <ArrowRight2
               size={20}
               color={COLORS.darkGreen}
               onPress={goToNextMonth}

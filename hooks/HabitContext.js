@@ -48,6 +48,7 @@ export const HabitProvider = ({ children }) => {
           })
         );
       }
+      console.log(updatedHabitData);
 
       setHabitData(updatedHabitData);
     } catch (e) {

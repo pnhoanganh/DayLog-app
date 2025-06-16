@@ -24,6 +24,7 @@ import useToggleModal from "@/hooks/useToggleModal";
 import { useLocalSearchParams, router } from "expo-router";
 import { useToastController } from "@tamagui/toast";
 import EditHabitModal from "@/components/Feature/EditHabit";
+import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 
 const HabitDetailPanel = () => {
   const { habitCheck, habitData, removeCheckin, handleDeleteHabit, habitList } =
@@ -94,15 +95,19 @@ const HabitDetailPanel = () => {
                 height: wp("12%"),
                 display: "flex",
                 justifyContent: "center",
-                borderRadius: "30%",
+                borderRadius: "50%",
                 alignItems: "center",
               }}
             >
-              <MaterialIcons
-                name={habit.icon}
-                size={30}
-                color={COLORS.darkGreen}
-              />
+              {MaterialIconsGlyphs[habit.icon] ? (
+                <MaterialIcons
+                  name={habit.icon}
+                  size={30}
+                  color={COLORS.darkGreen}
+                />
+              ) : (
+                <Text style={{ fontSize: 30 }}>{habit.icon}</Text>
+              )}
             </View>
             {/* TEXT */}
             <View>
