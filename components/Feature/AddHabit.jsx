@@ -13,7 +13,8 @@ import ColorPicker from "../Forms/ColorPicker";
 import { HabitContext } from "../../hooks/HabitContext";
 
 const AddHabitModal = ({ isOpen, onClose }) => {
-  const { handleAddHabit } = useContext(HabitContext);
+  const { handleAddHabit, errorMessage, setErrorMessage, isError, setIsError } =
+    useContext(HabitContext);
   const [isIconModalOpen, setIconModalOpen] = useState(false);
   const [newHabit, setNewHabit] = useState({
     title: "",
@@ -26,6 +27,10 @@ const AddHabitModal = ({ isOpen, onClose }) => {
       visible={isOpen}
       onClose={() => {
         onClose();
+        setTimeout(() => {
+          setErrorMessage("");
+          setIsError(false);
+        }, 1000);
       }}
       disableClose={isIconModalOpen}
       title="New Habit"
@@ -43,13 +48,24 @@ const AddHabitModal = ({ isOpen, onClose }) => {
           />
           {/* TEXT INPUT */}
           <View className="flex flex-col gap-4 mt-4 mb-8">
-            <TextInput
-              label="New Habit"
-              value={newHabit.title}
-              onChangeText={(text) =>
-                setNewHabit((prev) => ({ ...prev, title: text }))
-              }
-            />
+            <View className="gap-1">
+              <TextInput
+                label="New Habit *"
+                value={newHabit.title}
+                onChangeText={(text) =>
+                  setNewHabit((prev) => ({ ...prev, title: text }))
+                }
+                style={{
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  paddingHorizontal: 12,
+                  borderColor: isError ? COLORS.red : COLORS.gray,
+                }}
+              />
+              {isError && (
+                <Text style={{ color: COLORS.red }}>{errorMessage}</Text>
+              )}
+            </View>
             <TextInput
               label="Description"
               value={newHabit.description}
@@ -84,6 +100,8 @@ const AddHabitModal = ({ isOpen, onClose }) => {
                 color_code: "",
                 icon: "",
               });
+              setErrorMessage("");
+              setIsError(false);
               setTimeout(() => {
                 onClose();
               }, 100);

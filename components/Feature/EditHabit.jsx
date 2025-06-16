@@ -13,7 +13,13 @@ import ColorPicker from "../Forms/ColorPicker";
 import { HabitContext } from "../../hooks/HabitContext";
 
 const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
-  const { handleUpdateHabit } = useContext(HabitContext);
+  const {
+    handleUpdateHabit,
+    errorMessage,
+    setErrorMessage,
+    isError,
+    setIsError,
+  } = useContext(HabitContext);
   const [isIconModalOpen, setIconModalOpen] = useState(false);
 
   const [updatedFields, setUpdatedFields] = useState({
@@ -38,6 +44,10 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
       visible={isOpen}
       onClose={() => {
         onClose();
+        setTimeout(() => {
+          setErrorMessage("");
+          setIsError(false);
+        }, 1000);
       }}
       disableClose={isIconModalOpen}
       title="Edit Habit"
@@ -55,13 +65,24 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
           />
           {/* TEXT INPUT */}
           <View className="flex flex-col gap-4 mt-4 mb-8">
-            <TextInput
-              label="Habit"
-              value={updatedFields.title}
-              onChangeText={(text) =>
-                setUpdatedFields((prev) => ({ ...prev, title: text }))
-              }
-            />
+            <View className="gap-1">
+              <TextInput
+                label="New Habit *"
+                value={updatedFields.title}
+                onChangeText={(text) =>
+                  setUpdatedFields((prev) => ({ ...prev, title: text }))
+                }
+                style={{
+                  borderRadius: 5,
+                  borderWidth: 1,
+                  paddingHorizontal: 12,
+                  borderColor: isError ? COLORS.red : COLORS.gray,
+                }}
+              />
+              {isError && (
+                <Text style={{ color: COLORS.red }}>{errorMessage}</Text>
+              )}
+            </View>
             <TextInput
               label="Description"
               value={updatedFields.description}
@@ -105,7 +126,8 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
                 color_code: "",
                 icon: "",
               });
-
+              setErrorMessage("");
+              setIsError(false);
               setTimeout(() => {
                 onClose(true);
               }, 100);

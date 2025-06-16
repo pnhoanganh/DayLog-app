@@ -14,6 +14,8 @@ export const HabitProvider = ({ children }) => {
   const db = useSQLiteContext();
   const toast = useToastController();
   const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   // Load habitData from SQLite
   const loadHabitsList = async () => {
@@ -181,7 +183,8 @@ export const HabitProvider = ({ children }) => {
 
     // Validate required fields
     if (!trimmedTitle || typeof trimmedTitle !== "string") {
-      alert("Failed to Add Habit. Habit name is required");
+      setErrorMessage("Habit name is required.");
+      setIsError(true);
       return false;
     }
 
@@ -189,7 +192,8 @@ export const HabitProvider = ({ children }) => {
       (habit) => habit.title.toLowerCase() === trimmedTitle.toLowerCase()
     );
     if (isDuplicated) {
-      alert("Failed to Add Habit. Habit name already exists!");
+      setErrorMessage("Habit name already exists.");
+      setIsError(true);
       return false;
     }
     const habitToSave = {
@@ -260,11 +264,14 @@ export const HabitProvider = ({ children }) => {
         habit.title.toLowerCase() === trimmedTitle.toLowerCase()
     );
     if (isDuplicated) {
-      alert("Failed to update, Habit name already exists!");
+      setErrorMessage(" Habit name already exists.");
+      setIsError(true);
+
       return false;
     }
     if (!trimmedTitle) {
-      alert("Failed to update, Habit name is required!");
+      setErrorMessage("Habit name already exists.");
+      setIsError(true);
       return false;
     }
 
@@ -309,6 +316,10 @@ export const HabitProvider = ({ children }) => {
         loadHabitsData,
         handleAddHabit,
         handleUpdateHabit,
+        errorMessage,
+        isError,
+        setErrorMessage,
+        setIsError,
       }}
     >
       {children}

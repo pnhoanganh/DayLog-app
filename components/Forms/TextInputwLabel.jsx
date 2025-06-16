@@ -7,13 +7,7 @@ import {
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
 
-const TextInputwLabel = ({
-  label,
-  value,
-  onChangeText,
-
-  capitalize,
-}) => {
+const TextInputwLabel = ({ label, value, onChangeText, style, capitalize }) => {
   return (
     <View className="mt-4 flex flex-col gap-1">
       <Text
@@ -22,21 +16,24 @@ const TextInputwLabel = ({
         {label}
       </Text>
       <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: COLORS.white,
-          borderRadius: 5,
-          borderWidth: 1,
-          borderColor: COLORS.gray,
-          paddingHorizontal: 12,
-        }}
+        style={[
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: COLORS.white,
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: COLORS.gray,
+            paddingHorizontal: 12,
+          },
+          style,
+        ]}
       >
         <TextInput
           style={{
             flex: 1,
             height: hp("5%"),
-            color: COLORS.black,
+            color: COLORS.gray,
             paddingHorizontal: 10,
             fontSize: 16,
           }}
