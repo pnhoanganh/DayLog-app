@@ -24,7 +24,6 @@ const CalHeatMapMonth = ({
   color,
   currentDate,
   removeCheckinForHabit,
-  habitId,
 }) => {
   const [dates, setDates] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -114,6 +113,7 @@ const CalHeatMapMonth = ({
     ({ item }) => {
       const key = formatDateKey(item);
       const level = getLevel(dataMap[key]);
+      const isToday = formatDateKey(item) === formatDateKey(new Date());
       return (
         <TouchableOpacity
           onPress={() => onPressDay(item)}
@@ -123,6 +123,10 @@ const CalHeatMapMonth = ({
               backgroundColor: colorArray[level],
               width: SQUARE_SIZE,
               height: SQUARE_SIZE,
+            },
+            isToday && {
+              borderColor: COLOR.black,
+              borderWidth: 1.5,
             },
           ]}
         />
