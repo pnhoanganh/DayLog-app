@@ -33,7 +33,7 @@ const TextInputwLabel = ({ label, value, onChangeText, style, capitalize }) => {
           style={{
             flex: 1,
             height: hp("5%"),
-            color: COLORS.gray,
+            color: COLORS.black,
             paddingHorizontal: 10,
             fontSize: 16,
           }}
