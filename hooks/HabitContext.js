@@ -17,6 +17,8 @@ export const HabitProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
+  const [currentHabit, setCurrentHabit] = useState({});
+
   // Load habitData from SQLite
   const loadHabitsList = async () => {
     try {
@@ -85,7 +87,7 @@ export const HabitProvider = ({ children }) => {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color="#00000" />
       </View>
     );
   }
@@ -320,6 +322,8 @@ export const HabitProvider = ({ children }) => {
         isError,
         setErrorMessage,
         setIsError,
+        currentHabit,
+        setCurrentHabit,
       }}
     >
       {children}
