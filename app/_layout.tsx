@@ -86,7 +86,6 @@ export default function RootLayout() {
             <HabitProvider>
               <SafeAreaProvider>
                 <Stack screenOptions={{ headerShown: false }}></Stack>
-
                 <ToastCus />
               </SafeAreaProvider>
             </HabitProvider>

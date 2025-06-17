@@ -44,7 +44,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
       console.error("Invalid habit");
     }
     setSelectedHabit(id);
-    const pathname = "/(screens)/HabitDetailPanel";
+    const pathname = "/tabs/HabitDetailPanel";
     router.push({
       pathname,
       params: {

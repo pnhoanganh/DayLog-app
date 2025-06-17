@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -11,25 +10,25 @@ import { MaterialIcons } from "@expo/vector-icons";
 import CalHeatMapYear from "@/components/Char/CalHeatMapYear";
 import { HabitContext } from "@/hooks/HabitContext";
 import { Button, XStack } from "tamagui";
-import {
-  CheckCircle,
-  Circle,
-  CalendarFold,
-  Pencil,
-  Trash2,
-} from "@tamagui/lucide-icons";
+import { CheckCircle, Circle, Pencil, Trash2 } from "@tamagui/lucide-icons";
 import dayjs from "dayjs";
 import { AlertWarn } from "@/components/Common/Alert/AlertWarn";
 import useToggleModal from "@/hooks/useToggleModal";
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams, router, useNavigation } from "expo-router";
 import { useToastController } from "@tamagui/toast";
 import EditHabitModal from "@/components/Feature/EditHabit";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 
 const HabitDetailPanel = () => {
-  const { habitCheck, habitData, removeCheckin, handleDeleteHabit, habitList } =
-    useContext(HabitContext);
-  const { id, currentDate } = useLocalSearchParams();
+  const {
+    habitCheck,
+    habitData,
+    removeCheckin,
+    handleDeleteHabit,
+    habitList,
+    setCurrentHabit,
+  } = useContext(HabitContext);
+  const { id, currentDate, title } = useLocalSearchParams();
   const today = dayjs().format("YYYY-MM-DD");
   const checkins = habitData?.[id] || [];
   const isComplete =
@@ -39,15 +38,31 @@ const HabitDetailPanel = () => {
   const deleteConfirmModal = useToggleModal();
   const editHabitModal = useToggleModal();
   const toast = useToastController();
-  const habitToEdit = habitList.find((habit) => habit.habit_id === id);
+  const habitToEdit = habitList.find((habit) => habit.habit_id === String(id));
   const habit = habitList.find(
     (habit) => String(habit.habit_id) === String(id)
   );
+  const navigation = useNavigation();
+  useEffect(() => {
+    if (title) {
+      navigation.setOptions({ title: title });
+    }
+  }, [title, navigation]);
+
   useEffect(() => {
     if (!habit) {
-      router.push("/(screens)/Home");
+      router.push("/screens/Home");
     }
-  }, [habit]);
+    if (habit) {
+      setCurrentHabit({
+        id: habit.id,
+        title: habit.title,
+        description: habit.description,
+        color_code: habit.color_code,
+        icon: habit.icon,
+      });
+    }
+  }, [habit, setCurrentHabit]);
 
   if (!habit) return null;
   const heatmapData = Array.isArray(habitData[id])
@@ -67,9 +82,7 @@ const HabitDetailPanel = () => {
     : [];
 
   return (
-    <View
-      style={{ flex: 1, justifyContent: "center", backgroundColor: "white" }}
-    >
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <View
         style={{
           height: hp("35%"),
@@ -86,7 +99,7 @@ const HabitDetailPanel = () => {
             marginBottom: 2,
           }}
         >
-          <View className="flex flex-row gap-1">
+          <View className="flex flex-row gap-1 justify-center items-center">
             {/* ICON */}
             <View
               style={{
@@ -111,38 +124,26 @@ const HabitDetailPanel = () => {
             </View>
             {/* TEXT */}
             <View>
-              <Text
-                style={{
-                  fontSize: wp("4.7%"),
-                  fontFamily: FontFamily.Poppins.Regular,
-                }}
-              >
-                {habit.title && habit.title.length > 30
-                  ? habit.title.substr(0, 30) + "..."
-                  : habit.title}
-              </Text>
+              {habit.description && (
+                <View className="mb-2">
+                  <Text
+                    style={{
+                      fontSize: wp("4%"),
+                      fontFamily: FontFamily.Poppins.Regular,
+                      color: COLORS.darkGray,
+                      marginLeft: 8,
+                    }}
+                  >
+                    {habit.description && habit.description.length > 45
+                      ? habit.description.substr(0, 45) + "..."
+                      : habit.description}
+                  </Text>
+                </View>
+              )}
             </View>
           </View>
-          <TouchableOpacity onPress={() => router.push("/(screens)/Home")}>
-            <AntDesign name="close" size={20} color="black" />
-          </TouchableOpacity>
         </View>
-        {/* DESCRIPTION */}
-        {habit.description && (
-          <View className="mb-2">
-            <Text
-              style={{
-                fontSize: wp("3.5%"),
-                fontFamily: FontFamily.Poppins.Regular,
-                color: COLORS.darkGray,
-              }}
-            >
-              {habit.description && habit.description.length > 45
-                ? habit.description.substr(0, 45) + "..."
-                : habit.description}
-            </Text>
-          </View>
-        )}
+
         {/* CAL-HEATMAP YEAR */}
         <View className="mt-2">
           <CalHeatMapYear color={habit.color_code} data={heatmapData} />
@@ -195,8 +196,12 @@ const HabitDetailPanel = () => {
 
           {/* DETAIL BTN */}
           <XStack gap="$6">
-            <CalendarFold color={COLORS.darkGreen} />
-            <TouchableOpacity onPress={editHabitModal.open}>
+            <TouchableOpacity
+              onPress={() => {
+                editHabitModal.open();
+                console.log("Edit modal");
+              }}
+            >
               <Pencil color={COLORS.darkGreen} />
             </TouchableOpacity>
             <TouchableOpacity onPress={deleteConfirmModal.open}>
@@ -210,7 +215,6 @@ const HabitDetailPanel = () => {
         setIsOpen={deleteConfirmModal.toggle}
         action={() => {
           handleDeleteHabit(id);
-          // router.push("/(screens)/Home");
           toast.show(`Successfully removed habit`, {
             message: "This habit is no longer in your tracker.",
             duration: 3000,
