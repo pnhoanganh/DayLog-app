@@ -23,34 +23,40 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
   const [isIconModalOpen, setIconModalOpen] = useState(false);
 
   const [updatedFields, setUpdatedFields] = useState({
-    title: "",
-    description: "",
-    color_code: "",
-    icon: "",
+    title: habitToEdit.title,
+    description: habitToEdit.description,
+    color_code: habitToEdit.color_code,
+    icon: habitToEdit.icon,
   });
 
   useEffect(() => {
-    if (habitToEdit) {
+    if (isOpen && habitToEdit) {
       setUpdatedFields({
-        title: habitToEdit.title || "",
+        title: habitToEdit.title,
         description: habitToEdit.description || "",
         color_code: habitToEdit.color_code || "",
         icon: habitToEdit.icon || "",
       });
+      setErrorMessage("");
+      setIsError(false);
     }
-  }, [habitToEdit]);
+  }, [isOpen, habitToEdit]);
+
   return (
     <ModalBottom
       visible={isOpen}
-      onClose={() => {
-        onClose();
-        setTimeout(() => {
-          setErrorMessage("");
-          setIsError(false);
-        }, 1000);
-      }}
       disableClose={isIconModalOpen}
       title="Edit Habit"
+      onClose={() => {
+        if (!updatedFields.title.trim()) {
+          setErrorMessage("Habit title is required.");
+          setIsError(true);
+          return;
+        }
+        setErrorMessage("");
+        setIsError(false);
+        onClose(true);
+      }}
     >
       <View className="flex flex-col justify-between h-full">
         <View style={{ marginBottom: hp("6%") }}>
@@ -117,10 +123,10 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
             });
             if (success) {
               setUpdatedFields({
-                title: updatedFields.title,
-                description: updatedFields.description,
-                color_code: updatedFields.color_code,
-                icon: updatedFields.icon,
+                title: habitToEdit.title,
+                description: habitToEdit.description,
+                color_code: habitToEdit.color_code,
+                icon: habitToEdit.icon,
               });
               setErrorMessage("");
               setIsError(false);

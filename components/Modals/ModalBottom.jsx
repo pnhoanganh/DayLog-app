@@ -45,7 +45,7 @@ const ModalBottom = ({
         }}
       >
         <View className="flex justify-start items-center flex-row mb-8">
-          <TouchableOpacity onPress={onClose} style={{ zIndex: 1 }}>
+          <TouchableOpacity onPress={handleClose} style={{ zIndex: 1 }}>
             <AntDesign name="close" size={24} color="black" />
           </TouchableOpacity>
 
