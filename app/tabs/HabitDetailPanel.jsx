@@ -199,7 +199,6 @@ const HabitDetailPanel = () => {
             <TouchableOpacity
               onPress={() => {
                 editHabitModal.open();
-                console.log("Edit modal");
               }}
             >
               <Pencil color={COLORS.darkGreen} />

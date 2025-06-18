@@ -260,18 +260,33 @@ export const HabitProvider = ({ children }) => {
         habit.habit_id !== id &&
         habit.title.toLowerCase() === trimmedTitle.toLowerCase()
     );
+    const currentHabit = habitList.find((habit) => habit.habit_id === id);
+    if (!currentHabit) return false;
     if (isDuplicated) {
       setErrorMessage(" Habit name already exists.");
       setIsError(true);
-
       return false;
     }
     if (!trimmedTitle) {
-      setErrorMessage("Habit name already exists.");
+      setErrorMessage("Habit name is required.");
       setIsError(true);
       return false;
     }
-    if (!db) return;
+    if (!db || !currentHabit) return;
+    const isUnchanged =
+      currentHabit.title === trimmedTitle &&
+      (currentHabit.description || "") === (description || "") &&
+      (currentHabit.color_code || "") === (color_code || "") &&
+      (currentHabit.icon || "") === (icon || "");
+
+    if (isUnchanged) {
+      toast.show("No changes made 🤔", {
+        message: "You didn't update anything.",
+        duration: 3000,
+      });
+      await loadHabitsList();
+      return true;
+    }
 
     try {
       await db.runAsync(
@@ -288,9 +303,10 @@ export const HabitProvider = ({ children }) => {
       );
       setHabitList(updatedList);
       toast.show("Habit is updated 🥳", {
-        message: "Nice work keeping up the habit!",
+        message: "Changes saved successfully!",
         duration: 3000,
       });
+      await loadHabitsList();
       return true;
     } catch (error) {
       console.error("Error updating habit:", error);

@@ -67,7 +67,7 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
           <View className="flex flex-col gap-4 mt-4 mb-8">
             <View className="gap-1">
               <TextInput
-                label="New Habit *"
+                label="Habit *"
                 value={updatedFields.title}
                 onChangeText={(text) =>
                   setUpdatedFields((prev) => ({ ...prev, title: text }))
@@ -109,22 +109,18 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
             bottom: hp("-2.2%"),
           }}
           onPress={async () => {
-            const finalData = {
-              title: updatedFields.title || habitToEdit.title,
-              description: updatedFields.description || habitToEdit.description,
-              color_code: updatedFields.color_code || habitToEdit.color_code,
-              icon: updatedFields.icon || habitToEdit.icon,
-            };
-            const success = await handleUpdateHabit(
-              habitToEdit.habit_id,
-              finalData
-            );
+            const success = await handleUpdateHabit(habitToEdit.habit_id, {
+              title: updatedFields.title,
+              description: updatedFields.description,
+              color_code: updatedFields.color_code,
+              icon: updatedFields.icon,
+            });
             if (success) {
               setUpdatedFields({
-                title: "",
-                description: "",
-                color_code: "",
-                icon: "",
+                title: updatedFields.title,
+                description: updatedFields.description,
+                color_code: updatedFields.color_code,
+                icon: updatedFields.icon,
               });
               setErrorMessage("");
               setIsError(false);
