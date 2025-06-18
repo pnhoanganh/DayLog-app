@@ -4,19 +4,14 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import AddHabitModal from "@/components/Feature/AddHabit";
 import SafeScreen from "@/components/Layouts/SafeScreen";
 import useToggleModal from "@/hooks/useToggleModal";
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { HabitContext } from "@/hooks/HabitContext";
 import HabitList from "@/components/Layouts/HabitList";
 import EmptyHabitState from "@/components/Layouts/EmptyHabitState";
 
 const Home = () => {
   const addHabitModal = useToggleModal();
-  const { habitList, resetHabitData, loadHabitsList } =
-    useContext(HabitContext);
-
-  useEffect(() => {
-    loadHabitsList();
-  }, []);
+  const { habitList, resetHabitData } = useContext(HabitContext);
 
   return (
     <SafeScreen>
@@ -34,7 +29,6 @@ const Home = () => {
           isOpen={addHabitModal.isOpen}
           onClose={() => {
             addHabitModal.close();
-            loadHabitsList();
           }}
         />
       </View>

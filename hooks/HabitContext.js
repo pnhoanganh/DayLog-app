@@ -16,7 +16,6 @@ export const HabitProvider = ({ children }) => {
   const timestamp = dayjs().format("YYYY-MM-DD HH:mm:ss");
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
-
   const [currentHabit, setCurrentHabit] = useState({});
 
   // Load habitData from SQLite
@@ -31,30 +30,18 @@ export const HabitProvider = ({ children }) => {
 
   const loadHabitsData = async () => {
     try {
-      const checkIns = await db.getAllAsync(
-        `SELECT habit_id, created_at FROM check_ins_log`
-      );
+      const checkIns = await db.getAllAsync(`
+        SELECT habit_id, DATE(created_at) AS date, COUNT(*) AS count
+        FROM check_ins_log
+        GROUP BY habit_id, DATE(created_at)
+      `);
+
       const grouped = {};
-
-      checkIns.forEach(({ habit_id, created_at }) => {
-        const date = dayjs(created_at).format("YYYY-MM-DD");
-        if (!grouped[habit_id]) grouped[habit_id] = {};
-        if (!grouped[habit_id][date]) grouped[habit_id][date] = 0;
-        grouped[habit_id][date]++;
-      });
-
-      const updatedHabitData = {};
-      for (const habitId in grouped) {
-        updatedHabitData[habitId] = Object.entries(grouped[habitId]).map(
-          ([date, count]) => ({
-            date,
-            count,
-          })
-        );
+      for (const { habit_id, date, count } of checkIns) {
+        if (!grouped[habit_id]) grouped[habit_id] = [];
+        grouped[habit_id].push({ date, count });
       }
-      console.log(updatedHabitData);
-
-      setHabitData(updatedHabitData);
+      setHabitData(grouped);
     } catch (e) {
       console.log("loadHabitsData error:", e);
     }
@@ -92,6 +79,7 @@ export const HabitProvider = ({ children }) => {
     );
   }
   const habitCheck = async (habit_id) => {
+    if (!db) return;
     const today = dayjs().format("YYYY-MM-DD");
     const newLog = uuid.v4();
     if (!habit_id) {
@@ -148,6 +136,7 @@ export const HabitProvider = ({ children }) => {
 
     const updatedHabitData = { ...habitData, [habit_id]: updatedData };
     setHabitData(updatedHabitData);
+    if (!db) return;
 
     try {
       const logs = await db.getAllAsync(
@@ -170,6 +159,8 @@ export const HabitProvider = ({ children }) => {
   };
 
   const resetHabitData = async () => {
+    if (!db) return;
+
     try {
       await db.runAsync("DELETE FROM check_ins_log");
       setHabitData({});
@@ -210,6 +201,7 @@ export const HabitProvider = ({ children }) => {
 
     // Log for debugging
     console.log("Inserting habit:", habitToSave);
+    if (!db) return;
 
     try {
       await db.runAsync(
@@ -229,6 +221,7 @@ export const HabitProvider = ({ children }) => {
         message: "Nice work keeping up the habit!",
         duration: 3000,
       });
+      await loadHabitsList();
       return true;
     } catch (error) {
       console.error("Failed to save habit:", error, error.stack);
@@ -238,6 +231,8 @@ export const HabitProvider = ({ children }) => {
   };
 
   const handleDeleteHabit = async (habit_id) => {
+    if (!db) return;
+
     try {
       await db.runAsync("DELETE FROM habit WHERE habit_id = ?", [habit_id]);
       await db.runAsync("DELETE FROM check_ins_log WHERE habit_id = ?", [
@@ -276,6 +271,7 @@ export const HabitProvider = ({ children }) => {
       setIsError(true);
       return false;
     }
+    if (!db) return;
 
     try {
       await db.runAsync(
@@ -313,7 +309,6 @@ export const HabitProvider = ({ children }) => {
         resetHabitData,
         habitList,
         handleDeleteHabit,
-        loadHabitsList,
         loadAllData,
         loadHabitsData,
         handleAddHabit,
