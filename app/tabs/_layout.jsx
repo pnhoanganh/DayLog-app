@@ -45,7 +45,7 @@ export default function TabLayout() {
           const habitId = route.params?.id;
           const currentHabit = habitList.find((h) => h.habit_id === habitId);
           return {
-            headerTitle: currentHabit?.title ?? "Habit Detail",
+            headerTitle: currentHabit?.title,
             tabBarLabel: "Overview",
           };
         }}
@@ -56,7 +56,7 @@ export default function TabLayout() {
           const habitId = route.params?.id;
           const currentHabit = habitList.find((h) => h.habit_id === habitId);
           return {
-            headerTitle: currentHabit?.title ?? "Analytics",
+            headerTitle: currentHabit?.title,
             tabBarLabel: "Analytics",
           };
         }}
@@ -67,7 +67,7 @@ export default function TabLayout() {
           const habitId = route.params?.id;
           const currentHabit = habitList.find((h) => h.habit_id === habitId);
           return {
-            headerTitle: currentHabit?.title ?? "Check-ins",
+            headerTitle: currentHabit?.title,
             tabBarLabel: "Check-ins",
           };
         }}
