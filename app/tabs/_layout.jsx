@@ -42,7 +42,7 @@ export default function TabLayout() {
           tabBarLabel: "Analytics",
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => router.push("/screens/Home")}
+              onPress={() => router.back()}
               style={{ paddingLeft: 15 }}
             >
               <AntDesign name="left" size={24} color="black" />
@@ -64,7 +64,7 @@ export default function TabLayout() {
           tabBarLabel: "Check-ins",
           headerLeft: () => (
             <TouchableOpacity
-              onPress={() => router.push("/screens/Home")}
+              onPress={() => router.back()}
               style={{ paddingLeft: 15 }}
             >
               <AntDesign name="left" size={24} color="black" />
