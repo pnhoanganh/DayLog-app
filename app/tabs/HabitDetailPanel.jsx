@@ -4,20 +4,20 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import COLORS from "@/constants/colors";
-import { FontFamily } from "@/constants/fonts";
-import { MaterialIcons } from "@expo/vector-icons";
-import CalHeatMapYear from "@/components/Char/CalHeatMapYear";
-import { HabitContext } from "@/hooks/HabitContext";
 import { Button, XStack } from "tamagui";
+import { useToastController } from "@tamagui/toast";
 import { CheckCircle, Circle, Pencil, Trash2 } from "@tamagui/lucide-icons";
 import dayjs from "dayjs";
-import { AlertWarn } from "@/components/Common/Alert/AlertWarn";
-import useToggleModal from "@/hooks/useToggleModal";
 import { useLocalSearchParams, router, useNavigation } from "expo-router";
-import { useToastController } from "@tamagui/toast";
-import EditHabitModal from "@/components/Feature/EditHabit";
+import { MaterialIcons } from "@expo/vector-icons";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
+import COLORS from "@/constants/colors";
+import { FontFamily } from "@/constants/fonts";
+import useToggleModal from "@/hooks/useToggleModal";
+import { HabitContext } from "@/hooks/HabitContext";
+import { AlertWarn } from "@/components/Alert/AlertWarn";
+import CalHeatMapYear from "@/components/Char/Calendar/CalHeatMapYear";
+import EditHabitModal from "@/components/Habit/EditHabit";
 
 const HabitDetailPanel = () => {
   const {
@@ -66,7 +66,7 @@ const HabitDetailPanel = () => {
 
   useEffect(() => {
     if (!habit) {
-      router.push("/screens/Home");
+      router.push("/home");
     }
     if (habit) {
       setCurrentHabit({

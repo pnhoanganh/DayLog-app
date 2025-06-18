@@ -1,22 +1,15 @@
 import React, { useEffect, useState, useCallback, memo, useMemo } from "react";
-import {
-  View,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from "react-native";
+import { View, FlatList, TouchableOpacity, Text } from "react-native";
 import tinycolor from "tinycolor2";
+import dayjs from "dayjs";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
-import { AlertDate } from "../Common/Alert/AlertDate";
-import dayjs from "dayjs";
+import { AlertDate } from "../../Alert/AlertDate";
 import { FontFamily } from "@/constants/fonts";
 import COLOR from "@/constants/colors";
 
 const SQUARE_SIZE = wp("4.5%");
 const ITEM_MARGIN = wp("0.4%");
-
 const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
 
 const CalHeatMapMonth = ({
@@ -38,7 +31,7 @@ const CalHeatMapMonth = ({
     const month = currentDate.getMonth();
 
     const firstDayOfMonth = new Date(year, month, 1);
-    const lastDayOfMonth = new Date(year, month + 1, 0);
+    // const lastDayOfMonth = new Date(year, month + 1, 0);
 
     // Bắt đầu từ thứ Hai gần nhất (hoặc Chủ Nhật trước đó nếu là Chủ Nhật)
     const offset =

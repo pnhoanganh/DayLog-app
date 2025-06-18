@@ -4,10 +4,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { FontFamily } from "@/constants/fonts";
 import Modal from "react-native-modal";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { LinearGradient } from "expo-linear-gradient";
+import { FontFamily } from "@/constants/fonts";
 
 const ModalBottom = ({
   visible,

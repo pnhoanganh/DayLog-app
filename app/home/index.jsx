@@ -1,13 +1,13 @@
-import { View } from "react-native";
-import Header from "@/components/Layouts/Header";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import AddHabitModal from "@/components/Feature/AddHabit";
-import SafeScreen from "@/components/Layouts/SafeScreen";
-import useToggleModal from "@/hooks/useToggleModal";
 import { useContext } from "react";
+import { View } from "react-native";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import useToggleModal from "@/hooks/useToggleModal";
 import { HabitContext } from "@/hooks/HabitContext";
-import HabitList from "@/components/Layouts/HabitList";
-import EmptyHabitState from "@/components/Layouts/EmptyHabitState";
+import HabitList from "@/components/Habit/HabitList";
+import EmptyHabitState from "@/components/Habit//EmptyHabitState";
+import AddHabitModal from "@/components/Habit/AddHabit";
+import SafeScreen from "@/components/UI/SafeScreen";
+import Header from "@/components/UI/Header";
 
 const Home = () => {
   const addHabitModal = useToggleModal();

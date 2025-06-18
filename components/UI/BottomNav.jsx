@@ -1,16 +1,16 @@
 import { View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useContext } from "react";
 import { Text } from "@react-navigation/elements";
-import COLORS from "../../constants/colors";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import React, { useContext } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import tinycolor from "tinycolor2";
 import { Element4 } from "iconsax-react-nativejs";
 import { HabitContext } from "@/hooks/HabitContext";
-import tinycolor from "tinycolor2";
+import COLORS from "@/constants/colors";
 
 const BottomNav = ({ state, descriptors, navigation }) => {
   const { currentHabit } = useContext(HabitContext);

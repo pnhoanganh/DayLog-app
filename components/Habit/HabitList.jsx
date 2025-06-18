@@ -1,7 +1,7 @@
 import { FlatList } from "react-native";
 import React from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import HabitItem from "@/components/Common/HabitItem";
+import HabitItem from "@/components/Habit/HabitItem";
 
 const HabitList = ({ habitList }) => {
   return (

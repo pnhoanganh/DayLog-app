@@ -1,6 +1,6 @@
 import { View, Text, TouchableWithoutFeedback } from "react-native";
-import { FontFamily } from "@/constants/fonts";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { FontFamily } from "@/constants/fonts";
 
 const ColorPicker = ({ selectedColor, setSelectedColor }) => {
   const colors = [

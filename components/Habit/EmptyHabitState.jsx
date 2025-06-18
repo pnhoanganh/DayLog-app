@@ -1,5 +1,7 @@
 import { View, Text, Dimensions } from "react-native";
+import Svg, { Path, Text as SvgText, TextPath, Defs } from "react-native-svg";
 import React from "react";
+import { YStack } from "tamagui";
 import Sticker from "@/assets/images/Launch/homeSticker.svg";
 import {
   widthPercentageToDP as wp,
@@ -7,8 +9,6 @@ import {
 } from "react-native-responsive-screen";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
-import { YStack } from "tamagui";
-import Svg, { Path, Text as SvgText, TextPath, Defs } from "react-native-svg";
 
 const screenWidth = Dimensions.get("window").width;
 const imageSize = Math.min(screenWidth * 0.72, 500);

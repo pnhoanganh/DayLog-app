@@ -1,9 +1,9 @@
-import { Tabs, router } from "expo-router";
-import BottomNav from "../../components/Layouts/BottomNav";
-import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import { Tabs, router } from "expo-router";
+import { AntDesign } from "@expo/vector-icons";
 import { FontFamily } from "@/constants/fonts";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import BottomNav from "@/components/UI/BottomNav";
 
 export default function TabLayout() {
   return (

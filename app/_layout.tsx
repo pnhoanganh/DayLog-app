@@ -6,15 +6,15 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
+import { useFonts } from "expo-font";
 import { SQLiteProvider } from "expo-sqlite";
 import { createTamagui, TamaguiProvider, Text, View } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import { PortalProvider } from "@tamagui/portal";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
-import ToastCus from "../components/Common/Toast/ToastCus";
+import ToastCus from "../components/UI/ToastCus";
 import { HabitProvider } from "@/hooks/HabitContext";
-import { customFonts } from "../constants/fonts";
-import { useFonts } from "expo-font";
+import { customFonts } from "@/constants/fonts";
 
 SplashScreen.preventAutoHideAsync();
 const config = createTamagui(defaultConfig);

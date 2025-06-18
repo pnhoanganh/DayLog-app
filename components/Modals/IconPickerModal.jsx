@@ -1,16 +1,16 @@
 import { View, TouchableOpacity, FlatList } from "react-native";
 import React, { useState } from "react";
-import { SizableText, Tabs, Text, Separator } from "tamagui";
+import { SizableText, Tabs, Separator } from "tamagui";
 import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
+import EmojiSelector from "react-native-emoji-selector";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
-import EmojiSelector from "react-native-emoji-selector";
 
 // List Life Styles Icon filtered
 import IconLifeStylesList from "../../constants/icons";

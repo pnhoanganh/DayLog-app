@@ -15,7 +15,7 @@ import {
 import tinycolor from "tinycolor2"; // Library for generating color shades
 import dayjs from "dayjs";
 import useToggleModal from "@/hooks/useToggleModal";
-import { AlertDate } from "../Common/Alert/AlertDate";
+import { AlertDate } from "../../Alert/AlertDate";
 
 const SQUARE_SIZE = 16;
 const ITEM_MARGIN = 2;

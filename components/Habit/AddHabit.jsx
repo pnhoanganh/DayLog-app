@@ -1,44 +1,27 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
+import { HabitContext } from "@/hooks/HabitContext";
 import ModalBottom from "../Modals/ModalBottom";
-import IconSelector from "../Forms/IconSelector";
-import TextInput from "../Forms/TextInputwLabel";
-import ColorPicker from "../Forms/ColorPicker";
-import { HabitContext } from "../../hooks/HabitContext";
+import IconSelector from "../UI/IconSelector";
+import TextInput from "../UI/TextInputwLabel";
+import ColorPicker from "../UI/ColorPicker";
 
-const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
-  const {
-    handleUpdateHabit,
-    errorMessage,
-    setErrorMessage,
-    isError,
-    setIsError,
-  } = useContext(HabitContext);
+const AddHabitModal = ({ isOpen, onClose }) => {
+  const { handleAddHabit, errorMessage, setErrorMessage, isError, setIsError } =
+    useContext(HabitContext);
   const [isIconModalOpen, setIconModalOpen] = useState(false);
-
-  const [updatedFields, setUpdatedFields] = useState({
+  const [newHabit, setNewHabit] = useState({
     title: "",
     description: "",
     color_code: "",
     icon: "",
   });
-
-  useEffect(() => {
-    if (habitToEdit) {
-      setUpdatedFields({
-        title: habitToEdit.title || "",
-        description: habitToEdit.description || "",
-        color_code: habitToEdit.color_code || "",
-        icon: habitToEdit.icon || "",
-      });
-    }
-  }, [habitToEdit]);
   return (
     <ModalBottom
       visible={isOpen}
@@ -50,7 +33,7 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
         }, 1000);
       }}
       disableClose={isIconModalOpen}
-      title="Edit Habit"
+      title="New Habit"
     >
       <View className="flex flex-col justify-between h-full">
         <View style={{ marginBottom: hp("6%") }}>
@@ -58,9 +41,9 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
           <IconSelector
             isModalOpen={isIconModalOpen}
             setModalOpen={setIconModalOpen}
-            selectedIcon={updatedFields.icon}
+            selectedIcon={newHabit.icon}
             setSelectedIcon={(icon) => {
-              setUpdatedFields((prev) => ({ ...prev, icon }));
+              setNewHabit((prev) => ({ ...prev, icon }));
             }}
           />
           {/* TEXT INPUT */}
@@ -68,9 +51,9 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
             <View className="gap-1">
               <TextInput
                 label="New Habit *"
-                value={updatedFields.title}
+                value={newHabit.title}
                 onChangeText={(text) =>
-                  setUpdatedFields((prev) => ({ ...prev, title: text }))
+                  setNewHabit((prev) => ({ ...prev, title: text }))
                 }
                 style={{
                   borderRadius: 5,
@@ -85,17 +68,17 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
             </View>
             <TextInput
               label="Description"
-              value={updatedFields.description}
+              value={newHabit.description}
               onChangeText={(text) =>
-                setUpdatedFields((prev) => ({ ...prev, description: text }))
+                setNewHabit((prev) => ({ ...prev, description: text }))
               }
             />
           </View>
           {/* COLOR PICKER */}
           <ColorPicker
-            selectedColor={updatedFields.color_code}
+            selectedColor={newHabit.color_code}
             setSelectedColor={(color) => {
-              setUpdatedFields((prev) => ({ ...prev, color_code: color }));
+              setNewHabit((prev) => ({ ...prev, color_code: color }));
             }}
           />
         </View>
@@ -109,18 +92,9 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
             bottom: hp("-2.2%"),
           }}
           onPress={async () => {
-            const finalData = {
-              title: updatedFields.title || habitToEdit.title,
-              description: updatedFields.description || habitToEdit.description,
-              color_code: updatedFields.color_code || habitToEdit.color_code,
-              icon: updatedFields.icon || habitToEdit.icon,
-            };
-            const success = await handleUpdateHabit(
-              habitToEdit.habit_id,
-              finalData
-            );
+            const success = await handleAddHabit(newHabit);
             if (success) {
-              setUpdatedFields({
+              setNewHabit({
                 title: "",
                 description: "",
                 color_code: "",
@@ -129,7 +103,7 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
               setErrorMessage("");
               setIsError(false);
               setTimeout(() => {
-                onClose(true);
+                onClose();
               }, 100);
             }
           }}
@@ -143,7 +117,7 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
               marginVertical: "auto",
             }}
           >
-            Update
+            Save
           </Text>
         </TouchableOpacity>
         <View />
@@ -152,4 +126,4 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
   );
 };
 
-export default EditHabitModal;
+export default AddHabitModal;

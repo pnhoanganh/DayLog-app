@@ -1,14 +1,14 @@
-import SafeScreen from "@/components/Layouts/SafeScreen";
-import COLORS from "@/constants/colors";
-import { FontFamily } from "@/constants/fonts";
 import { Text, TouchableOpacity, View } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { useRouter } from "expo-router";
 import Calendar3D from "@/assets/images/Launch/calendar3d.svg";
 import Sticker from "@/assets/images/Launch/sticker.svg";
-import { useRouter } from "expo-router";
+import COLORS from "@/constants/colors";
+import { FontFamily } from "@/constants/fonts";
+import SafeScreen from "@/components/UI/SafeScreen";
 
 const LaunchScreen = () => {
   const router = useRouter();
@@ -53,7 +53,7 @@ const LaunchScreen = () => {
               borderRadius: 8,
               bottom: hp("-2.2%"),
             }}
-            onPress={() => router.navigate("/screens/Home")}
+            onPress={() => router.navigate("/home")}
           >
             <Text
               style={{
