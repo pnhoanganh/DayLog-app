@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -38,16 +38,31 @@ const HabitDetailPanel = () => {
   const deleteConfirmModal = useToggleModal();
   const editHabitModal = useToggleModal();
   const toast = useToastController();
-  const habitToEdit = habitList.find((habit) => habit.habit_id === String(id));
   const habit = habitList.find(
     (habit) => String(habit.habit_id) === String(id)
   );
+  const habitToEdit = habit;
   const navigation = useNavigation();
+  const heatmapData = useMemo(() => {
+    if (!Array.isArray(habitData[id])) return [];
+
+    return habitData[id]
+      .filter(
+        (item) =>
+          item &&
+          typeof item === "object" &&
+          typeof item.count === "number" &&
+          item.date &&
+          !isNaN(new Date(item.date).getTime())
+      )
+      .map((item) => ({
+        date: formatDateKey(item.date),
+        count: item.count,
+      }));
+  }, [habitData, id]);
   useEffect(() => {
-    if (title) {
-      navigation.setOptions({ title: title });
-    }
-  }, [title, navigation]);
+    title && navigation.setOptions({ title: title });
+  }, []);
 
   useEffect(() => {
     if (!habit) {
@@ -65,21 +80,6 @@ const HabitDetailPanel = () => {
   }, [habit, setCurrentHabit]);
 
   if (!habit) return null;
-  const heatmapData = Array.isArray(habitData[id])
-    ? habitData[id]
-        .filter(
-          (item) =>
-            item != null &&
-            typeof item === "object" &&
-            typeof item.count === "number" &&
-            item.date &&
-            !isNaN(new Date(item.date).getTime())
-        )
-        .map((item) => ({
-          date: formatDateKey(item.date),
-          count: item.count,
-        }))
-    : [];
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
