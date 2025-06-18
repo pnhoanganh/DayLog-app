@@ -1,9 +1,14 @@
-import React, { useRef, useEffect, useState, useMemo } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   View,
   FlatList,
   TouchableOpacity,
-  Alert,
   StyleSheet,
   ScrollView,
 } from "react-native";
@@ -68,21 +73,23 @@ const CalHeatMapYear = ({ data = [], color }) => {
   const numRows = 7; // Number of rows = 7 days/week (Sunday to Saturday)
   const numCols = Math.ceil(dates.length / numRows); // Number of columns = number of weeks
 
-  // Group dates into weeks (7 ngày mỗi tuần)
-  const weeks = [];
-  for (let i = 0; i < dates.length; i += 7) {
-    weeks.push(dates.slice(i, i + 7));
-  }
-
-  // Rearrange into column-major (Sunday to Saturday in column)
-  const arrangedDates = [];
-  for (let row = 0; row < 7; row++) {
-    for (let col = 0; col < weeks.length; col++) {
-      if (weeks[col][row]) {
-        arrangedDates.push(weeks[col][row]);
+  const arrangedDates = useMemo(() => {
+    // Group dates into weeks (7 ngày mỗi tuần)
+    const weeks = [];
+    for (let i = 0; i < dates.length; i += 7) {
+      weeks.push(dates.slice(i, i + 7));
+    }
+    // Rearrange into column-major (Sunday to Saturday in column)
+    const arranged = [];
+    for (let row = 0; row < 7; row++) {
+      for (let col = 0; col < weeks.length; col++) {
+        if (weeks[col][row]) {
+          arranged.push(weeks[col][row]);
+        }
       }
     }
-  }
+    return arranged;
+  }, [dates]);
 
   // Check for a new week and append new column if necessary
   useEffect(() => {
@@ -154,39 +161,44 @@ const CalHeatMapYear = ({ data = [], color }) => {
   }, [data]);
 
   // Handle press on a day square
-  const onPressDay = (date) => {
-    const key = formatDateKey(date);
-    const count = rawCountMap[key];
-    console.log(
-      "Pressed date:",
-      key,
-      "Raw count:",
-      rawCountMap[formatDateKey(date)]
-    );
-    showAlert.open();
-    setSelectedDate(date);
-    setSelectedCount(count ?? null);
-  };
+  const onPressDay = useCallback(
+    (date) => {
+      const key = formatDateKey(date);
+      const count = rawCountMap[key];
+      console.log(
+        "Pressed date:",
+        key,
+        "Raw count:",
+        rawCountMap[formatDateKey(date)]
+      );
+      showAlert.open();
+      setSelectedDate(date);
+      setSelectedCount(count ?? null);
+    },
+    [rawCountMap, showAlert]
+  );
 
   // Render function for each day square
-  const renderItem = ({ item }) => {
-    const key = formatDateKey(item);
-    const level = getLevel(dataMap[key]); // Get check-in level, default to 0
-    return (
-      <TouchableOpacity
-        onPress={() => onPressDay(item)} // Call onPressDay when square is pressed
-        style={[
-          styles.square,
-          {
-            backgroundColor: colorArray[level], // Apply color based on level
-            width: SQUARE_SIZE,
-            height: SQUARE_SIZE,
-          },
-        ]}
-      />
-    );
-  };
-
+  const renderItem = useCallback(
+    ({ item }) => {
+      const key = formatDateKey(item);
+      const level = getLevel(dataMap[key]); // Get check-in level, default to 0
+      return (
+        <TouchableOpacity
+          onPress={() => onPressDay(item)} // Call onPressDay when square is pressed
+          style={[
+            styles.square,
+            {
+              backgroundColor: colorArray[level], // Apply color based on level
+              width: SQUARE_SIZE,
+              height: SQUARE_SIZE,
+            },
+          ]}
+        />
+      );
+    },
+    [dataMap, colorArray, onPressDay]
+  );
   return (
     <View>
       <ScrollView
@@ -227,4 +239,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CalHeatMapYear;
+export default React.memo(CalHeatMapYear);

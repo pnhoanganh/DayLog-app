@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, memo, useMemo } from "react";
 import {
   View,
   FlatList,
@@ -109,25 +109,39 @@ const CalHeatMapMonth = ({
     [rawCountMap, removeCheckinForHabit]
   );
 
+  const DaySquare = memo(function DaySquare({ isToday, onPress, color }) {
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        style={[
+          {
+            backgroundColor: color,
+            width: SQUARE_SIZE,
+            height: SQUARE_SIZE,
+            margin: ITEM_MARGIN / 2,
+            borderRadius: 4,
+          },
+          isToday && {
+            borderRadius: SQUARE_SIZE / 2,
+          },
+        ]}
+      />
+    );
+  });
+
   const renderItem = useCallback(
     ({ item }) => {
       const key = formatDateKey(item);
       const level = getLevel(dataMap[key]);
-      const isToday = formatDateKey(item) === formatDateKey(new Date());
+      const isToday = key === formatDateKey(new Date());
+
       return (
-        <TouchableOpacity
+        <DaySquare
+          date={item}
+          level={level}
+          isToday={isToday}
+          color={colorArray[level]}
           onPress={() => onPressDay(item)}
-          style={[
-            styles.square,
-            {
-              backgroundColor: colorArray[level],
-              width: SQUARE_SIZE,
-              height: SQUARE_SIZE,
-            },
-            isToday && {
-              borderRadius: "50%",
-            },
-          ]}
         />
       );
     },
@@ -135,11 +149,15 @@ const CalHeatMapMonth = ({
   );
 
   const numColumns = 6; // each column is a week
+  const daysOfWeek = useMemo(
+    () => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    []
+  );
 
   return (
-    <View style={styles.container}>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
       <View className="mr-1">
-        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, index) => (
+        {daysOfWeek.map((day, index) => (
           <View
             key={index}
             style={{
@@ -168,10 +186,10 @@ const CalHeatMapMonth = ({
         numColumns={numColumns}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={[
-          styles.flatListContent,
-          { paddingLeft: SQUARE_SIZE },
-        ]}
+        contentContainerStyle={{
+          paddingLeft: SQUARE_SIZE,
+          padding: ITEM_MARGIN / 2,
+        }}
       />
 
       <AlertDate
@@ -184,18 +202,4 @@ const CalHeatMapMonth = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  flatListContent: {
-    padding: ITEM_MARGIN / 2,
-  },
-  square: {
-    margin: ITEM_MARGIN / 2,
-    borderRadius: 4,
-  },
-});
-
-export default CalHeatMapMonth;
+export default React.memo(CalHeatMapMonth);
