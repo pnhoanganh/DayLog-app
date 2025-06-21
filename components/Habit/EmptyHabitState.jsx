@@ -35,7 +35,7 @@ const CurvedText = ({ text }) => {
     </Svg>
   );
 };
-const EmptyHabitState = () => {
+const EmptyHabitState = ({ description }) => {
   return (
     <YStack
       alignItems="center"
@@ -65,7 +65,7 @@ const EmptyHabitState = () => {
           color: COLORS.darkGray,
         }}
       >
-        Let’s tap the + button to start building your awesome routine!
+        {description}
       </Text>
     </YStack>
   );

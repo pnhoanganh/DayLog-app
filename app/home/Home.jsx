@@ -23,7 +23,7 @@ const Home = () => {
         {habitList.length > 0 ? (
           <HabitList habitList={habitList} />
         ) : (
-          <EmptyHabitState />
+          <EmptyHabitState desciption=" Let’s tap the + button to start building your awesome routine!" />
         )}
         <AddHabitModal
           isOpen={addHabitModal.isOpen}
