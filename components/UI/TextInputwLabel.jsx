@@ -34,7 +34,6 @@ const TextInputwLabel = ({ label, value, onChangeText, style, capitalize }) => {
             flex: 1,
             height: hp("5%"),
             color: COLORS.black,
-            paddingHorizontal: 10,
             fontSize: 16,
           }}
           autoCapitalize={capitalize || "sentences"}
