@@ -35,7 +35,7 @@ const CurvedText = ({ text }) => {
     </Svg>
   );
 };
-const EmptyHabitState = ({ description }) => {
+const EmptyHabitState = ({ description, title }) => {
   return (
     <YStack
       alignItems="center"
@@ -54,19 +54,21 @@ const EmptyHabitState = ({ description }) => {
             justifyContent: "center",
           }}
         >
-          <CurvedText text="Oops! No habits yet" />
+          <CurvedText text={title} />
         </View>
         <Sticker width={imageSize} height={imageSize * 0.8} />
       </View>
-      <Text
-        style={{
-          fontSize: wp("4.5%"),
-          textAlign: "center",
-          color: COLORS.darkGray,
-        }}
-      >
-        {description}
-      </Text>
+      {description && (
+        <Text
+          style={{
+            fontSize: wp("4.5%"),
+            textAlign: "center",
+            color: COLORS.darkGray,
+          }}
+        >
+          {description}
+        </Text>
+      )}
     </YStack>
   );
 };
