@@ -115,7 +115,8 @@ const CalHeatMapMonth = ({
             borderRadius: 4,
           },
           isToday && {
-            borderRadius: SQUARE_SIZE / 2,
+            borderWidth: 1,
+            borderColor: "#7D7C7C",
           },
         ]}
       />
