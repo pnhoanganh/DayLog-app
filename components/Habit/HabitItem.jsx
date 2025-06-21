@@ -17,6 +17,7 @@ import CalHeatMapMonth from "../Char/Calendar/CalHeatMapMonth";
 
 import { router } from "expo-router";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
+import dayjs from "dayjs";
 
 const HabitItem = ({ icon, title, description, color, id }) => {
   const { habitData, habitCheck, removeCheckin } = useContext(HabitContext);
@@ -24,6 +25,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
     useCalendarMonth();
   const toast = useToastController();
   const [selectedHabit, setSelectedHabit] = useState(null);
+  const today = dayjs().format("YYYY-MM-DD");
 
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
@@ -189,10 +191,12 @@ const HabitItem = ({ icon, title, description, color, id }) => {
               currentDate={currentDate}
               removeCheckinForHabit={(dateKey) => {
                 removeCheckin(id, dateKey);
-                toast.show("Check-in removed 😢", {
-                  message: "Don’t worry, you can always check in again!",
-                  duration: 3000,
-                });
+                if (dateKey === today) {
+                  toast.show("Check-in removed 😢", {
+                    message: "Don’t worry, you can always check in again!",
+                    duration: 3000,
+                  });
+                }
               }}
             />
             <ArrowRight2

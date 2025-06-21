@@ -118,12 +118,14 @@ export const HabitProvider = ({ children }) => {
   };
 
   const removeCheckin = async (habit_id, targetDate) => {
-    const today = targetDate ?? dayjs().format("YYYY-MM-DD");
+    const today = dayjs().format("YYYY-MM-DD");
+
+    if (targetDate !== today) return;
 
     const currentData = Array.isArray(habitData[habit_id])
       ? habitData[habit_id]
       : [];
-    const todayCheckin = currentData.find((item) => item.date === today);
+    const todayCheckin = currentData.find((item) => item.date === targetDate);
 
     if (!todayCheckin || todayCheckin.count <= 0) return;
 
@@ -133,6 +135,11 @@ export const HabitProvider = ({ children }) => {
       }
       return item;
     });
+
+    setHabitData((prev) => ({
+      ...prev,
+      [habit_id]: updatedData,
+    }));
 
     const updatedHabitData = { ...habitData, [habit_id]: updatedData };
     setHabitData(updatedHabitData);
