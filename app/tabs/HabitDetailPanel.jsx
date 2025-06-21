@@ -70,7 +70,7 @@ const HabitDetailPanel = () => {
     }
     if (habit) {
       setCurrentHabit({
-        id: habit.id,
+        id: habit.habit_id,
         title: habit.title,
         description: habit.description,
         color_code: habit.color_code,
