@@ -67,6 +67,45 @@ export const HabitProvider = ({ children }) => {
     }
   };
 
+  const loadHabitHistoryGrouped = async (habit_id) => {
+    const logs = await db.getAllAsync(
+      `SELECT habit_id, created_at FROM check_ins_log WHERE habit_id = ? ORDER BY created_at DESC`,
+      [habit_id]
+    );
+    const grouped = {};
+
+    for (const { created_at } of logs) {
+      const month = dayjs(created_at).format("YYYY-MM"); // for sorting
+      const date = dayjs(created_at).format("YYYY-MM-DD");
+      const time = dayjs(created_at).format("H:mm");
+
+      if (!grouped[month]) grouped[month] = {};
+      if (!grouped[month][date]) grouped[month][date] = [];
+
+      grouped[month][date].push(time);
+    }
+
+    const habitHistoryList = Object.entries(grouped)
+      .sort((a, b) => dayjs(a[0]).diff(dayjs(b[0])))
+      .map(([month, days]) => {
+        const daysEntries = Object.entries(days)
+          .sort((a, b) => dayjs(a[0]).diff(dayjs(b[0])))
+          .map(([date, times]) => ({
+            date: dayjs(date).format("dddd, D MMMM"), // for display
+            count: times.length,
+            times,
+          }));
+
+        return {
+          month: dayjs(month).format("MMMM YYYY"),
+          total: daysEntries.reduce((sum, d) => sum + d.count, 0),
+          days: daysEntries,
+        };
+      });
+
+    return habitHistoryList;
+  };
+
   useEffect(() => {
     loadAllData();
   }, []);
@@ -78,6 +117,7 @@ export const HabitProvider = ({ children }) => {
       </View>
     );
   }
+
   const habitCheck = async (habit_id) => {
     if (!db) return;
     const today = dayjs().format("YYYY-MM-DD");
@@ -259,6 +299,7 @@ export const HabitProvider = ({ children }) => {
       alert("Failed to delete habit. Please try again");
     }
   };
+
   const handleUpdateHabit = async (id, updatedFields) => {
     const { title, description, color_code, icon } = updatedFields;
     const trimmedTitle = title?.trim();
@@ -334,6 +375,7 @@ export const HabitProvider = ({ children }) => {
         handleDeleteHabit,
         loadAllData,
         loadHabitsData,
+        loadHabitHistoryGrouped,
         handleAddHabit,
         handleUpdateHabit,
         errorMessage,
