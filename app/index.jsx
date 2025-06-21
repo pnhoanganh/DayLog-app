@@ -53,7 +53,7 @@ const LaunchScreen = () => {
               borderRadius: 8,
               bottom: hp("-2.2%"),
             }}
-            onPress={() => router.navigate("/home")}
+            onPress={() => router.navigate("/home/Home")}
           >
             <Text
               style={{

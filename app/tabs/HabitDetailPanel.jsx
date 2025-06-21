@@ -66,7 +66,7 @@ const HabitDetailPanel = () => {
 
   useEffect(() => {
     if (!habit) {
-      router.push("/home");
+      router.push("/home/Home");
     }
     if (habit) {
       setCurrentHabit({
