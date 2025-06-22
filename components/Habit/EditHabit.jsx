@@ -48,11 +48,6 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
       disableClose={isIconModalOpen}
       title="Edit Habit"
       onClose={() => {
-        if (!updatedFields.title.trim()) {
-          setErrorMessage("Habit title is required.");
-          setIsError(true);
-          return;
-        }
         setErrorMessage("");
         setIsError(false);
         onClose(true);
