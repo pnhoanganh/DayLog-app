@@ -31,7 +31,7 @@ const Report = () => {
     if (currentHabit?.id) {
       loadData();
     }
-  }, [currentHabit?.id, loadHabitHistoryGrouped]);
+  }, [currentHabit?.id]);
 
   const filterBySelectedDates = (data, selectedDates) => {
     const selectedKeys = Object.keys(selectedDates || {});
@@ -58,12 +58,12 @@ const Report = () => {
     if (applyFilter) {
       const result = filterBySelectedDates(habitHistory, selectedDates);
       setFilteredHistory(result);
-      setApplyFilter(false);
+      setApplyFilter(false); // reset flag
     }
   }, [applyFilter]);
 
   const dataToRender =
-    applyFilter && selectedDates && Object.keys(selectedDates).length > 0
+    selectedDates && Object.keys(selectedDates).length > 0
       ? filteredHistory
       : habitHistory;
 
