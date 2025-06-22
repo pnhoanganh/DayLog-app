@@ -8,11 +8,14 @@ import {
 import { HabitContext } from "@/hooks/HabitContext";
 import HabitHistoryList from "@/components/Habit/HabitHistoryList";
 import EmptyState from "../../components/UI/EmptyState";
+import { useFilter } from "@/hooks/FilterContext";
 
 const Report = () => {
   const navigation = useNavigation();
   const { currentHabit, loadHabitHistoryGrouped } = useContext(HabitContext);
   const [habitHistory, setHabitHistory] = useState([]);
+  const [filteredHistory, setFilteredHistory] = useState([]);
+  const { selectedDates, applyFilter, setApplyFilter } = useFilter();
 
   useEffect(() => {
     if (currentHabit?.title) {
@@ -30,14 +33,44 @@ const Report = () => {
     }
   }, [currentHabit?.id, loadHabitHistoryGrouped]);
 
+  const filterBySelectedDates = (data, selectedDates) => {
+    const selectedKeys = Object.keys(selectedDates || {});
+    if (selectedKeys.length === 0) return data;
+
+    return data
+      .map((monthData) => {
+        const filteredDays = monthData.days.filter((d) =>
+          selectedKeys.includes(d.rawDate)
+        );
+
+        if (filteredDays.length === 0) return null;
+
+        return {
+          ...monthData,
+          days: filteredDays,
+          total: filteredDays.reduce((sum, d) => sum + d.count, 0),
+        };
+      })
+      .filter(Boolean);
+  };
+
+  useEffect(() => {
+    if (applyFilter) {
+      const result = filterBySelectedDates(habitHistory, selectedDates);
+      setFilteredHistory(result);
+      setApplyFilter(false);
+    }
+  }, [applyFilter]);
+
+  const dataToRender =
+    applyFilter && selectedDates && Object.keys(selectedDates).length > 0
+      ? filteredHistory
+      : habitHistory;
+
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
+    <View style={{ flex: 1 }}>
       <FlatList
-        data={habitHistory}
+        data={dataToRender}
         keyExtractor={(item) => item.month}
         renderItem={({ item }) => (
           <HabitHistoryList
