@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { HabitContext } from "@/hooks/HabitContext";
 import HabitList from "@/components/Habit/HabitList";
-import EmptyHabitState from "@/components/Habit//EmptyHabitState";
+import EmptyState from "../../components/UI/EmptyState";
 import AddHabitModal from "@/components/Habit/AddHabit";
 import SafeScreen from "@/components/UI/SafeScreen";
 import Header from "@/components/UI/Header";
@@ -23,7 +23,7 @@ const Home = () => {
         {habitList.length > 0 ? (
           <HabitList habitList={habitList} />
         ) : (
-          <EmptyHabitState
+          <EmptyState
             title="Oops! No habits yet"
             desciption=" Let’s tap the + button to start building your awesome routine!"
           />

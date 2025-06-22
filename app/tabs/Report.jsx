@@ -7,7 +7,7 @@ import {
 } from "react-native-responsive-screen";
 import { HabitContext } from "@/hooks/HabitContext";
 import HabitHistoryList from "@/components/Habit/HabitHistoryList";
-import EmptyHabitState from "../../components/Habit/EmptyHabitState";
+import EmptyState from "../../components/UI/EmptyState";
 
 const Report = () => {
   const navigation = useNavigation();
@@ -33,7 +33,6 @@ const Report = () => {
   return (
     <View
       style={{
-        backgroundColor: "#F2F2F7",
         flex: 1,
       }}
     >
@@ -51,14 +50,9 @@ const Report = () => {
         contentContainerStyle={{
           paddingBottom: hp("20%"),
           paddingHorizontal: wp("6%"),
-          paddingTop: hp("3%"),
+          paddingTop: hp("1%"),
         }}
-        ListEmptyComponent={() => (
-          <EmptyHabitState
-            title="Oops! No checkins yet"
-            description="Looks like there’s nothing here. Change your filters or start your first check-in!"
-          />
-        )}
+        ListEmptyComponent={() => <EmptyState title="Oops! No checkins yet" />}
       />
     </View>
   );
