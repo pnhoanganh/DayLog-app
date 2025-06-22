@@ -59,7 +59,7 @@ const EditHabitModal = ({ isOpen, onClose, habitToEdit }) => {
       }}
     >
       <View className="flex flex-col justify-between h-full">
-        <View style={{ marginBottom: hp("6%") }}>
+        <View>
           {/* ICON PICKER */}
           <IconSelector
             isModalOpen={isIconModalOpen}
