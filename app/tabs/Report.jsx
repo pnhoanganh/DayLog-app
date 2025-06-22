@@ -18,6 +18,7 @@ const Report = () => {
   const { currentHabit, loadHabitHistoryGrouped } = useContext(HabitContext);
   const [habitHistory, setHabitHistory] = useState([]);
   const [filteredHistory, setFilteredHistory] = useState([]);
+  const [hasFiltered, setHasFiltered] = useState(false);
   const { selectedDates, applyFilter, setApplyFilter, setSelectedDates } =
     useFilter();
 
@@ -63,11 +64,12 @@ const Report = () => {
       const result = filterBySelectedDates(habitHistory, selectedDates);
       setFilteredHistory(result);
       setApplyFilter(false); // reset flag
+      setHasFiltered(true);
     }
   }, [applyFilter]);
 
   const dataToRender =
-    selectedDates && Object.keys(selectedDates).length > 0
+    hasFiltered && Object.keys(selectedDates).length > 0
       ? filteredHistory
       : habitHistory;
 
@@ -97,6 +99,7 @@ const Report = () => {
           onPress={() => {
             setSelectedDates({});
             setFilteredHistory([]);
+            setHasFiltered(false);
           }}
           size="$4"
           style={{
