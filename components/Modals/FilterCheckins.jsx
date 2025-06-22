@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import COLORS from "@/constants/colors";
 import { HabitContext } from "@/hooks/HabitContext";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { Button, XStack } from "tamagui";
+import { Button } from "tamagui";
 import { useFilter } from "@/hooks/FilterContext";
 
 export const FilterCheckins = ({ open, setOpen, snapPoints, data }) => {
@@ -105,27 +105,15 @@ export const FilterCheckins = ({ open, setOpen, snapPoints, data }) => {
           style={{ paddingBottom: 2 }}
           dayComponent={CustomDay}
         />
-        <XStack gap="$4" justifyContent="center">
-          <Button
-            size="$4"
-            onPress={() => {
-              setOpen(false);
-              setApplyFilter(true);
-            }}
-          >
-            Filter Checkins
-          </Button>
-          <Button
-            themeInverse
-            onPress={() => {
-              setSelectedDates({});
-              setApplyFilter(true);
-              setOpen(false);
-            }}
-          >
-            Clear Filter
-          </Button>
-        </XStack>
+        <Button
+          size="$4"
+          onPress={() => {
+            setOpen(false);
+            setApplyFilter(true);
+          }}
+        >
+          Filter Checkins
+        </Button>
       </Sheet.Frame>
     </Sheet>
   );

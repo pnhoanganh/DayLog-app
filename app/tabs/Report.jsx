@@ -9,13 +9,17 @@ import { HabitContext } from "@/hooks/HabitContext";
 import HabitHistoryList from "@/components/Habit/HabitHistoryList";
 import EmptyState from "../../components/UI/EmptyState";
 import { useFilter } from "@/hooks/FilterContext";
+import { Button } from "tamagui";
+import { FilterRemove } from "iconsax-react-nativejs";
+import COLORS from "@/constants/colors";
 
 const Report = () => {
   const navigation = useNavigation();
   const { currentHabit, loadHabitHistoryGrouped } = useContext(HabitContext);
   const [habitHistory, setHabitHistory] = useState([]);
   const [filteredHistory, setFilteredHistory] = useState([]);
-  const { selectedDates, applyFilter, setApplyFilter } = useFilter();
+  const { selectedDates, applyFilter, setApplyFilter, setSelectedDates } =
+    useFilter();
 
   useEffect(() => {
     if (currentHabit?.title) {
@@ -68,7 +72,7 @@ const Report = () => {
       : habitHistory;
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <FlatList
         data={dataToRender}
         keyExtractor={(item) => item.month}
@@ -87,6 +91,25 @@ const Report = () => {
         }}
         ListEmptyComponent={() => <EmptyState title="Oops! No checkins yet" />}
       />
+      {Object.keys(selectedDates).length > 0 && (
+        <Button
+          themeInverse
+          onPress={() => {
+            setSelectedDates({});
+            setFilteredHistory([]);
+          }}
+          size="$4"
+          style={{
+            position: "absolute",
+            bottom: hp("4%"),
+            alignSelf: "center",
+            zIndex: 10,
+          }}
+        >
+          <FilterRemove size="20" color={COLORS.white} />
+          Clear Filter
+        </Button>
+      )}
     </View>
   );
 };
