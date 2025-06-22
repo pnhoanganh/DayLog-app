@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 import {
@@ -8,68 +9,72 @@ import {
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
 
-const HabitDayBlock = ({ date, count, times, currentHabit }) => {
-  return (
-    <View style={{ marginTop: 12 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: 12,
-        }}
-      >
-        <Text
-          style={{
-            color: "#666",
-            fontFamily: FontFamily.Poppins.Regular,
-            fontSize: 17,
-          }}
-        >
-          {date}
-        </Text>
+const HabitDayBlock = React.memo(
+  ({ displayDate, count, times, currentHabit }) => {
+    return (
+      <View style={{ marginTop: 12 }}>
         <View
           style={{
-            backgroundColor: "#7BCC85",
-            width: 25,
-            height: 25,
-            borderRadius: "50%",
+            flexDirection: "row",
+            justifyContent: "space-between",
             alignItems: "center",
-            justifyContent: "center",
+            padding: 12,
           }}
         >
           <Text
             style={{
-              fontSize: 16,
-              color: COLORS.white,
-              fontFamily: FontFamily.Poppins.SemiBold,
+              color: "#666",
+              fontFamily: FontFamily.Poppins.Regular,
+              fontSize: 17,
             }}
           >
-            {count}
+            {displayDate}
           </Text>
+          <View
+            style={{
+              backgroundColor: "#7BCC85",
+              width: 25,
+              height: 25,
+              borderRadius: 50,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                color: COLORS.white,
+                fontFamily: FontFamily.Poppins.SemiBold,
+              }}
+            >
+              {count}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            backgroundColor: COLORS.white,
+            borderRadius: 10,
+            paddingHorizontal: wp("5%"),
+          }}
+        >
+          {times.map((time, i) => (
+            <CheckinCard
+              key={i}
+              time={time}
+              currentHabit={currentHabit}
+              isLast={i === times.length - 1}
+            />
+          ))}
         </View>
       </View>
-      <View
-        style={{
-          backgroundColor: COLORS.white,
-          borderRadius: 10,
-          paddingHorizontal: wp("5%"),
-        }}
-      >
-        {times.map((time, i) => (
-          <CheckinCard
-            key={i}
-            time={time}
-            currentHabit={currentHabit}
-            isLast={i === times.length - 1}
-          />
-        ))}
-      </View>
-    </View>
-  );
-};
+    );
+  }
+);
 
-const CheckinCard = ({ time, currentHabit, isLast }) => {
+HabitDayBlock.displayName = "HabitDayBlock";
+
+const CheckinCard = React.memo(({ time, currentHabit, isLast }) => {
   const icon = currentHabit?.icon;
   return (
     <View
@@ -94,7 +99,9 @@ const CheckinCard = ({ time, currentHabit, isLast }) => {
       </Text>
     </View>
   );
-};
+});
+
+CheckinCard.displayName = "CheckinCard";
 
 export default function HabitHistoryList({ month, days, total, currentHabit }) {
   return (
@@ -108,6 +115,7 @@ export default function HabitHistoryList({ month, days, total, currentHabit }) {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          marginTop: hp("3%"),
         }}
       >
         <Text
@@ -140,7 +148,7 @@ export default function HabitHistoryList({ month, days, total, currentHabit }) {
         </View>
       </View>
       {days.map((d) => (
-        <HabitDayBlock key={d.date} {...d} currentHabit={currentHabit} />
+        <HabitDayBlock key={d.rawDate} {...d} currentHabit={currentHabit} />
       ))}
     </View>
   );
