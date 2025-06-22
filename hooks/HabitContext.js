@@ -77,7 +77,7 @@ export const HabitProvider = ({ children }) => {
     for (const { created_at } of logs) {
       const month = dayjs(created_at).format("YYYY-MM"); // for sorting
       const date = dayjs(created_at).format("YYYY-MM-DD");
-      const time = dayjs(created_at).format("H:mm");
+      const time = dayjs(created_at).format("HH:mm");
 
       if (!grouped[month]) grouped[month] = {};
       if (!grouped[month][date]) grouped[month][date] = [];
@@ -90,11 +90,19 @@ export const HabitProvider = ({ children }) => {
       .map(([month, days]) => {
         const daysEntries = Object.entries(days)
           .sort((a, b) => dayjs(a[0]).diff(dayjs(b[0])))
-          .map(([date, times]) => ({
-            date: dayjs(date).format("dddd, D MMMM"), // for display
-            count: times.length,
-            times,
-          }));
+          .map(([date, times]) => {
+            const sortedTimes = [...times].sort((a, b) =>
+              dayjs(`${date} ${a}`, "YYYY-MM-DD HH:mm").diff(
+                dayjs(`${date} ${b}`, "YYYY-MM-DD HH:mm")
+              )
+            );
+            return {
+              rawDate: date,
+              displayDate: dayjs(date).format("dddd, D MMMM"),
+              count: sortedTimes.length,
+              times: sortedTimes,
+            };
+          });
 
         return {
           month: dayjs(month).format("MMMM YYYY"),
