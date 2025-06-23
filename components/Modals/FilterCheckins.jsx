@@ -32,13 +32,14 @@ export const FilterCheckins = ({ open, setOpen, snapPoints, data }) => {
     });
   };
 
-  const CustomDay = ({ date }) => {
+  const CustomDay = ({ date, state }) => {
     const isSelected = !!selectedDates[date.dateString];
     const isToday = date.dateString === today;
 
     return (
       <TouchableOpacity
         onPress={() => toggleDay(date.dateString)}
+        disabled={state === "disabled"}
         style={{
           backgroundColor: isSelected ? currentHabit.color_code : "transparent",
           borderRadius: 8,
@@ -52,7 +53,11 @@ export const FilterCheckins = ({ open, setOpen, snapPoints, data }) => {
       >
         <Text
           style={{
-            color: COLORS.textPrimary,
+            color: isSelected
+              ? COLORS.textPrimary
+              : state === "disabled"
+              ? COLORS.gray
+              : COLORS.textPrimary,
             fontSize: wp("3.5%"),
             textAlign: "center",
           }}
@@ -94,8 +99,11 @@ export const FilterCheckins = ({ open, setOpen, snapPoints, data }) => {
           current={today}
           markedDates={selectedDates}
           showSixWeeks={false}
+          hideExtraDays={false}
+          disableAllTouchEventsForDisabledDays={true}
           theme={{
             calendarBackground: "transparent",
+            textSectionTitleColor: COLORS.darkGray,
             textSectionTitleFontWeight: "bold",
             selectedDotColor: "transparent",
             arrowColor: COLORS.darkGray,
