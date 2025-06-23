@@ -74,6 +74,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
         shadowOpacity: 0.1,
         shadowRadius: 6,
         elevation: 5,
+        maxWidth: 400,
       }}
       onPress={() => {
         handleSelectedItem(id);
