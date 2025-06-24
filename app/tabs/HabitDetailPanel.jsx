@@ -14,7 +14,7 @@ import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-ve
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
 import useToggleModal from "@/hooks/useToggleModal";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 import { AlertWarn } from "@/components/Alert/AlertWarn";
 import CalHeatMapYear from "@/components/Char/Calendar/CalHeatMapYear";
 import EditHabitModal from "@/components/Habit/EditHabit";

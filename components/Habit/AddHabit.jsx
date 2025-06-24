@@ -6,7 +6,7 @@ import {
 } from "react-native-responsive-screen";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 import ModalBottom from "../Modals/ModalBottom";
 import IconSelector from "../UI/IconSelector";
 import TextInput from "../UI/TextInputwLabel";

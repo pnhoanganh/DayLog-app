@@ -5,10 +5,10 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 import HabitHistoryList from "@/components/Habit/HabitHistoryList";
 import EmptyState from "../../components/UI/EmptyState";
-import { useFilter } from "@/hooks/FilterContext";
+import { useFilter } from "@/contexts/FilterContext";
 import { Button } from "tamagui";
 import { FilterRemove } from "iconsax-react-nativejs";
 import COLORS from "@/constants/colors";

@@ -9,7 +9,7 @@ import {
 import { Button } from "tamagui";
 import { CheckCircle } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 import useCalendarMonth from "@/hooks/useCalendarMonth";
 import { FontFamily } from "@/constants/fonts";
 import COLORS from "@/constants/colors";

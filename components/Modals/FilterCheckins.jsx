@@ -4,10 +4,10 @@ import React, { useState, useContext } from "react";
 import { Calendar } from "react-native-calendars";
 import { format } from "date-fns";
 import COLORS from "@/constants/colors";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { Button } from "tamagui";
-import { useFilter } from "@/hooks/FilterContext";
+import { useFilter } from "@/contexts/FilterContext";
 
 export const FilterCheckins = ({ open, setOpen, snapPoints, data }) => {
   const [position, setPosition] = useState(0);

@@ -6,10 +6,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { FilterAdd, FilterTick, FilterRemove } from "iconsax-react-nativejs";
 import { FontFamily } from "@/constants/fonts";
 import BottomNav from "@/components/UI/BottomNav";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 import useToggleModal from "@/hooks/useToggleModal";
 import { FilterCheckins } from "@/components/Modals/FilterCheckins";
-import { FilterProvider } from "@/hooks/FilterContext";
+import { FilterProvider } from "@/contexts/FilterContext";
 
 export default function TabLayout() {
   const { habitList, currentHabit, loadHabitHistoryGrouped } =

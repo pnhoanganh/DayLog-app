@@ -1,6 +1,7 @@
 import "../global.css";
 import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ActivityIndicator } from "react-native";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -13,7 +14,7 @@ import { defaultConfig } from "@tamagui/config/v4";
 import { PortalProvider } from "@tamagui/portal";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import ToastCus from "../components/UI/ToastCus";
-import { HabitProvider } from "@/hooks/HabitContext";
+import { HabitProvider } from "@/contexts/HabitContext";
 import { customFonts } from "@/constants/fonts";
 
 SplashScreen.preventAutoHideAsync();
@@ -72,25 +73,27 @@ export default function RootLayout() {
   return (
     <TamaguiProvider config={config}>
       <SQLiteProvider databaseName="mySQLiteDB.db">
-        <PortalProvider>
-          <ToastProvider>
-            <ToastViewport
-              flexDirection="column-reverse"
-              bottom={50}
-              left={0}
-              right={0}
-              position="absolute"
-              width="100%"
-              zIndex={99999}
-            />
-            <HabitProvider>
-              <SafeAreaProvider>
-                <Stack screenOptions={{ headerShown: false }}></Stack>
-                <ToastCus />
-              </SafeAreaProvider>
-            </HabitProvider>
-          </ToastProvider>
-        </PortalProvider>
+        <GestureHandlerRootView>
+          <PortalProvider>
+            <ToastProvider>
+              <ToastViewport
+                flexDirection="column-reverse"
+                bottom={50}
+                left={0}
+                right={0}
+                position="absolute"
+                width="100%"
+                zIndex={99999}
+              />
+              <HabitProvider>
+                <SafeAreaProvider>
+                  <Stack screenOptions={{ headerShown: false }}></Stack>
+                  <ToastCus />
+                </SafeAreaProvider>
+              </HabitProvider>
+            </ToastProvider>
+          </PortalProvider>
+        </GestureHandlerRootView>
       </SQLiteProvider>
     </TamaguiProvider>
   );

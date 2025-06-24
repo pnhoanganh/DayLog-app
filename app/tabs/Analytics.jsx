@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useEffect, useContext } from "react";
 import { useNavigation } from "expo-router";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 
 const Analytis = () => {
   const navigation = useNavigation();
