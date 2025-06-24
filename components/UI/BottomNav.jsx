@@ -9,7 +9,7 @@ import {
 } from "react-native-responsive-screen";
 import tinycolor from "tinycolor2";
 import { Element4 } from "iconsax-react-nativejs";
-import { HabitContext } from "@/hooks/HabitContext";
+import { HabitContext } from "@/contexts/HabitContext";
 import COLORS from "@/constants/colors";
 
 const BottomNav = ({ state, descriptors, navigation }) => {
