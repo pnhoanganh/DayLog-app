@@ -6,7 +6,11 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-const Horizontal = ({ barData, themeColor }) => {
+const Horizontal = ({ barData = [], themeColor, maxY = 5 }) => {
+  const yAxisLabelTexts = Array.from({ length: maxY + 1 }, (_, i) =>
+    i.toString()
+  );
+
   return (
     <View
       style={{
@@ -27,10 +31,12 @@ const Horizontal = ({ barData, themeColor }) => {
         data={barData}
         yAxisThickness={0}
         xAxisThickness={0}
-        noOfSections={5}
         stepValue={1}
         initialSpacing={16}
         spacing={wp("6%")}
+        yAxisLabelTexts={yAxisLabelTexts}
+        noOfSections={maxY}
+        formatYLabel={(val) => parseInt(val).toString()}
       />
     </View>
   );
