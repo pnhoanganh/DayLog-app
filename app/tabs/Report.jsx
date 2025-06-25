@@ -74,7 +74,7 @@ const Report = () => {
       : habitHistory;
 
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: COLORS.white }}>
       <FlatList
         data={dataToRender}
         keyExtractor={(item) => item.month}
