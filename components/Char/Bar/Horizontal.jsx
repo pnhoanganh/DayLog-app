@@ -26,11 +26,12 @@ const Horizontal = ({ barData = [], themeColor, maxY = 5 }) => {
         style={{ alignSelf: "center" }}
         barWidth={wp("4%")}
         width={wp("70%")}
+        height={hp("18%")}
         barBorderRadius={4}
         frontColor={themeColor}
         data={barData}
         yAxisThickness={0}
-        xAxisThickness={0}
+        xAxisThickness={1}
         stepValue={1}
         initialSpacing={16}
         spacing={wp("6%")}
