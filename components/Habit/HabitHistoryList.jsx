@@ -53,7 +53,7 @@ const HabitDayBlock = React.memo(
         </View>
         <View
           style={{
-            backgroundColor: "#F1F1F1",
+            backgroundColor: COLORS.white,
             borderRadius: 10,
             paddingHorizontal: wp("5%"),
           }}
