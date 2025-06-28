@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
 import { HabitContext } from "@/contexts/HabitContext";
 import HabitList from "@/components/Habit/HabitList";
-import EmptyState from "../../components/UI/EmptyState";
+import EmptyState from "@/components/UI/EmptyState";
 import AddHabitModal from "@/components/Habit/AddHabit";
 import SafeScreen from "@/components/UI/SafeScreen";
 import Header from "@/components/UI/Header";
