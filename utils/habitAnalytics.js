@@ -44,3 +44,43 @@ export const getMaxCheckinCount = async (db, habit_id) => {
   if (result.length === 0) return 1;
   return Math.max(...result.map((r) => r.count));
 };
+
+export const getHabitStreak = async (db, habit_id) => {
+  const logs = await db.getAllAsync(
+    `SELECT DISTINCT DATE(created_at) as date FROM check_ins_log WHERE habit_id = ? ORDER BY date DESC`,
+    [habit_id]
+  );
+
+  const dates = logs.map((row) => dayjs(row.date));
+  if (dates.length === 0) return 0;
+
+  let streak = 0;
+  let today = dayjs().startOf("day");
+
+  for (const date of dates) {
+    if (date.isSame(today, "day")) {
+      streak++;
+      today = today.subtract(1, "day");
+    } else if (date.isSame(today.subtract(1, "day"), "day")) {
+      streak++;
+      today = today.subtract(1, "day");
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+};
+
+export const getTotalCheckins = async (db, habit_id) => {
+  try {
+    const result = await db.getFirstAsync(
+      `SELECT COUNT(*) AS total FROM check_ins_log WHERE habit_id = ?`,
+      [habit_id]
+    );
+    return result?.total || 0;
+  } catch (error) {
+    console.error("getTotalCheckins error:", error);
+    return 0;
+  }
+};
