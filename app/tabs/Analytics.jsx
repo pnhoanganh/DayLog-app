@@ -63,36 +63,45 @@ const Analytis = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: COLORS.white,
+        backgroundColor: "#F2F1F5",
       }}
     >
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: wp("6%"),
-          paddingTop: hp("1%"),
+          paddingHorizontal: wp("4%"),
+          paddingTop: hp("2%"),
           paddingBottom: hp("16%"),
         }}
       >
-        <View style={{ gap: hp("1%") }}>
-          <View
-            style={{
-              borderWidth: 1,
-              padding: wp("3%"),
-              borderRadius: 10,
-              borderColor: COLORS.gray,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: hp("3%"),
-            }}
-          >
+        <View
+          style={{
+            gap: hp("2%"),
+            backgroundColor: COLORS.white,
+            borderRadius: "2%",
+            padding: wp("3%"),
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.1,
+            shadowRadius: 6,
+            elevation: 5,
+          }}
+        >
+          <View>
             <Text
               style={{
-                fontSize: 20,
                 fontFamily: FontFamily.Poppins.SemiBold,
+                fontSize: wp("5%"),
               }}
             >
-              Weekly Analytics
+              Weekdays
+            </Text>
+            <Text
+              style={{
+                fontFamily: FontFamily.Poppins.Regular,
+                color: COLORS.gray,
+              }}
+            >
+              Total check-ins by day of week
             </Text>
           </View>
           {weeklyChartData?.length > 0 && (
