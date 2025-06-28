@@ -19,14 +19,12 @@ const Horizontal = ({ barData = [], themeColor, maxY = 5 }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        paddingVertical: hp("2%"),
       }}
     >
       <BarChart
-        style={{ alignSelf: "center" }}
         barWidth={wp("4%")}
-        width={wp("70%")}
-        height={hp("18%")}
+        width={wp("65%")}
+        height={hp("16%")}
         barBorderRadius={4}
         frontColor={themeColor}
         data={barData}
@@ -34,7 +32,7 @@ const Horizontal = ({ barData = [], themeColor, maxY = 5 }) => {
         xAxisThickness={1}
         stepValue={1}
         initialSpacing={16}
-        spacing={wp("6%")}
+        spacing={wp("5%")}
         yAxisLabelTexts={yAxisLabelTexts}
         noOfSections={maxY}
         formatYLabel={(val) => parseInt(val).toString()}
