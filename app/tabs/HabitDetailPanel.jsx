@@ -18,6 +18,8 @@ import { HabitContext } from "@/contexts/HabitContext";
 import { AlertWarn } from "@/components/Alert/AlertWarn";
 import CalHeatMapYear from "@/components/Char/Calendar/CalHeatMapYear";
 import EditHabitModal from "@/components/Habit/EditHabit";
+import StreakBox from "@/components/UI/SteakBox";
+import TotalBox from "@/components/UI/TotalBox";
 
 const HabitDetailPanel = () => {
   const {
@@ -82,15 +84,29 @@ const HabitDetailPanel = () => {
   if (!habit) return null;
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "#F2F1F5",
+        alignItems: "center",
+        gap: hp("2%"),
+      }}
+    >
       <View
         style={{
-          height: hp("35%"),
-          width: wp("100%"),
-          padding: 20,
+          width: wp("90%"),
+          padding: hp("2%"),
+          backgroundColor: "white",
+          marginTop: hp("2%"),
+          borderRadius: "2%",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.1,
+          shadowRadius: 6,
+          elevation: 5,
         }}
       >
-        {/* HEADER = ICON + TITLE + CLOSEBTN */}
+        {/* HEADER = ICON + DESCRIPTION */}
         <View
           style={{
             flexDirection: "row",
@@ -154,7 +170,6 @@ const HabitDetailPanel = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          {/* COMPLETE BTN */}
           {isComplete ? (
             <Button
               icon={Circle}
@@ -194,7 +209,6 @@ const HabitDetailPanel = () => {
             </Button>
           )}
 
-          {/* DETAIL BTN */}
           <XStack gap="$6">
             <TouchableOpacity
               onPress={() => {
@@ -209,6 +223,10 @@ const HabitDetailPanel = () => {
           </XStack>
         </XStack>
       </View>
+      <XStack gap={"$4"}>
+        <StreakBox habit_id={habit.habit_id} />
+        <TotalBox habit_id={habit.habit_id} />
+      </XStack>
       <AlertWarn
         isOpen={deleteConfirmModal.isOpen}
         setIsOpen={deleteConfirmModal.toggle}
