@@ -1,6 +1,5 @@
-import { Text } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import Streak from "@/assets/images/Streak.svg";
 import { getHabitStreak } from "@/utils/habitAnalytics";
 import { useSQLiteContext } from "expo-sqlite";
 import COLORS from "@/constants/colors";
@@ -11,7 +10,7 @@ import {
 import { XStack, YStack } from "tamagui";
 import { FontFamily } from "@/constants/fonts";
 
-const SteakBox = ({ habit_id }) => {
+const SteakBox = ({ habit_id, onPress }) => {
   const [streak, setStreak] = useState(0);
   const db = useSQLiteContext();
 
@@ -23,38 +22,66 @@ const SteakBox = ({ habit_id }) => {
     fetchStreak();
   }, [habit_id, db]);
   return (
-    <YStack
+    <TouchableOpacity
       style={{
         gap: 4,
+        flexDirection: "column",
         backgroundColor: COLORS.white,
-        minWidth: wp("42%"),
+        width: wp("42%"),
         paddingHorizontal: wp("4%"),
         paddingVertical: wp("5%"),
-        borderRadius: "6%",
+        borderRadius: "10%",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.1,
         shadowRadius: 6,
         elevation: 5,
       }}
+      onPress={onPress}
     >
-      <XStack alignItems="center" gap={"$1"}>
-        <Streak width={34} height={34} />
-        <Text style={{ fontSize: 24, fontFamily: FontFamily.Poppins.SemiBold }}>
-          Streak
-        </Text>
+      <XStack alignItems="center" justifyContent="space-between">
+        <YStack>
+          <Text
+            style={{ fontSize: 18, fontFamily: FontFamily.Poppins.Regular }}
+          >
+            Current
+          </Text>
+          <Text
+            style={{ fontSize: 18, fontFamily: FontFamily.Poppins.Regular }}
+          >
+            Streak
+          </Text>
+        </YStack>
+        <View
+          style={{
+            backgroundColor: "#F9F9F9",
+            padding: wp("2%"),
+            borderRadius: 50,
+          }}
+        >
+          <Text style={{ fontSize: 24 }}>🔥</Text>
+        </View>
       </XStack>
       <Text
         style={{
-          textAlign: "center",
-          fontSize: 18,
-          fontFamily: FontFamily.Poppins.Regular,
-          color: COLORS.darkGray,
+          fontSize: 24,
+          fontFamily: FontFamily.Poppins.Medium,
+          color: COLORS.black,
+          marginTop: hp("1%"),
         }}
       >
-        {streak} days
+        {streak}{" "}
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: FontFamily.Poppins.Regular,
+            color: COLORS.darkGray,
+          }}
+        >
+          days
+        </Text>
       </Text>
-    </YStack>
+    </TouchableOpacity>
   );
 };
 
