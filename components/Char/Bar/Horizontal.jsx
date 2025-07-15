@@ -6,9 +6,14 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-const Horizontal = ({ barData = [], themeColor, maxY = 5 }) => {
-  const yAxisLabelTexts = Array.from({ length: maxY + 1 }, (_, i) =>
-    i.toString()
+const Horizontal = ({ barData = [], themeColor, maxY }) => {
+  const maxValue = maxY ?? Math.max(...barData.map((d) => d.value ?? 0), 1);
+
+  const stepValue = Math.ceil(maxValue / 4);
+  const noOfSections = Math.ceil(maxValue / stepValue);
+
+  const yAxisLabelTexts = Array.from({ length: noOfSections + 1 }, (_, i) =>
+    (i * stepValue).toString()
   );
 
   return (
@@ -16,25 +21,25 @@ const Horizontal = ({ barData = [], themeColor, maxY = 5 }) => {
       style={{
         backgroundColor: COLORS.white,
         borderRadius: 10,
-        display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
       <BarChart
+        data={barData}
         barWidth={wp("4%")}
         width={wp("65%")}
-        height={hp("16%")}
+        height={hp("20%")}
         barBorderRadius={4}
         frontColor={themeColor}
-        data={barData}
         yAxisThickness={0}
         xAxisThickness={1}
-        stepValue={1}
-        initialSpacing={16}
-        spacing={wp("5%")}
+        xAxisColor="#ccc"
+        stepValue={stepValue}
+        noOfSections={noOfSections}
         yAxisLabelTexts={yAxisLabelTexts}
-        noOfSections={maxY}
+        spacing={wp("5%")}
+        initialSpacing={16}
         formatYLabel={(val) => parseInt(val).toString()}
       />
     </View>
