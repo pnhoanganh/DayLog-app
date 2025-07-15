@@ -72,6 +72,8 @@ export const HabitProvider = ({ children }) => {
       `SELECT habit_id, created_at FROM check_ins_log WHERE habit_id = ? ORDER BY created_at DESC`,
       [habit_id]
     );
+
+    if (!logs || logs.length === 0) return [];
     const grouped = {};
 
     for (const { created_at } of logs) {
@@ -86,10 +88,10 @@ export const HabitProvider = ({ children }) => {
     }
 
     const habitHistoryList = Object.entries(grouped)
-      .sort((a, b) => dayjs(a[0]).diff(dayjs(b[0])))
+      .sort((a, b) => dayjs(b[0]).diff(dayjs(a[0])))
       .map(([month, days]) => {
         const daysEntries = Object.entries(days)
-          .sort((a, b) => dayjs(a[0]).diff(dayjs(b[0])))
+          .sort((a, b) => dayjs(b[0]).diff(dayjs(a[0])))
           .map(([date, times]) => {
             const sortedTimes = [...times].sort((a, b) =>
               dayjs(`${date} ${a}`, "YYYY-MM-DD HH:mm").diff(
