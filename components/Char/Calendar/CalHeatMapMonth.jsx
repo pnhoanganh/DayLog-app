@@ -58,7 +58,7 @@ const CalHeatMapMonth = ({
     setDates(rearranged);
   }, [currentDate]);
 
-  // 🔁 KEEP THIS: dataMap and color logic
+  // dataMap and color logic
   const { dataMap, rawCountMap } = useMemo(() => {
     const safeData = Array.isArray(data) ? data : [];
     const dataMap = {};
@@ -76,7 +76,7 @@ const CalHeatMapMonth = ({
   const colorArray = useMemo(() => {
     const arr = ["#F0F2F5"];
     for (let i = 1; i <= 4; i++) {
-      const darkenRatio = 4 + ((i - 1) * (70 - 35)) / (4 - 1);
+      const darkenRatio = i * 10;
       const c = tinycolor(color).darken(darkenRatio).toHexString();
       arr.push(c);
     }
