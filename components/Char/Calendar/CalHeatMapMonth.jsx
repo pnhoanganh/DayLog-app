@@ -58,7 +58,6 @@ const CalHeatMapMonth = ({
     setDates(rearranged);
   }, [currentDate]);
 
-  // dataMap and color logic
   const { dataMap, rawCountMap } = useMemo(() => {
     const safeData = Array.isArray(data) ? data : [];
     const dataMap = {};
