@@ -4,7 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Button, XStack } from "tamagui";
+import { Button, XStack, YStack } from "tamagui";
 import { useToastController } from "@tamagui/toast";
 import { CheckCircle, Circle, Pencil, Trash2 } from "@tamagui/lucide-icons";
 import dayjs from "dayjs";
@@ -20,6 +20,7 @@ import CalHeatMapYear from "@/components/Char/Calendar/CalHeatMapYear";
 import EditHabitModal from "@/components/Habit/EditHabit";
 import StreakBox from "@/components/UI/SteakBox";
 import TotalBox from "@/components/UI/TotalBox";
+import { CalendarStreak } from "@/components/Modals/CalendarStreak";
 
 const HabitDetailPanel = () => {
   const {
@@ -39,6 +40,7 @@ const HabitDetailPanel = () => {
   const formatDateKey = (date) => dayjs(date).format("YYYY-MM-DD");
   const deleteConfirmModal = useToggleModal();
   const editHabitModal = useToggleModal();
+  const streakModal = useToggleModal();
   const toast = useToastController();
   const habit = habitList.find(
     (habit) => String(habit.habit_id) === String(id)
@@ -223,8 +225,8 @@ const HabitDetailPanel = () => {
           </XStack>
         </XStack>
       </View>
-      <XStack gap={"$4"}>
-        <StreakBox habit_id={habit.habit_id} />
+      <XStack gap={"$2"}>
+        <StreakBox habit_id={habit.habit_id} onPress={streakModal.open} />
         <TotalBox habit_id={habit.habit_id} />
       </XStack>
       <AlertWarn
@@ -242,6 +244,11 @@ const HabitDetailPanel = () => {
         isOpen={editHabitModal.isOpen}
         onClose={() => editHabitModal.close()}
         habitToEdit={habitToEdit}
+      />
+      <CalendarStreak
+        open={streakModal.isOpen}
+        setOpen={streakModal.toggle}
+        snapPoints={[45]}
       />
     </View>
   );
