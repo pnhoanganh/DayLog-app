@@ -14,7 +14,7 @@ const ColorPicker = ({ selectedColor, setSelectedColor }) => {
   const CIRCLE_SIZE = 40;
   const CIRCLE_RING_SIZE = 2;
   return (
-    <View className="flex flex-col gap-1">
+    <View className="flex flex-col gap-1 mx-auto">
       <Text
         style={{
           fontFamily: FontFamily.Poppins.Regular,
@@ -26,8 +26,9 @@ const ColorPicker = ({ selectedColor, setSelectedColor }) => {
       <View
         style={{
           flexDirection: "row",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           flexWrap: "wrap",
+          paddingLeft: wp("2%"),
         }}
       >
         {colors.map((item) => {
