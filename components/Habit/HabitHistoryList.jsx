@@ -19,6 +19,7 @@ const HabitDayBlock = React.memo(
             justifyContent: "space-between",
             alignItems: "center",
             padding: 12,
+            paddingTop: 0,
           }}
         >
           <Text
@@ -76,6 +77,9 @@ HabitDayBlock.displayName = "HabitDayBlock";
 
 const CheckinCard = React.memo(({ time, currentHabit, isLast }) => {
   const icon = currentHabit?.icon;
+
+  const isValidIcon = icon && MaterialIconsGlyphs?.[icon];
+
   return (
     <View
       style={{
@@ -89,10 +93,10 @@ const CheckinCard = React.memo(({ time, currentHabit, isLast }) => {
         borderColor: "#E6E6E8",
       }}
     >
-      {MaterialIconsGlyphs[icon] ? (
+      {isValidIcon ? (
         <MaterialIcons name={icon} size={wp("6%")} color={COLORS.darkGreen} />
       ) : (
-        <Text style={{ fontSize: wp("6%") }}>{icon}</Text>
+        <Text style={{ fontSize: wp("6%") }}>{icon || "❓"}</Text>
       )}
       <Text style={{ fontFamily: FontFamily.Poppins.Medium, fontSize: 18 }}>
         {time}
@@ -106,47 +110,6 @@ CheckinCard.displayName = "CheckinCard";
 export default function HabitHistoryList({ month, days, total, currentHabit }) {
   return (
     <View>
-      <View
-        style={{
-          borderWidth: 1,
-          padding: wp("3%"),
-          borderRadius: 10,
-          borderColor: COLORS.gray,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: hp("3%"),
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 20,
-            fontFamily: FontFamily.Poppins.SemiBold,
-          }}
-        >
-          {month}
-        </Text>
-        <View
-          style={{
-            backgroundColor: "#7BCC85",
-            width: 25,
-            height: 25,
-            borderRadius: "50%",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 16,
-              color: COLORS.white,
-              fontFamily: FontFamily.Poppins.SemiBold,
-            }}
-          >
-            {total}
-          </Text>
-        </View>
-      </View>
       {days.map((d) => (
         <HabitDayBlock key={d.rawDate} {...d} currentHabit={currentHabit} />
       ))}
