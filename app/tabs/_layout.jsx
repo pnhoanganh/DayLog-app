@@ -3,7 +3,7 @@ import { useState, useCallback, useContext, useEffect } from "react";
 import { Tabs, router, useFocusEffect } from "expo-router";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { AntDesign } from "@expo/vector-icons";
-import { FilterAdd, FilterTick, FilterRemove } from "iconsax-react-nativejs";
+import { FilterAdd } from "iconsax-react-nativejs";
 import { FontFamily } from "@/constants/fonts";
 import BottomNav from "@/components/UI/BottomNav";
 import { HabitContext } from "@/contexts/HabitContext";
