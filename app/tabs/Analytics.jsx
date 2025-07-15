@@ -1,130 +1,88 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useEffect, useContext, useState, useMemo } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useNavigation } from "expo-router";
 import { HabitContext } from "@/contexts/HabitContext";
-import Horizontal from "@/components/Char/Bar/Horizontal";
-import { useSQLiteContext } from "expo-sqlite";
-import { getWeeklyDayStats, getMaxCheckinCount } from "@/utils/habitAnalytics";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
-import { ScrollView, XStack } from "tamagui";
-import dayjs from "dayjs";
-import { ArrowCircleLeft, ArrowCircleRight } from "iconsax-react-nativejs";
+import { XStack } from "tamagui";
+import Weekly from "@/components/Habit/Analytics/Weekly";
+import Monthly from "@/components/Habit/Analytics/Monthly";
+import Yearly from "@/components/Habit/Analytics/Yearly";
 
 const Analytis = () => {
   const navigation = useNavigation();
   const { currentHabit } = useContext(HabitContext);
-  const [weeklyChartData, setWeeklyChartData] = useState([]);
-  const db = useSQLiteContext();
-  const [weekStartDate, setWeekStartDate] = useState(dayjs().startOf("week"));
-  const [startStr, endStr] = useMemo(() => {
-    const start = dayjs(weekStartDate).format("DD/MM/YY");
-    const end = dayjs(weekStartDate).endOf("week").format("DD/MM/YY");
-    return [start, end];
-  }, [weekStartDate]);
-  const [maxCheckinCount, setMaxCheckinCount] = useState(1);
-
+  const [activeTab, setActiveTab] = useState("weekly");
+  const tabs = [
+    { id: "weekly", label: "Weekly" },
+    { id: "monthly", label: "Monthly" },
+    { id: "yearly", label: "Yearly" },
+  ];
   useEffect(() => {
     if (currentHabit?.title) {
       navigation.setOptions({ title: currentHabit.title });
     }
   }, [currentHabit?.title, navigation]);
 
-  const loadWeek = async (targetWeek) => {
-    if (!db || !currentHabit?.id) return;
-
-    const weeklyStats = await getWeeklyDayStats(
-      db,
-      currentHabit.id,
-      targetWeek
-    );
-    setWeeklyChartData(weeklyStats);
-
-    const max = await getMaxCheckinCount(db, currentHabit.id);
-    setMaxCheckinCount(max + 1);
-  };
-
-  useEffect(() => {
-    loadWeek(weekStartDate);
-  }, [weekStartDate]);
-
-  const preWeek = () => {
-    setWeekStartDate((prev) => dayjs(prev).subtract(1, "week"));
-  };
-  const nextWeek = () => {
-    setWeekStartDate((prev) => dayjs(prev).add(1, "week"));
-  };
-
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: "#F2F1F5",
+        paddingTop: hp("2%"),
+        gap: hp("2%"),
       }}
     >
-      <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: wp("4%"),
-          paddingTop: hp("2%"),
-          paddingBottom: hp("16%"),
-        }}
+      <XStack
+        justifyContent="space-between"
+        padding={"$2"}
+        backgroundColor={COLORS.white}
+        borderRadius={30}
+        marginHorizontal={wp("4%")}
+        shadowColor={"#000"}
+        shadowOffset={{ width: 0, height: 1 }}
+        shadowOpacity="0.1"
+        shadowRadius={6}
+        elevation={5}
       >
-        <View
-          style={{
-            gap: hp("2%"),
-            backgroundColor: COLORS.white,
-            borderRadius: "2%",
-            padding: wp("3%"),
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.1,
-            shadowRadius: 6,
-            elevation: 5,
-          }}
-        >
-          <View>
+        {tabs.map((tab) => (
+          <TouchableOpacity
+            key={tab.id}
+            style={{
+              backgroundColor:
+                activeTab === tab.id ? currentHabit.color_code : "tranparent",
+              padding: wp("3%"),
+              borderRadius: 30,
+              minWidth: wp("28%"),
+            }}
+            onPress={() => {
+              setActiveTab(tab.id);
+            }}
+          >
             <Text
               style={{
-                fontFamily: FontFamily.Poppins.SemiBold,
-                fontSize: wp("5%"),
+                fontFamily: FontFamily.Poppins.Medium,
+                color: activeTab === tab.id ? COLORS.black : COLORS.gray,
+                textAlign: "center",
+                fontSize: 16,
               }}
             >
-              Weekdays
+              {tab.label}
             </Text>
-            <Text
-              style={{
-                fontFamily: FontFamily.Poppins.Regular,
-                color: COLORS.gray,
-              }}
-            >
-              Total check-ins by day of week
-            </Text>
-          </View>
-          {weeklyChartData?.length > 0 && (
-            <Horizontal
-              barData={weeklyChartData}
-              themeColor={currentHabit.color_code}
-              maxY={maxCheckinCount}
-            />
-          )}
-
-          <XStack alignItems="center" justifyContent="center" gap="$2">
-            <TouchableOpacity onPress={() => preWeek()}>
-              <ArrowCircleLeft size="24" />
-            </TouchableOpacity>
-            <Text>
-              {startStr} - {endStr}
-            </Text>
-            <TouchableOpacity onPress={() => nextWeek()}>
-              <ArrowCircleRight size="24" />
-            </TouchableOpacity>
-          </XStack>
-        </View>
-      </ScrollView>
+          </TouchableOpacity>
+        ))}
+      </XStack>
+      {activeTab === "weekly" ? (
+        <Weekly />
+      ) : activeTab === "monthly" ? (
+        <Monthly />
+      ) : (
+        <Yearly />
+      )}
     </View>
   );
 };
