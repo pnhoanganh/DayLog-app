@@ -108,7 +108,7 @@ export default function TabLayout() {
       <FilterCheckins
         open={filterModal.isOpen}
         setOpen={filterModal.toggle}
-        snapPoints={[60]}
+        snapPoints={[50]}
         data={habitHistory}
         onApplyDates={setSelectedDates}
       />

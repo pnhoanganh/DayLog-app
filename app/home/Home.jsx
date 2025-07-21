@@ -15,7 +15,7 @@ const Home = () => {
 
   return (
     <SafeScreen>
-      <View style={{ flex: 1, paddingTop: hp("3%") }}>
+      <View style={{ flex: 1, paddingTop: hp("1%") }}>
         <Header
           toggleAddHabit={addHabitModal.open}
           resetHabitData={resetHabitData}
