@@ -16,45 +16,14 @@ import { ToastProvider, ToastViewport } from "@tamagui/toast";
 import ToastCus from "../components/UI/ToastCus";
 import { HabitProvider } from "@/contexts/HabitContext";
 import { customFonts } from "@/constants/fonts";
+import SQLiteContext from "../contexts/SQLiteContext";
 
 SplashScreen.preventAutoHideAsync();
 const config = createTamagui(defaultConfig);
 
-const loadDatabase = async () => {
-  const dbName = "mySQLiteDB.db";
-  const dbAsset = require("../assets/databases/mySQLiteDB.db");
-  const dbUri = Asset.fromModule(dbAsset).uri;
-  const dbFilePath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
-  // console.log(dbFilePath);
-  try {
-    const dbInfo = await FileSystem.getInfoAsync(dbFilePath);
-    if (!dbInfo.exists) {
-      await FileSystem.makeDirectoryAsync(
-        `${FileSystem.documentDirectory}SQLite`,
-        { intermediates: true }
-      );
-
-      await FileSystem.downloadAsync(dbUri, dbFilePath);
-      console.log("Database loaded from assets.");
-    } else {
-      console.log("Database already exists.");
-      // delete old database
-      // await FileSystem.deleteAsync(dbFilePath);
-    }
-  } catch (e) {
-    console.error("Error loading database:", e);
-  }
-};
-
 export default function RootLayout() {
   const [fontsLoaded] = useFonts(customFonts);
-  const [dbLoaded, setDbLoaded] = useState<boolean>(false);
 
-  useEffect(() => {
-    loadDatabase()
-      .then(() => setDbLoaded(true))
-      .catch((e) => console.log(e));
-  }, []);
   useEffect(() => {
     if (fontsLoaded) {
       SplashScreen.hideAsync();
@@ -62,17 +31,10 @@ export default function RootLayout() {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) return null;
-  if (!dbLoaded)
-    return (
-      <View style={{ flex: 1 }}>
-        <ActivityIndicator size="large" />
-        <Text>Loading...</Text>
-      </View>
-    );
 
   return (
     <TamaguiProvider config={config}>
-      <SQLiteProvider databaseName="mySQLiteDB.db">
+      <SQLiteContext>
         <GestureHandlerRootView>
           <PortalProvider>
             <ToastProvider>
@@ -94,7 +56,7 @@ export default function RootLayout() {
             </ToastProvider>
           </PortalProvider>
         </GestureHandlerRootView>
-      </SQLiteProvider>
+      </SQLiteContext>
     </TamaguiProvider>
   );
 }
