@@ -8,9 +8,11 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build-widget": "npx expo prebuild --template ./node_modules/@bacons/apple-targets/prebuild-blank.tgz --clean"
   },
   "dependencies": {
+    "@bacons/apple-targets": "^3.0.2",
     "@expo/vector-icons": "^14.0.4",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/bottom-tabs": "^7.3.15",
@@ -52,6 +54,7 @@
     "react-native-draggable-flatlist": "^4.0.3",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-emoji-selector": "^0.2.0",
+    "react-native-gesture-handler": "^2.27.2",
     "react-native-gifted-charts": "^1.4.61",
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-responsive-screen": "^1.4.2",

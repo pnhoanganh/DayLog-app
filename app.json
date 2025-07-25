@@ -17,7 +17,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.DayLogapp"
+      "bundleIdentifier": "com.pnhoanganh.DayLogapp",
+      "appleTeamId": "MXK7WM9JR5",
+      "entitlements": {
+        "com.apple.security.application-groups": [
+          "group.com.pnhoanganh.DayLogapp"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,7 +31,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.DayLogapp"
+      "package": "com.pnhoanganh.DayLogapp"
     },
     "web": {
       "bundler": "metro",
@@ -45,7 +51,8 @@
       ],
       "expo-font",
       "expo-sqlite",
-      "expo-asset"
+      "expo-asset",
+      "@bacons/apple-targets"
     ],
     "experiments": {
       "typedRoutes": true
