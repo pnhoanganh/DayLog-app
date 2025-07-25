@@ -9,6 +9,12 @@
     "userInterfaceStyle": "automatic",
     "jsEngine": "hermes",
     "newArchEnabled": true,
+    "assetBundlePatterns": [
+      "assets/images/*",
+      "assets/fonts/*",
+      "**/*",
+      "assets/databases/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.DayLogapp"
