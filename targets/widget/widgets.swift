@@ -37,13 +37,23 @@ struct SimpleEntry: TimelineEntry {
 struct widgetEntryView : View {
     var entry: Provider.Entry
 
+    func getHabitName() -> String {
+    let defaults = UserDefaults(suiteName: "group.com.pnhoanganh.DayLogapp")
+    return defaults?.string(forKey: "name") ?? "No Name"
+}
+
+ func getHabitIcon() -> String {
+ let defaults = UserDefaults(suiteName: "group.com.pnhoanganh.DayLogapp")
+ return defaults?.string(forKey: "icon") ?? "No icon"
+}
+
     var body: some View {
         VStack {
-          Text("Time:")
-            Text(entry.date, style: .time)
+          Text("Habit").foregroundColor(Color.purple)
+            Text(getHabitName())
 
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+           Text("Favorite Emoji:")
+           Text(getHabitIcon())
         }
     }
 }
