@@ -4,8 +4,11 @@ import dayjs from "dayjs";
 import { useSQLiteContext } from "expo-sqlite";
 import { useToastController } from "@tamagui/toast";
 import uuid from "react-native-uuid";
+import { ExtensionStorage } from "@bacons/apple-targets";
 
 export const HabitContext = createContext();
+
+const widgetStorage = new ExtensionStorage("group.com.pnhoanganh.DayLogapp");
 
 export const HabitProvider = ({ children }) => {
   const [habitData, setHabitData] = useState({});
@@ -17,12 +20,89 @@ export const HabitProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [currentHabit, setCurrentHabit] = useState({});
+  const getLastCheckins = async (id) => {
+    if (!db) return null;
+
+    try {
+      const logs = await db.getAllAsync(
+        `
+      SELECT created_at 
+      FROM check_ins_log 
+      WHERE habit_id = ? 
+      ORDER BY created_at DESC 
+      LIMIT 1
+      `,
+        [id]
+      );
+
+      if (!logs || logs.length === 0) return null;
+
+      const log = logs[0];
+      return {
+        rawDate: dayjs(log.created_at).format("YYYY-MM-DD"),
+        rawTime: dayjs(log.created_at).format("HH:mm"),
+        displayDate: dayjs(log.created_at).format("ddd, D MMMM"),
+        displayTime: dayjs(log.created_at).format("h:mm A"),
+      };
+    } catch (error) {
+      console.error("Error in getLastCheckins:", error);
+      return null;
+    }
+  };
+
+  // Save data to widget
+  const saveHabitToWidget = async (currentHabitList) => {
+    if (!currentHabitList || currentHabitList.length === 0) return;
+
+    try {
+      // Save habit_list
+      const names = currentHabitList.map((habit) => habit.title);
+      await widgetStorage.set("widget_habit_list", JSON.stringify(names));
+
+      // Save icon map: name -> icon
+      const iconMap = currentHabitList.reduce((acc, habit) => {
+        acc[habit.title] = habit.icon;
+        return acc;
+      }, {});
+      await widgetStorage.set("widget_habit_icons", JSON.stringify(iconMap));
+
+      // Save lastCheckin map
+      const lastCheckinResults = await Promise.all(
+        currentHabitList.map(async (habit) => {
+          const lastCheckin = await getLastCheckins(habit.habit_id);
+          return {
+            name: habit.title,
+            value: lastCheckin
+              ? `${lastCheckin.displayDate} at ${lastCheckin.displayTime}`
+              : "No check-in yet",
+          };
+        })
+      );
+
+      const lastCheckinMap = lastCheckinResults.reduce((acc, item) => {
+        acc[item.name] = item.value;
+        return acc;
+      }, {});
+
+      await widgetStorage.set(
+        "widget_habit_last_checkins",
+        JSON.stringify(lastCheckinMap)
+      );
+
+      // Reload widget
+      ExtensionStorage.reloadWidget();
+    } catch (error) {
+      console.error("Error saving to widgetStorage:", error);
+    }
+  };
 
   // Load habitData from SQLite
   const loadHabitsList = async () => {
     try {
       const habits = await db.getAllAsync(`SELECT * FROM habit`);
       setHabitList(habits);
+      // Update widget when habit_list changed
+      await saveHabitToWidget(habits);
     } catch (e) {
       console.log("loadHabitsList error:", e);
     }
@@ -123,7 +203,7 @@ export const HabitProvider = ({ children }) => {
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#00000" />
+        <ActivityIndicator size="large" color="#000000" />
       </View>
     );
   }
@@ -137,7 +217,7 @@ export const HabitProvider = ({ children }) => {
       return;
     }
     try {
-      // Insert check-in into DB
+      // Insert check-in vào DB
       await db.runAsync(
         `INSERT INTO check_ins_log (habit_id, log_id, created_at, updated_at) VALUES (?, ?, ?, ?)`,
         [habit_id, newLog, timestamp, timestamp]
@@ -162,6 +242,9 @@ export const HabitProvider = ({ children }) => {
         timestamp,
         habit_id,
       ]);
+
+      // Update widget after check-in
+      await saveHabitToWidget(habitList);
     } catch (error) {
       console.error("Error in habitCheck:", error);
     }
@@ -221,6 +304,8 @@ export const HabitProvider = ({ children }) => {
     try {
       await db.runAsync("DELETE FROM check_ins_log");
       setHabitData({});
+      // Update widget after reset
+      await saveHabitToWidget([]);
     } catch (error) {
       console.error("Error resetting habit data:", error);
       alert("Failed to reset habit data. Please try again.");
@@ -231,7 +316,6 @@ export const HabitProvider = ({ children }) => {
     const newId = uuid.v4();
     const trimmedTitle = newHabit.title.trim();
 
-    // Validate required fields
     if (!trimmedTitle || typeof trimmedTitle !== "string") {
       setErrorMessage("Habit name is required.");
       setIsError(true);
@@ -256,8 +340,6 @@ export const HabitProvider = ({ children }) => {
       updated_at: String(timestamp),
     };
 
-    // Log for debugging
-    console.log("Inserting habit:", habitToSave);
     if (!db) return;
 
     try {
@@ -278,7 +360,9 @@ export const HabitProvider = ({ children }) => {
         message: "Nice work keeping up the habit!",
         duration: 3000,
       });
+
       await loadHabitsList();
+
       return true;
     } catch (error) {
       console.error("Failed to save habit:", error, error.stack);
@@ -304,6 +388,9 @@ export const HabitProvider = ({ children }) => {
       const updatedHabitData = { ...habitData };
       delete updatedHabitData[habit_id];
       setHabitData(updatedHabitData);
+
+      // Update widget after deleting habit
+      await saveHabitToWidget(updatedList);
     } catch (error) {
       console.error("Error deleting habit:", error);
       alert("Failed to delete habit. Please try again");
@@ -349,8 +436,8 @@ export const HabitProvider = ({ children }) => {
     try {
       await db.runAsync(
         `UPDATE habit 
-       SET title = ?, description = ?, color_code = ?, icon = ?, updated_at = ? 
-       WHERE habit_id = ?`,
+         SET title = ?, description = ?, color_code = ?, icon = ?, updated_at = ? 
+         WHERE habit_id = ?`,
         [trimmedTitle, description, color_code, icon, timestamp, id]
       );
 
@@ -360,11 +447,17 @@ export const HabitProvider = ({ children }) => {
           : habit
       );
       setHabitList(updatedList);
+
       toast.show("Habit is updated 🥳", {
         message: "Changes saved successfully!",
         duration: 3000,
       });
+
       await loadHabitsList();
+
+      // Update widget after update habit
+      await saveHabitToWidget(updatedList);
+
       return true;
     } catch (error) {
       console.error("Error updating habit:", error);
@@ -394,6 +487,8 @@ export const HabitProvider = ({ children }) => {
         setIsError,
         currentHabit,
         setCurrentHabit,
+        getLastCheckins,
+        saveHabitToWidget,
       }}
     >
       {children}

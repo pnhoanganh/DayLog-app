@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { View } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import useToggleModal from "@/hooks/useToggleModal";
@@ -11,7 +11,12 @@ import Header from "@/components/UI/Header";
 
 const Home = () => {
   const addHabitModal = useToggleModal();
-  const { habitList, resetHabitData } = useContext(HabitContext);
+  const { habitList, resetHabitData, saveHabitToWidget } =
+    useContext(HabitContext);
+
+  useEffect(() => {
+    saveHabitToWidget(habitList);
+  }, [habitList]);
 
   return (
     <SafeScreen>
@@ -25,14 +30,12 @@ const Home = () => {
         ) : (
           <EmptyState
             title="Oops! No habits yet"
-            desciption=" Let’s tap the + button to start building your awesome routine!"
+            description="Let’s tap the + button to start building your awesome routine!"
           />
         )}
         <AddHabitModal
           isOpen={addHabitModal.isOpen}
-          onClose={() => {
-            addHabitModal.close();
-          }}
+          onClose={addHabitModal.close}
         />
       </View>
     </SafeScreen>
