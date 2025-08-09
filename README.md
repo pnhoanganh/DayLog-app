@@ -1,50 +1,107 @@
-# Welcome to your Expo app 👋
+# Day Log - Habit Tracker Mobile App 📝
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Habit Tracker is a mobile app built with React Native using **Expo**, designed to help you build and maintain positive habits. The app uses **Tamagui** for a smooth, responsive, and customizable user interface, while storing all your data locally with **SQLite** to ensure your habit records are fast and reliable without requiring an internet connection.
 
-## Get started
+This app makes **tracking habits** simple with daily **check-ins**, detailed **analytics** that show your progress daily, weekly, monthly, and a handy iOS widget that allows you to view your habit status and check in directly from your home screen.
 
-1. Install dependencies
+## ✨ Original Figma Design
+
+- [View on Figma - Day Log app](https://www.figma.com/design/miCl17ybPmfxa95vbMjSOc/Daylog-Mobile-App?node-id=0-1&t=n8b4Zq86fDGVpmXy-1)
+
+## 📝 Features
+
+- **Daily Check-ins**: Easily mark your habit as completed each day to stay on track.
+- **Powerful Analytics**: Visualize your habit trends and consistency with daily, weekly, and monthly charts.
+- **Reports**: Generate summaries habit history that help you understand your progress and areas for improvement.
+- **iOS Widget**: Quick and convenient widget on your iPhone home screen for instant habit updates.
+- **Local SQLite Storage**: All your data is saved securely on your device with SQLite for quick access and offline availability.
+- **Tamagui UI**: Provides a beautiful, customizable, and high-performance user interface with responsive design.
+
+## 🖼️ Screenshots
+
+<table>
+  <tr>
+    <th>Launch</th>
+    <th>Home</th>
+    <th>Home - Empty Habit</th>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/screens/lauch.png" width="200"/></td>
+    <td><img src="./assets/images/screens/home.png" width="200"/></td>
+    <td><img src="./assets/images/screens/empty.png" width="200"/></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th>Add Habit</th>
+    <th>Edit Habit</th>
+    <th>Delete Habit</th>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/screens/add.png" width="200"/></td>
+    <td><img src="./assets/images/screens/edit.png" width="200"/></td>
+    <td><img src="./assets/images/screens/delete.png" width="200"/></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th>Habit - Overview</th>
+    <th>Habit - Analytics</th>
+    <th>Habit - Report</th>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/screens/overview.png" width="200"/></td>
+    <td><img src="./assets/images/screens/analytics.png" width="200"/></td>
+    <td><img src="./assets/images/screens/report.png" width="200"/></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th>Streak Calendar </th>
+    <th>Filter Calendar </th>
+    <th>Filter Result</th>
+  </tr>
+  <tr>
+    <td><img src="./assets/images/screens/streak.png" width="200"/></td>
+    <td><img src="./assets/images/screens/filcal.png" width="200"/></td>
+    <td><img src="./assets/images/screens/filre.png" width="200"/></td>
+  </tr>
+</table>
+
+## 🛠 Tech Stack
+
+- **React Native via Expo**: Cross-platform mobile app framework.
+- **JavaScript**
+- **React Navigation**
+- **Styled Components / Custom Styles**
+- **Tailwind CSS (via NativeWind)**
+- **Tamagui**: UI kit for performant and themeable components.
+- **SQLite**: Local database for persistent data storage.
+- **iOS WidgetKit**: Native iOS widget integration.
+- **Charting Libraries**: For rendering habit analytics and reports.
+
+## 👩🏻‍💻 Get started
+
+1. Clone the repository:
 
    ```bash
-   npm install
+   git clone https://github.com/pnhoanganh/DayLog-app.git
    ```
 
-2. Start the app
+2. Navigate to the project folder:
+   ```bash
+    cd DayLog-app
+   ```
+3. Install dependencies:
 
+   ```bash
+    npm install
+   ```
+
+4. Start the development server:
    ```bash
    npx expo start
    ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
