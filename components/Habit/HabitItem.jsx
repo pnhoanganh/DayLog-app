@@ -14,18 +14,21 @@ import useCalendarMonth from "@/hooks/useCalendarMonth";
 import { FontFamily } from "@/constants/fonts";
 import COLORS from "@/constants/colors";
 import CalHeatMapMonth from "../Char/Calendar/CalHeatMapMonth";
-
+import useToggleModal from "@/hooks/useToggleModal";
 import { router } from "expo-router";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 import dayjs from "dayjs";
+import { AlertWarn } from "@/components/Alert/AlertWarn";
 
 const HabitItem = ({ icon, title, description, color, id }) => {
-  const { habitData, habitCheck, removeCheckin } = useContext(HabitContext);
+  const { habitData, habitCheck, removeCheckin, handleDeleteHabit } =
+    useContext(HabitContext);
   const { currentDate, goToPreviousDate, goToNextMonth, formattedLabel } =
     useCalendarMonth();
   const toast = useToastController();
   const [selectedHabit, setSelectedHabit] = useState(null);
   const today = dayjs().format("YYYY-MM-DD");
+  const deleteConfirmModal = useToggleModal();
 
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
@@ -62,153 +65,169 @@ const HabitItem = ({ icon, title, description, color, id }) => {
   };
 
   return (
-    <TouchableOpacity
-      style={{
-        borderColor: "#ebedf0",
-        borderWidth: 1,
-        padding: 12,
-        borderRadius: 12,
-        backgroundColor: "#fff",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        elevation: 5,
-        maxWidth: 400,
-      }}
-      onPress={() => {
-        handleSelectedItem(id);
-      }}
-    >
-      <View
+    <View>
+      <TouchableOpacity
         style={{
-          width: wp("86%"),
-          display: "flex",
-          gap: hp("1%"),
-          flexDirection: "row",
-          justifyContent: "space-between",
-          overflow: "hidden",
+          borderColor: "#ebedf0",
+          borderWidth: 1,
+          padding: 12,
+          borderRadius: 12,
+          backgroundColor: "#fff",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 0.1,
+          shadowRadius: 6,
+          elevation: 5,
+          maxWidth: 400,
         }}
+        onPress={() => {
+          handleSelectedItem(id);
+        }}
+        onLongPress={deleteConfirmModal.open}
       >
         <View
           style={{
+            width: wp("86%"),
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            maxWidth: wp("50%"),
+            gap: hp("1%"),
+            flexDirection: "row",
+            justifyContent: "space-between",
+            overflow: "hidden",
           }}
         >
-          {/* ICON */}
           <View
             style={{
-              backgroundColor: color,
-              width: wp("10%"),
-              height: wp("10%"),
               display: "flex",
+              flexDirection: "column",
               justifyContent: "center",
-              borderRadius: "60%",
-              alignItems: "center",
-              marginBottom: hp("1%"),
+              alignItems: "flex-start",
+              maxWidth: wp("50%"),
             }}
           >
-            {MaterialIconsGlyphs[icon] ? (
-              <MaterialIcons
-                name={icon}
-                size={wp("6%")}
-                color={COLORS.darkGreen}
-              />
-            ) : (
-              <Text style={{ fontSize: 20 }}>{icon}</Text>
-            )}
-          </View>
-          {/* TEXT */}
-          <View>
-            <Text
+            {/* ICON */}
+            <View
               style={{
-                fontSize: wp("3.5%"),
-                fontFamily: FontFamily.Poppins.SemiBold,
-                textAlign: "left",
+                backgroundColor: color,
+                width: wp("10%"),
+                height: wp("10%"),
+                display: "flex",
+                justifyContent: "center",
+                borderRadius: "60%",
+                alignItems: "center",
+                marginBottom: hp("1%"),
               }}
             >
-              {title && title.length > 13 ? title.substr(0, 13) + "..." : title}
-            </Text>
-            <Text
+              {MaterialIconsGlyphs[icon] ? (
+                <MaterialIcons
+                  name={icon}
+                  size={wp("6%")}
+                  color={COLORS.darkGreen}
+                />
+              ) : (
+                <Text style={{ fontSize: 20 }}>{icon}</Text>
+              )}
+            </View>
+            {/* TEXT */}
+            <View>
+              <Text
+                style={{
+                  fontSize: wp("3.5%"),
+                  fontFamily: FontFamily.Poppins.SemiBold,
+                  textAlign: "left",
+                }}
+              >
+                {title && title.length > 13
+                  ? title.substr(0, 13) + "..."
+                  : title}
+              </Text>
+              <Text
+                style={{
+                  fontSize: wp("3%"),
+                  fontFamily: FontFamily.Poppins.Regular,
+                  color: COLORS.darkGreen,
+                  textAlign: "left",
+                }}
+              >
+                {description && description.length > 16
+                  ? description.substr(0, 16) + "..."
+                  : description}
+              </Text>
+            </View>
+            {/* BUTTON */}
+            <Button
+              icon={<CheckCircle size={wp("3%")} />}
+              size="$2.5"
+              themeInverse
               style={{
-                fontSize: wp("3%"),
                 fontFamily: FontFamily.Poppins.Regular,
-                color: COLORS.darkGreen,
-                textAlign: "left",
+                marginTop: hp("2%"),
+              }}
+              textProps={{ style: { fontSize: wp("3.5%") } }}
+              onPress={() => {
+                habitCheck(id);
+                toast.show("Check-in saved 🥳", {
+                  message: "Nice work keeping up the habit!",
+                  duration: 3000,
+                });
               }}
             >
-              {description && description.length > 16
-                ? description.substr(0, 16) + "..."
-                : description}
-            </Text>
+              Check In
+            </Button>
           </View>
-          {/* BUTTON */}
-          <Button
-            icon={<CheckCircle size={wp("3%")} />}
-            size="$2.5"
-            themeInverse
-            style={{
-              fontFamily: FontFamily.Poppins.Regular,
-              marginTop: hp("2%"),
-            }}
-            textProps={{ style: { fontSize: wp("3.5%") } }}
-            onPress={() => {
-              habitCheck(id);
-              toast.show("Check-in saved 🥳", {
-                message: "Nice work keeping up the habit!",
-                duration: 3000,
-              });
-            }}
-          >
-            Check In
-          </Button>
-        </View>
-        <View className="flex flex-col gap-1">
-          <Text
-            style={{
-              color: COLORS.darkGreen,
-              fontFamily: FontFamily.Poppins.SemiBold,
-              fontSize: wp("3.4%"),
-              textAlign: "center",
-            }}
-          >
-            {formattedLabel}
-          </Text>
-          <View className="flex flex-row items-center gap-2">
-            <ArrowLeft2
-              size={20}
-              color={COLORS.darkGreen}
-              onPress={goToPreviousDate}
-            />
-            <CalHeatMapMonth
-              key={id}
-              habitId={id}
-              color={color}
-              data={heatmapData}
-              currentDate={currentDate}
-              removeCheckinForHabit={(dateKey) => {
-                removeCheckin(id, dateKey);
-                if (dateKey === today) {
-                  toast.show("Check-in removed 😢", {
-                    message: "Don’t worry, you can always check in again!",
-                    duration: 3000,
-                  });
-                }
+          <View className="flex flex-col gap-1">
+            <Text
+              style={{
+                color: COLORS.darkGreen,
+                fontFamily: FontFamily.Poppins.SemiBold,
+                fontSize: wp("3.4%"),
+                textAlign: "center",
               }}
-            />
-            <ArrowRight2
-              size={20}
-              color={COLORS.darkGreen}
-              onPress={goToNextMonth}
-            />
+            >
+              {formattedLabel}
+            </Text>
+            <View className="flex flex-row items-center gap-2">
+              <ArrowLeft2
+                size={20}
+                color={COLORS.darkGreen}
+                onPress={goToPreviousDate}
+              />
+              <CalHeatMapMonth
+                key={id}
+                habitId={id}
+                color={color}
+                data={heatmapData}
+                currentDate={currentDate}
+                removeCheckinForHabit={(dateKey) => {
+                  removeCheckin(id, dateKey);
+                  if (dateKey === today) {
+                    toast.show("Check-in removed 😢", {
+                      message: "Don’t worry, you can always check in again!",
+                      duration: 3000,
+                    });
+                  }
+                }}
+              />
+              <ArrowRight2
+                size={20}
+                color={COLORS.darkGreen}
+                onPress={goToNextMonth}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <AlertWarn
+        isOpen={deleteConfirmModal.isOpen}
+        setIsOpen={deleteConfirmModal.toggle}
+        action={() => {
+          handleDeleteHabit(id);
+          toast.show(`Successfully removed habit`, {
+            message: "This habit is no longer in your tracker.",
+            duration: 3000,
+          });
+        }}
+      />
+    </View>
   );
 };
 
