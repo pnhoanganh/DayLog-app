@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0DDD441C8F4FA0A681C41A51 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA09E59A7A1A282A3F851804 /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		3791104C042615F65C4C98FB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 119B2E19CD93F949CE9BBCDF /* PrivacyInfo.xcprivacy */; };
+		15F330D7684A15D535865F34 /* libPods-DayLog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C89AE2D012DB6858370A4D26 /* libPods-DayLog.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		B1A400B1B763B71C771773C1 /* libPods-DayLogapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB8A18761BD5C6463D8266D2 /* libPods-DayLogapp.a */; };
+		AB3DB3C9B325C1AC16BA49A5 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1547589D7D8F15006FE19E46 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		F272E6058FBE31F11354C7A8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A9626DBB527B4146F9E55565 /* PrivacyInfo.xcprivacy */; };
 		XX09E725E164C2787243F7XX /* widget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = XXD26DB380DB6D7349BA89XX /* widget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		XX12B55A1EDABF083C3B51XX /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = XX470101BAEB8E0BBC8B0DXX /* WidgetKit.framework */; };
 		XX1A6800511A685AB346D2XX /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = XXA12889081EB894481655XX /* AppIntents.framework */; };
@@ -46,19 +46,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		119B2E19CD93F949CE9BBCDF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = DayLogapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* DayLogapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; fileEncoding = 4; includeInIndex = 0; path = DayLogapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DayLogapp/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = Info.plist; path = DayLogapp/Info.plist; sourceTree = "<group>"; };
-		35B1E1E639D4FE99994FD5FD /* Pods-DayLogapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayLogapp.debug.xcconfig"; path = "Target Support Files/Pods-DayLogapp/Pods-DayLogapp.debug.xcconfig"; sourceTree = "<group>"; };
-		42BF91BF97D576F08DA5DB25 /* Pods-DayLogapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayLogapp.release.xcconfig"; path = "Target Support Files/Pods-DayLogapp/Pods-DayLogapp.release.xcconfig"; sourceTree = "<group>"; };
-		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = DayLogapp/SplashScreen.storyboard; sourceTree = "<group>"; };
-		BA09E59A7A1A282A3F851804 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-DayLogapp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		096F2B428EEB895669627DBF /* Pods-DayLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayLog.debug.xcconfig"; path = "Target Support Files/Pods-DayLog/Pods-DayLog.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* DayLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; fileEncoding = 4; includeInIndex = 0; path = DayLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DayLog/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = Info.plist; path = DayLog/Info.plist; sourceTree = "<group>"; };
+		1547589D7D8F15006FE19E46 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-DayLog/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		A40F5D44F6CC01725EC8267A /* Pods-DayLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayLog.release.xcconfig"; path = "Target Support Files/Pods-DayLog/Pods-DayLog.release.xcconfig"; sourceTree = "<group>"; };
+		A9626DBB527B4146F9E55565 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = DayLog/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = DayLog/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		EB8A18761BD5C6463D8266D2 /* libPods-DayLogapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DayLogapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C89AE2D012DB6858370A4D26 /* libPods-DayLog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DayLog.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = undefined; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = DayLogapp/AppDelegate.swift; sourceTree = "<group>"; };
-		F11748442D0722820044C1D9 /* DayLogapp-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "DayLogapp-Bridging-Header.h"; path = "DayLogapp/DayLogapp-Bridging-Header.h"; sourceTree = "<group>"; };
+		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = DayLog/AppDelegate.swift; sourceTree = "<group>"; };
+		F11748442D0722820044C1D9 /* DayLog-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "DayLog-Bridging-Header.h"; path = "DayLog/DayLog-Bridging-Header.h"; sourceTree = "<group>"; };
 		XX470101BAEB8E0BBC8B0DXX /* WidgetKit.framework */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = undefined; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		XX4DFF38D47332D6BF0183XX /* SwiftUI.framework */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = undefined; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		XXA12889081EB894481655XX /* AppIntents.framework */ = {isa = PBXFileReference; fileEncoding = 4; includeInIndex = undefined; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
@@ -97,7 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B1A400B1B763B71C771773C1 /* libPods-DayLogapp.a in Frameworks */,
+				15F330D7684A15D535865F34 /* libPods-DayLog.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,18 +115,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* DayLogapp */ = {
+		13B07FAE1A68108700A75B9A /* DayLog */ = {
 			isa = PBXGroup;
 			children = (
 				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
-				F11748442D0722820044C1D9 /* DayLogapp-Bridging-Header.h */,
+				F11748442D0722820044C1D9 /* DayLog-Bridging-Header.h */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				119B2E19CD93F949CE9BBCDF /* PrivacyInfo.xcprivacy */,
+				A9626DBB527B4146F9E55565 /* PrivacyInfo.xcprivacy */,
 			);
-			name = DayLogapp;
+			name = DayLog;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -137,17 +137,19 @@
 				XX4DFF38D47332D6BF0183XX /* SwiftUI.framework */,
 				XXCAF23C3FC41F82140FA1XX /* ActivityKit.framework */,
 				XXA12889081EB894481655XX /* AppIntents.framework */,
-				EB8A18761BD5C6463D8266D2 /* libPods-DayLogapp.a */,
+				C89AE2D012DB6858370A4D26 /* libPods-DayLog.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		764DED6B5DBC29E951767711 /* DayLogapp */ = {
+		578FD72B2E2986AFF9218D98 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BA09E59A7A1A282A3F851804 /* ExpoModulesProvider.swift */,
+				096F2B428EEB895669627DBF /* Pods-DayLog.debug.xcconfig */,
+				A40F5D44F6CC01725EC8267A /* Pods-DayLog.release.xcconfig */,
 			);
-			name = DayLogapp;
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -161,12 +163,12 @@
 			isa = PBXGroup;
 			children = (
 				XX3E41C1850246162C0061XX /* expo:targets */,
-				13B07FAE1A68108700A75B9A /* DayLogapp */,
+				13B07FAE1A68108700A75B9A /* DayLog */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				D416A5BD6B40F5135FFEE471 /* Pods */,
-				B9F8D3F790EC64FAA8BEFEC4 /* ExpoModulesProviders */,
+				578FD72B2E2986AFF9218D98 /* Pods */,
+				A6F407135BCFF7971705E9D1 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -176,16 +178,24 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* DayLogapp.app */,
+				13B07F961A680F5B00A75B9A /* DayLog.app */,
 				XXD26DB380DB6D7349BA89XX /* widget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B9F8D3F790EC64FAA8BEFEC4 /* ExpoModulesProviders */ = {
+		8A75EA93D1AE5835EFB2BBDC /* DayLog */ = {
 			isa = PBXGroup;
 			children = (
-				764DED6B5DBC29E951767711 /* DayLogapp */,
+				1547589D7D8F15006FE19E46 /* ExpoModulesProvider.swift */,
+			);
+			name = DayLog;
+			sourceTree = "<group>";
+		};
+		A6F407135BCFF7971705E9D1 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				8A75EA93D1AE5835EFB2BBDC /* DayLog */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
@@ -196,17 +206,7 @@
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
 			);
 			name = Supporting;
-			path = DayLogapp/Supporting;
-			sourceTree = "<group>";
-		};
-		D416A5BD6B40F5135FFEE471 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				35B1E1E639D4FE99994FD5FD /* Pods-DayLogapp.debug.xcconfig */,
-				42BF91BF97D576F08DA5DB25 /* Pods-DayLogapp.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
+			path = DayLog/Supporting;
 			sourceTree = "<group>";
 		};
 		XX3E41C1850246162C0061XX /* expo:targets */ = {
@@ -221,28 +221,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* DayLogapp */ = {
+		13B07F861A680F5B00A75B9A /* DayLog */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DayLogapp" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DayLog" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				3032877926A15796B57C2246 /* [Expo] Configure project */,
+				4DFA3E73A7F24E5DD6C4C902 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
 				XX72A8CFBF0FBA13A79902XX /* Embed Foundation Extensions */,
-				844B951B78A97B7A69C02875 /* [CP] Embed Pods Frameworks */,
+				024174C004EE196E35CF39DE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				XX2E833BA8B750C1246774XX /* PBXTargetDependency */,
 			);
-			name = DayLogapp;
-			productName = DayLogapp;
-			productReference = 13B07F961A680F5B00A75B9A /* DayLogapp.app */;
+			name = DayLog;
+			productName = DayLog;
+			productReference = 13B07F961A680F5B00A75B9A /* DayLog.app */;
 			productType = "com.apple.product-type.application";
 		};
 		XX2D052188814C0BFFE1A8XX /* widget */ = {
@@ -283,7 +283,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DayLogapp" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DayLog" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -296,7 +296,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* DayLogapp */,
+				13B07F861A680F5B00A75B9A /* DayLog */,
 				XX2D052188814C0BFFE1A8XX /* widget */,
 			);
 		};
@@ -310,7 +310,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				3791104C042615F65C4C98FB /* PrivacyInfo.xcprivacy in Resources */,
+				F272E6058FBE31F11354C7A8 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +343,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n# Source .xcode.env.updates if it exists to allow\n# SKIP_BUNDLING to be unset if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.updates\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.updates\"\nfi\n# Source local changes to allow overrides\n# if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
 		};
+		024174C004EE196E35CF39DE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DayLog/Pods-DayLog-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DayLog/Pods-DayLog-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -358,14 +376,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DayLogapp-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DayLog-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3032877926A15796B57C2246 /* [Expo] Configure project */ = {
+		4DFA3E73A7F24E5DD6C4C902 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -382,7 +400,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-DayLogapp/expo-configure-project.sh\"\n";
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-DayLog/expo-configure-project.sh\"\n";
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -390,7 +408,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DayLogapp/Pods-DayLogapp-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-DayLog/Pods-DayLog-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
@@ -459,25 +477,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DayLogapp/Pods-DayLogapp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		844B951B78A97B7A69C02875 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DayLogapp/Pods-DayLogapp-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DayLogapp/Pods-DayLogapp-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DayLog/Pods-DayLog-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -488,7 +488,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				0DDD441C8F4FA0A681C41A51 /* ExpoModulesProvider.swift in Sources */,
+				AB3DB3C9B325C1AC16BA49A5 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,11 +512,11 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35B1E1E639D4FE99994FD5FD /* Pods-DayLogapp.debug.xcconfig */;
+			baseConfigurationReference = 096F2B428EEB895669627DBF /* Pods-DayLog.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = DayLogapp/DayLogapp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DayLog/DayLog.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MXK7WM9JR5;
 				ENABLE_BITCODE = NO;
@@ -524,7 +524,7 @@
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = DayLogapp/Info.plist;
+				INFOPLIST_FILE = DayLog/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -538,8 +538,8 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pnhoanganh.DayLogapp;
-				PRODUCT_NAME = DayLogapp;
-				SWIFT_OBJC_BRIDGING_HEADER = "DayLogapp/DayLogapp-Bridging-Header.h";
+				PRODUCT_NAME = DayLog;
+				SWIFT_OBJC_BRIDGING_HEADER = "DayLog/DayLog-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -549,14 +549,14 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42BF91BF97D576F08DA5DB25 /* Pods-DayLogapp.release.xcconfig */;
+			baseConfigurationReference = A40F5D44F6CC01725EC8267A /* Pods-DayLog.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = DayLogapp/DayLogapp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = DayLog/DayLog.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MXK7WM9JR5;
-				INFOPLIST_FILE = DayLogapp/Info.plist;
+				INFOPLIST_FILE = DayLog/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -570,8 +570,8 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.pnhoanganh.DayLogapp;
-				PRODUCT_NAME = DayLogapp;
-				SWIFT_OBJC_BRIDGING_HEADER = "DayLogapp/DayLogapp-Bridging-Header.h";
+				PRODUCT_NAME = DayLog;
+				SWIFT_OBJC_BRIDGING_HEADER = "DayLog/DayLog-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -787,7 +787,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DayLogapp" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DayLog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -796,7 +796,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DayLogapp" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "DayLog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
