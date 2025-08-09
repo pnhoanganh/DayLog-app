@@ -248,7 +248,7 @@ const HabitDetailPanel = () => {
       <CalendarStreak
         open={streakModal.isOpen}
         setOpen={streakModal.toggle}
-        snapPoints={[45]}
+        snapPoints={[55]}
       />
     </View>
   );
