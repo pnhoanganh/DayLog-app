@@ -11,16 +11,16 @@ import { FontFamily } from "@/constants/fonts";
 import { XStack } from "tamagui";
 import Weekly from "@/components/Habit/Analytics/Weekly";
 import Monthly from "@/components/Habit/Analytics/Monthly";
-import Yearly from "@/components/Habit/Analytics/Yearly";
+import Daily from "../../components/Habit/Analytics/Daily";
 
 const Analytis = () => {
   const navigation = useNavigation();
   const { currentHabit } = useContext(HabitContext);
-  const [activeTab, setActiveTab] = useState("weekly");
+  const [activeTab, setActiveTab] = useState("daily");
   const tabs = [
+    { id: "daily", label: "Daily" },
     { id: "weekly", label: "Weekly" },
     { id: "monthly", label: "Monthly" },
-    { id: "yearly", label: "Yearly" },
   ];
   useEffect(() => {
     if (currentHabit?.title) {
@@ -81,7 +81,7 @@ const Analytis = () => {
       ) : activeTab === "monthly" ? (
         <Monthly />
       ) : (
-        <Yearly />
+        <Daily />
       )}
     </View>
   );

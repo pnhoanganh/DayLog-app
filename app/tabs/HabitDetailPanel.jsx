@@ -4,7 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Button, XStack, YStack } from "tamagui";
+import { Button, XStack } from "tamagui";
 import { useToastController } from "@tamagui/toast";
 import { CheckCircle, Circle, Pencil, Trash2 } from "@tamagui/lucide-icons";
 import dayjs from "dayjs";

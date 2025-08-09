@@ -12,6 +12,7 @@ import { getMonthlyCheckinDates } from "@/utils/habitAnalytics";
 import { ScrollView, XStack, YStack } from "tamagui";
 import { FontFamily } from "@/constants/fonts";
 import Horizontal from "@/components/Char/Bar/Horizontal";
+import { LineChart } from "react-native-gifted-charts";
 
 export default function Monthly() {
   const db = useSQLiteContext();
@@ -108,6 +109,30 @@ export default function Monthly() {
           {monthlyData.length > 0 && (
             <Horizontal barData={monthlyData} maxY={maxY} />
           )}
+        </View>
+
+        <View
+          style={{
+            padding: wp("5%"),
+            backgroundColor: "white",
+            borderRadius: 10,
+          }}
+        >
+          <LineChart
+            data={monthlyData}
+            areaChart
+            width={wp("70%")}
+            height={hp("20%")}
+            color={currentHabit?.color_code}
+            noOfSections={5}
+            yAxisColor="#ccc"
+            xAxisColor="#ccc"
+            xAxisLabelTextStyle={{ fontSize: 10 }}
+            startFillColor={currentHabit?.color_code}
+            startOpacity={0.8}
+            endFillColor={currentHabit?.color_code}
+            endOpacity={0.3}
+          />
         </View>
       </YStack>
     </ScrollView>

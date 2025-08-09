@@ -151,3 +151,29 @@ export const getMonthlyCheckinDates = async (db, habit_id, year) => {
 
   return monthStats;
 };
+
+export const getCheckinInHour = async (db, habit_id, date) => {
+  try {
+    const formattedDate = dayjs(date).format("YYYY-MM-DD");
+    const logs = await db.getAllAsync(
+      `SELECT created_at FROM check_ins_log 
+     WHERE habit_id = ? AND DATE(created_at) = ?`,
+      [habit_id, formattedDate]
+    );
+
+    const hourCounts = Array(24).fill(0);
+
+    for (const { created_at } of logs) {
+      const hour = dayjs(created_at).hour();
+      hourCounts[hour]++;
+    }
+
+    return hourCounts.map((count, i) => ({
+      label: `${i}h`,
+      value: count,
+    }));
+  } catch (error) {
+    console.error("getCheckinInHour error: ", error);
+    return [];
+  }
+};
