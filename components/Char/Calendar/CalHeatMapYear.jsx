@@ -4,6 +4,7 @@ import React, {
   useState,
   useMemo,
   useCallback,
+  useContext,
 } from "react";
 import {
   View,
@@ -16,6 +17,7 @@ import tinycolor from "tinycolor2"; // Library for generating color shades
 import dayjs from "dayjs";
 import useToggleModal from "@/hooks/useToggleModal";
 import { AlertDate } from "../../Alert/AlertDate";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const SQUARE_SIZE = 16;
 const ITEM_MARGIN = 2;
@@ -46,6 +48,7 @@ const CalHeatMapYear = ({ data = [], color }) => {
   const showAlert = useToggleModal();
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCount, setSelectedCount] = useState(null);
+  const { theme } = useContext(ThemeContext);
 
   // State to store the list of dates in years
   const [dates, setDates] = useState(() => {
@@ -129,7 +132,7 @@ const CalHeatMapYear = ({ data = [], color }) => {
 
   // Generate 5 color levels: from background to progressively darker shades
   const colorArray = useMemo(() => {
-    const arr = ["#F0F2F5"];
+    const arr = [theme === "dark" ? "#303030" : "#F0F2F5"];
     for (let i = 1; i <= 4; i++) {
       const darkenRatio = 4 + ((i - 1) * (70 - 35)) / (4 - 1);
       const c = tinycolor(color).darken(darkenRatio).toHexString();

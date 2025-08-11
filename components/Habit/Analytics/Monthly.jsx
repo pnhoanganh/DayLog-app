@@ -13,6 +13,7 @@ import { ScrollView, XStack, YStack } from "tamagui";
 import { FontFamily } from "@/constants/fonts";
 import Horizontal from "@/components/Char/Bar/Horizontal";
 import { LineChart } from "react-native-gifted-charts";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 export default function Monthly() {
   const db = useSQLiteContext();
@@ -20,6 +21,7 @@ export default function Monthly() {
   const [monthlyData, setMonthlyData] = useState([]);
   const currentYear = dayjs().year();
   const [selectedYear, setSelectedYear] = useState(currentYear);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const loadData = async () => {
@@ -52,7 +54,9 @@ export default function Monthly() {
         <View
           style={{
             gap: hp("2%"),
-            backgroundColor: COLORS.white,
+            backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
+            borderWidth: theme === "dark" ? 1 : 0,
+            borderColor: COLORS.gray,
             borderRadius: "2%",
             padding: wp("4%"),
             shadowColor: "#000",
@@ -68,6 +72,7 @@ export default function Monthly() {
                 style={{
                   fontFamily: FontFamily.Poppins.SemiBold,
                   fontSize: wp("5%"),
+                  color: theme === "dark" ? COLORS.white : COLORS.black,
                 }}
               >
                 Monthly
@@ -92,17 +97,36 @@ export default function Monthly() {
               <TouchableOpacity
                 onPress={() => setSelectedYear((prev) => prev - 1)}
               >
-                <Text style={{ fontSize: 14 }}>← </Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: theme === "dark" ? COLORS.white : COLORS.black,
+                  }}
+                >
+                  ←{" "}
+                </Text>
               </TouchableOpacity>
               <Text
-                style={{ fontSize: 16, fontFamily: FontFamily.Poppins.Regular }}
+                style={{
+                  fontSize: 16,
+                  fontFamily: FontFamily.Poppins.Regular,
+                  color: theme === "dark" ? COLORS.white : COLORS.black,
+                }}
               >
                 {selectedYear}
               </Text>
               <TouchableOpacity
                 onPress={() => setSelectedYear((prev) => prev + 1)}
               >
-                <Text style={{ fontSize: 14 }}> →</Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: theme === "dark" ? COLORS.white : COLORS.black,
+                  }}
+                >
+                  {" "}
+                  →
+                </Text>
               </TouchableOpacity>
             </View>
           </XStack>
@@ -114,8 +138,11 @@ export default function Monthly() {
         <View
           style={{
             padding: wp("5%"),
-            backgroundColor: "white",
+            backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
+            borderWidth: theme === "dark" ? 1 : 0,
+            borderColor: COLORS.gray,
             borderRadius: 10,
+            paddingLeft: wp("2%"),
           }}
         >
           <LineChart
@@ -125,9 +152,16 @@ export default function Monthly() {
             height={hp("20%")}
             color={currentHabit?.color_code}
             noOfSections={5}
-            yAxisColor="#ccc"
             xAxisColor="#ccc"
-            xAxisLabelTextStyle={{ fontSize: 10 }}
+            yAxisColor={theme === "dark" ? "#ccc" : COLORS.black}
+            xAxisLabelTextStyle={{
+              color: theme === "dark" ? "#ccc" : COLORS.black,
+              fontSize: 14,
+            }}
+            yAxisTextStyle={{
+              color: theme === "dark" ? "#ccc" : COLORS.black,
+              fontSize: 14,
+            }}
             startFillColor={currentHabit?.color_code}
             startOpacity={0.8}
             endFillColor={currentHabit?.color_code}

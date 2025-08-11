@@ -1,6 +1,6 @@
 import { AlertDialog, Button, XStack, YStack } from "tamagui";
 
-export function AlertWarn({ isOpen, setIsOpen, action }) {
+export function AlertWarn({ isOpen, setIsOpen, action, msg }) {
   if (!isOpen) {
     return null;
   }
@@ -41,7 +41,7 @@ export function AlertWarn({ isOpen, setIsOpen, action }) {
               Attention
             </AlertDialog.Title>
             <AlertDialog.Description>
-              Do you really want to delete this habit?
+              {msg ? msg : " Do you really want to delete this habit ?"}
             </AlertDialog.Description>
             <XStack gap="$2" justifyContent="flex-end" marginTop="$3">
               <AlertDialog.Cancel asChild>

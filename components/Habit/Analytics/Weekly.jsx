@@ -19,6 +19,7 @@ import tinycolor from "tinycolor2";
 import { useSQLiteContext } from "expo-sqlite";
 import dayjs from "dayjs";
 import { XStack, YStack } from "tamagui";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 export default function Weekly() {
   const { currentHabit } = useContext(HabitContext);
@@ -33,6 +34,7 @@ export default function Weekly() {
   const [maxCheckinCount, setMaxCheckinCount] = useState(1);
   const [totalInWeek, setTotalInWeek] = useState();
   const [missedDate, setMissedDate] = useState([]);
+  const { theme } = useContext(ThemeContext);
 
   const loadWeek = async (targetWeek) => {
     if (!db || !currentHabit?.id) return;
@@ -87,7 +89,7 @@ export default function Weekly() {
       <View
         style={{
           gap: hp("2%"),
-          backgroundColor: COLORS.white,
+          backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
           borderRadius: "2%",
           padding: wp("3%"),
           shadowColor: "#000",
@@ -95,6 +97,8 @@ export default function Weekly() {
           shadowOpacity: 0.1,
           shadowRadius: 6,
           elevation: 5,
+          borderWidth: theme === "dark" ? 1 : 0,
+          borderColor: COLORS.gray,
         }}
       >
         <View>
@@ -102,6 +106,7 @@ export default function Weekly() {
             style={{
               fontFamily: FontFamily.Poppins.SemiBold,
               fontSize: wp("5%"),
+              color: theme === "dark" ? COLORS.white : COLORS.black,
             }}
           >
             Weekdays
@@ -121,13 +126,21 @@ export default function Weekly() {
 
         <XStack alignItems="center" justifyContent="center" gap="$2">
           <TouchableOpacity onPress={() => preWeek()}>
-            <ArrowCircleLeft size="24" />
+            <ArrowCircleLeft
+              size="24"
+              color={theme === "dark" ? COLORS.white : COLORS.black}
+            />
           </TouchableOpacity>
-          <Text>
+          <Text
+            style={{ color: theme === "dark" ? COLORS.white : COLORS.black }}
+          >
             {startStr} - {endStr}
           </Text>
           <TouchableOpacity onPress={() => nextWeek()}>
-            <ArrowCircleRight size="24" />
+            <ArrowCircleRight
+              size="24"
+              color={theme === "dark" ? COLORS.white : COLORS.black}
+            />
           </TouchableOpacity>
         </XStack>
       </View>
@@ -136,7 +149,6 @@ export default function Weekly() {
         <YStack
           style={{
             gap: 4,
-            backgroundColor: COLORS.white,
             width: wp("45%"),
             paddingHorizontal: wp("4%"),
             paddingVertical: wp("5%"),
@@ -146,6 +158,9 @@ export default function Weekly() {
             shadowOpacity: 0.1,
             shadowRadius: 6,
             elevation: 5,
+            backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
+            borderWidth: theme === "dark" ? 1 : 0,
+            borderColor: COLORS.gray,
           }}
         >
           <XStack
@@ -155,19 +170,27 @@ export default function Weekly() {
           >
             <YStack>
               <Text
-                style={{ fontSize: 18, fontFamily: FontFamily.Poppins.Regular }}
+                style={{
+                  fontSize: 18,
+                  fontFamily: FontFamily.Poppins.Regular,
+                  color: theme === "dark" ? COLORS.white : COLORS.black,
+                }}
               >
                 Total
               </Text>
               <Text
-                style={{ fontSize: 18, fontFamily: FontFamily.Poppins.Regular }}
+                style={{
+                  fontSize: 18,
+                  fontFamily: FontFamily.Poppins.Regular,
+                  color: theme === "dark" ? COLORS.white : COLORS.black,
+                }}
               >
                 Check-ins
               </Text>
             </YStack>
             <View
               style={{
-                backgroundColor: "#F9F9F9",
+                backgroundColor: theme === "dark" ? COLORS.darkGray : "#F9F9F9",
                 padding: wp("2%"),
                 borderRadius: 50,
               }}
@@ -179,7 +202,7 @@ export default function Weekly() {
             style={{
               fontSize: 24,
               fontFamily: FontFamily.Poppins.Medium,
-              color: COLORS.black,
+              color: theme === "dark" ? COLORS.white : COLORS.black,
             }}
           >
             {totalInWeek}{" "}
@@ -187,7 +210,7 @@ export default function Weekly() {
               style={{
                 fontSize: 16,
                 fontFamily: FontFamily.Poppins.Regular,
-                color: COLORS.darkGray,
+                color: theme === "dark" ? COLORS.gray : COLORS.darkGray,
               }}
             >
               times
@@ -197,7 +220,6 @@ export default function Weekly() {
         <YStack
           style={{
             gap: 4,
-            backgroundColor: COLORS.white,
             width: wp("45%"),
             paddingHorizontal: wp("4%"),
             paddingVertical: wp("5%"),
@@ -207,6 +229,9 @@ export default function Weekly() {
             shadowOpacity: 0.1,
             shadowRadius: 6,
             elevation: 5,
+            backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
+            borderWidth: theme === "dark" ? 1 : 0,
+            borderColor: COLORS.gray,
           }}
         >
           <XStack
@@ -216,19 +241,27 @@ export default function Weekly() {
           >
             <YStack>
               <Text
-                style={{ fontSize: 18, fontFamily: FontFamily.Poppins.Regular }}
+                style={{
+                  fontSize: 18,
+                  fontFamily: FontFamily.Poppins.Regular,
+                  color: theme === "dark" ? COLORS.white : COLORS.black,
+                }}
               >
                 Missed
               </Text>
               <Text
-                style={{ fontSize: 18, fontFamily: FontFamily.Poppins.Regular }}
+                style={{
+                  fontSize: 18,
+                  fontFamily: FontFamily.Poppins.Regular,
+                  color: theme === "dark" ? COLORS.white : COLORS.black,
+                }}
               >
                 Days
               </Text>
             </YStack>
             <View
               style={{
-                backgroundColor: "#F9F9F9",
+                backgroundColor: theme === "dark" ? COLORS.darkGray : "#F9F9F9",
                 padding: wp("2%"),
                 borderRadius: 50,
               }}
@@ -240,7 +273,7 @@ export default function Weekly() {
             style={{
               fontSize: 18,
               fontFamily: FontFamily.Poppins.Medium,
-              color: COLORS.black,
+              color: theme === "dark" ? COLORS.white : COLORS.black,
             }}
           >
             {missedDate.length > 0 ? missedDate.join(", ") : "None"}{" "}

@@ -11,10 +11,12 @@ import { FontFamily } from "@/constants/fonts";
 import { XStack } from "tamagui";
 import Weekly from "@/components/Habit/Analytics/Weekly";
 import Monthly from "@/components/Habit/Analytics/Monthly";
-import Daily from "../../components/Habit/Analytics/Daily";
+import Daily from "@/components/Habit/Analytics/Daily";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const Analytis = () => {
   const navigation = useNavigation();
+  const { theme } = useContext(ThemeContext);
   const { currentHabit } = useContext(HabitContext);
   const [activeTab, setActiveTab] = useState("daily");
   const tabs = [
@@ -32,7 +34,7 @@ const Analytis = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "#F2F1F5",
+        backgroundColor: theme === "dark" ? COLORS.darkMode : "#F2F1F5",
         paddingTop: hp("2%"),
         gap: hp("2%"),
       }}
@@ -40,7 +42,9 @@ const Analytis = () => {
       <XStack
         justifyContent="space-between"
         padding={"$2"}
-        backgroundColor={COLORS.white}
+        backgroundColor={theme === "dark" ? COLORS.darkBlue : COLORS.white}
+        borderWidth={theme === "dark" ? 1 : 0}
+        borderColor={COLORS.gray}
         borderRadius={30}
         marginHorizontal={wp("4%")}
         shadowColor={"#000"}

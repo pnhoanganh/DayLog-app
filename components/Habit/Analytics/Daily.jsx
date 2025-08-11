@@ -9,13 +9,13 @@ import {
 } from "react-native-responsive-screen";
 import dayjs from "dayjs";
 import Horizontal from "@/components/Char/Bar/Horizontal";
-import { YStack, XStack, ScrollView, View } from "tamagui";
+import { YStack, XStack, ScrollView } from "tamagui";
 import { FontFamily } from "@/constants/fonts";
 import COLORS from "@/constants/colors";
 import { ArrowCircleLeft, ArrowCircleRight } from "iconsax-react-nativejs";
 import HabitHistoryList from "@/components/Habit/HabitHistoryList";
 import EmptyState from "@/components/UI/EmptyState";
-import { useFilter } from "@/contexts/FilterContext";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 export default function Daily() {
   const db = useSQLiteContext();
@@ -23,6 +23,7 @@ export default function Daily() {
   const [dailyStats, setDailyStats] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs().startOf("day"));
   const [habitHistory, setHabitHistory] = useState([]);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     const loadData = async () => {
@@ -40,7 +41,7 @@ export default function Daily() {
     };
 
     loadData();
-  }, [db, currentHabit, selectedDate]);
+  }, [db, currentHabit, selectedDate, loadHabitHistoryGrouped]);
 
   const maxY = Math.max(...dailyStats.map((d) => d.value)) + 2;
 
@@ -74,9 +75,11 @@ export default function Daily() {
       <YStack
         style={{
           padding: wp("5%"),
-          backgroundColor: "white",
+          backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
           borderRadius: 10,
           marginHorizontal: wp("4%"),
+          borderWidth: theme === "dark" ? 1 : 0,
+          borderColor: COLORS.gray,
         }}
         gap={hp("2%")}
       >
@@ -85,6 +88,7 @@ export default function Daily() {
             style={{
               fontFamily: FontFamily.Poppins.SemiBold,
               fontSize: wp("5%"),
+              color: theme === "dark" ? COLORS.white : COLORS.black,
             }}
           >
             Daily
@@ -107,13 +111,23 @@ export default function Daily() {
           <TouchableOpacity
             onPress={() => setSelectedDate((prev) => prev.subtract(1, "day"))}
           >
-            <ArrowCircleLeft size="24" />
+            <ArrowCircleLeft
+              size="24"
+              color={theme === "dark" ? COLORS.white : COLORS.black}
+            />
           </TouchableOpacity>
-          <Text>{selectedDate.format("DD/MM/YYYY")}</Text>
+          <Text
+            style={{ color: theme === "dark" ? COLORS.white : COLORS.black }}
+          >
+            {selectedDate.format("DD/MM/YYYY")}
+          </Text>
           <TouchableOpacity
             onPress={() => setSelectedDate((prev) => prev.add(1, "day"))}
           >
-            <ArrowCircleRight size="24" />
+            <ArrowCircleRight
+              size="24"
+              color={theme === "dark" ? COLORS.white : COLORS.black}
+            />
           </TouchableOpacity>
         </XStack>
       </YStack>

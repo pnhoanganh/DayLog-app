@@ -11,9 +11,11 @@ import tinycolor from "tinycolor2";
 import { Element4 } from "iconsax-react-nativejs";
 import { HabitContext } from "@/contexts/HabitContext";
 import COLORS from "@/constants/colors";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const BottomNav = ({ state, descriptors, navigation }) => {
   const { currentHabit } = useContext(HabitContext);
+  const { theme } = useContext(ThemeContext);
   const activeColor = tinycolor(currentHabit.color_code)
     .darken(45)
     .toHexString();
@@ -56,8 +58,8 @@ const BottomNav = ({ state, descriptors, navigation }) => {
       flexDirection: "row",
       width: "100%",
       height: hp("9%"),
-      backgroundColor: COLORS.white,
-      borderWidth: 1,
+      backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
+      borderWidth: theme === "dark" ? 0 : 1,
       borderColor: "#DDDDDD",
       alignSelf: "center",
       position: "absolute",

@@ -19,6 +19,7 @@ import { router } from "expo-router";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 import dayjs from "dayjs";
 import { AlertWarn } from "@/components/Alert/AlertWarn";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const HabitItem = ({ icon, title, description, color, id }) => {
   const { habitData, habitCheck, removeCheckin, handleDeleteHabit } =
@@ -29,6 +30,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
   const [selectedHabit, setSelectedHabit] = useState(null);
   const today = dayjs().format("YYYY-MM-DD");
   const deleteConfirmModal = useToggleModal();
+  const { theme } = useContext(ThemeContext);
 
   const heatmapData = Array.isArray(habitData[id])
     ? habitData[id]
@@ -68,11 +70,11 @@ const HabitItem = ({ icon, title, description, color, id }) => {
     <View>
       <TouchableOpacity
         style={{
-          borderColor: "#ebedf0",
+          borderColor: theme === "dark" ? COLORS.gray : "#ebedf0",
           borderWidth: 1,
           padding: 12,
           borderRadius: 12,
-          backgroundColor: "#fff",
+          backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 1 },
           shadowOpacity: 0.1,
@@ -134,6 +136,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
                   fontSize: wp("3.5%"),
                   fontFamily: FontFamily.Poppins.SemiBold,
                   textAlign: "left",
+                  color: theme === "dark" ? COLORS.white : COLORS.black,
                 }}
               >
                 {title && title.length > 13
@@ -144,7 +147,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
                 style={{
                   fontSize: wp("3%"),
                   fontFamily: FontFamily.Poppins.Regular,
-                  color: COLORS.darkGreen,
+                  color: theme === "dark" ? COLORS.white : COLORS.darkGreen,
                   textAlign: "left",
                 }}
               >
@@ -177,7 +180,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
           <View className="flex flex-col gap-1">
             <Text
               style={{
-                color: COLORS.darkGreen,
+                color: theme === "dark" ? COLORS.white : COLORS.darkGreen,
                 fontFamily: FontFamily.Poppins.SemiBold,
                 fontSize: wp("3.4%"),
                 textAlign: "center",
@@ -188,7 +191,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
             <View className="flex flex-row items-center gap-2">
               <ArrowLeft2
                 size={20}
-                color={COLORS.darkGreen}
+                color={theme === "dark" ? COLORS.white : COLORS.darkGreen}
                 onPress={goToPreviousDate}
               />
               <CalHeatMapMonth
@@ -209,7 +212,7 @@ const HabitItem = ({ icon, title, description, color, id }) => {
               />
               <ArrowRight2
                 size={20}
-                color={COLORS.darkGreen}
+                color={theme === "dark" ? COLORS.white : COLORS.darkGreen}
                 onPress={goToNextMonth}
               />
             </View>

@@ -1,5 +1,7 @@
+import { StatusBar } from "expo-status-bar";
+import { useContext, useEffect } from "react";
+import { ThemeContext, ThemeProvider } from "@/contexts/ThemeContext";
 import "../global.css";
-import { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Stack } from "expo-router";
@@ -9,10 +11,10 @@ import { createTamagui, TamaguiProvider } from "tamagui";
 import { defaultConfig } from "@tamagui/config/v4";
 import { PortalProvider } from "@tamagui/portal";
 import { ToastProvider, ToastViewport } from "@tamagui/toast";
-import ToastCus from "../components/UI/ToastCus";
+import ToastCus from "@/components/UI/ToastCus";
 import { HabitProvider } from "@/contexts/HabitContext";
 import { customFonts } from "@/constants/fonts";
-import SQLiteContext from "../contexts/SQLiteContext";
+import SQLiteContext from "@/contexts/SQLiteContext";
 
 SplashScreen.preventAutoHideAsync();
 const config = createTamagui(defaultConfig);
@@ -44,10 +46,13 @@ export default function RootLayout() {
                 zIndex={99999}
               />
               <HabitProvider>
-                <SafeAreaProvider>
-                  <Stack screenOptions={{ headerShown: false }}></Stack>
-                  <ToastCus />
-                </SafeAreaProvider>
+                <ThemeProvider>
+                  <SafeAreaProvider>
+                    <GlobalStatusBar />
+                    <Stack screenOptions={{ headerShown: false }} />
+                    <ToastCus />
+                  </SafeAreaProvider>
+                </ThemeProvider>
               </HabitProvider>
             </ToastProvider>
           </PortalProvider>
@@ -55,4 +60,9 @@ export default function RootLayout() {
       </SQLiteContext>
     </TamaguiProvider>
   );
+}
+
+function GlobalStatusBar() {
+  const { theme } = useContext(ThemeContext);
+  return <StatusBar style={theme === "dark" ? "light" : "dark"} />;
 }

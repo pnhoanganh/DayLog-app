@@ -10,6 +10,8 @@ import { HabitContext } from "@/contexts/HabitContext";
 import useToggleModal from "@/hooks/useToggleModal";
 import { FilterCheckins } from "@/components/Modals/FilterCheckins";
 import { FilterProvider } from "@/contexts/FilterContext";
+import { ThemeContext } from "@/contexts/ThemeContext";
+import COLORS from "@/constants/colors";
 
 export default function TabLayout() {
   const { habitList, currentHabit, loadHabitHistoryGrouped } =
@@ -18,6 +20,7 @@ export default function TabLayout() {
   const filterModal = useToggleModal();
   const [habitHistory, setHabitHistory] = useState([]);
   const [selectedDates, setSelectedDates] = useState({});
+  const { theme } = useContext(ThemeContext);
 
   useFocusEffect(
     useCallback(() => {
@@ -44,6 +47,15 @@ export default function TabLayout() {
       <Tabs
         tabBar={(props) => <BottomNav {...props} />}
         screenOptions={{
+          headerStyle: {
+            backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
+            height: hp("13%"),
+            shadowColor: "gray",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.2,
+            shadowRadius: 10,
+          },
+          headerTintColor: theme === "dark" ? COLORS.white : COLORS.black,
           headerShown: true,
           headerTitleStyle: {
             fontSize: 18,
@@ -54,12 +66,13 @@ export default function TabLayout() {
               onPress={() => router.back()}
               style={{ paddingLeft: 15 }}
             >
-              <AntDesign name="left" size={24} color="black" />
+              <AntDesign
+                name="left"
+                size={24}
+                color={theme === "dark" ? COLORS.white : COLORS.black}
+              />
             </TouchableOpacity>
           ),
-          headerStyle: {
-            height: hp("13%"),
-          },
         }}
       >
         <Tabs.Screen
@@ -98,7 +111,10 @@ export default function TabLayout() {
                   onPress={() => filterModal.open()}
                   style={{ paddingRight: 15 }}
                 >
-                  <FilterAdd size="24" color="#000000" />
+                  <FilterAdd
+                    size="24"
+                    color={theme === "dark" ? COLORS.white : COLORS.black}
+                  />
                 </TouchableOpacity>
               ),
             };

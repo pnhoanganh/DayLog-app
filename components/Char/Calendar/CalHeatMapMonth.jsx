@@ -1,4 +1,11 @@
-import React, { useEffect, useState, useCallback, memo, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  memo,
+  useMemo,
+  useContext,
+} from "react";
 import { View, FlatList, TouchableOpacity, Text } from "react-native";
 import tinycolor from "tinycolor2";
 import dayjs from "dayjs";
@@ -7,6 +14,7 @@ import useToggleModal from "@/hooks/useToggleModal";
 import { AlertDate } from "../../Alert/AlertDate";
 import { FontFamily } from "@/constants/fonts";
 import COLOR from "@/constants/colors";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const SQUARE_SIZE = wp("4.5%");
 const ITEM_MARGIN = wp("0.4%");
@@ -22,6 +30,7 @@ const CalHeatMapMonth = ({
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedCount, setSelectedCount] = useState(null);
   const showAlert = useToggleModal();
+  const { theme } = useContext(ThemeContext);
 
   // Generate column-major calendar (week-based)
   useEffect(() => {
@@ -73,7 +82,7 @@ const CalHeatMapMonth = ({
   }, [data]);
 
   const colorArray = useMemo(() => {
-    const arr = ["#F0F2F5"];
+    const arr = [theme === "dark" ? "#303030" : "#F0F2F5"];
     for (let i = 1; i <= 4; i++) {
       const darkenRatio = i * 10;
       const c = tinycolor(color).darken(darkenRatio).toHexString();
@@ -115,7 +124,7 @@ const CalHeatMapMonth = ({
           },
           isToday && {
             borderWidth: 1,
-            borderColor: "#7D7C7C",
+            borderColor: theme === "dark" ? COLOR.gray : "#7D7C7C",
           },
         ]}
       />

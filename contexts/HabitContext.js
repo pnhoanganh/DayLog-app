@@ -242,7 +242,6 @@ export const HabitProvider = ({ children }) => {
         timestamp,
         habit_id,
       ]);
-
       // Update widget after check-in
       await saveHabitToWidget(habitList);
     } catch (error) {
@@ -268,7 +267,6 @@ export const HabitProvider = ({ children }) => {
       }
       return item;
     });
-
     setHabitData((prev) => ({
       ...prev,
       [habit_id]: updatedData,

@@ -11,8 +11,7 @@ import Header from "@/components/UI/Header";
 
 const Home = () => {
   const addHabitModal = useToggleModal();
-  const { habitList, resetHabitData, saveHabitToWidget } =
-    useContext(HabitContext);
+  const { habitList, saveHabitToWidget } = useContext(HabitContext);
 
   useEffect(() => {
     saveHabitToWidget(habitList);
@@ -21,10 +20,7 @@ const Home = () => {
   return (
     <SafeScreen>
       <View style={{ flex: 1, paddingTop: hp("1%") }}>
-        <Header
-          toggleAddHabit={addHabitModal.open}
-          resetHabitData={resetHabitData}
-        />
+        <Header toggleAddHabit={addHabitModal.open} />
         {habitList.length > 0 ? (
           <HabitList habitList={habitList} />
         ) : (

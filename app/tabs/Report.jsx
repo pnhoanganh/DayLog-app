@@ -14,6 +14,7 @@ import { FilterRemove } from "iconsax-react-nativejs";
 import COLORS from "@/constants/colors";
 import DropdownMenu from "@/components/UI/DropdownMenu";
 import dayjs from "dayjs";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const Report = () => {
   const navigation = useNavigation();
@@ -23,6 +24,7 @@ const Report = () => {
   const [hasFiltered, setHasFiltered] = useState(false);
   const [selectedRange, setSelectedRange] = useState(30);
   const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useContext(ThemeContext);
   const { selectedDates, applyFilter, setApplyFilter, setSelectedDates } =
     useFilter();
 
@@ -108,7 +110,12 @@ const Report = () => {
       ? habitHistory
       : filterLastNDays(habitHistory, selectedRange);
   return (
-    <View style={{ backgroundColor: "#F2F1F5" }}>
+    <View
+      style={{
+        backgroundColor: theme === "dark" ? COLORS.darkMode : "#F2F1F5",
+        flex: 1,
+      }}
+    >
       <DropdownMenu
         // label="Report for"
         data={ranges.map((r) => ({ label: r.label, value: r.days }))}
@@ -121,11 +128,14 @@ const Report = () => {
             setIsLoading(false);
           }, 1000);
         }}
+        textColor={theme === "dark" ? COLORS.white : COLORS.black}
       />
 
       {isLoading ? (
         <View style={{ alignItems: "center", marginTop: hp("4%") }}>
-          <ActivityIndicator />
+          <ActivityIndicator
+            color={theme === "dark" ? COLORS.white : COLORS.black}
+          />
         </View>
       ) : (
         <FlatList

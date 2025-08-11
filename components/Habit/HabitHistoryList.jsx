@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import MaterialIconsGlyphs from "@expo/vector-icons/build/vendor/react-native-vector-icons/glyphmaps/MaterialIcons.json";
 import {
@@ -8,9 +8,11 @@ import {
 } from "react-native-responsive-screen";
 import COLORS from "@/constants/colors";
 import { FontFamily } from "@/constants/fonts";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const HabitDayBlock = React.memo(
   ({ displayDate, count, times, currentHabit }) => {
+    const { theme } = useContext(ThemeContext);
     return (
       <View style={{ marginTop: 12 }}>
         <View
@@ -24,7 +26,7 @@ const HabitDayBlock = React.memo(
         >
           <Text
             style={{
-              color: "#666",
+              color: theme === "dark" ? COLORS.white : "#666",
               fontFamily: FontFamily.Poppins.Regular,
               fontSize: 17,
             }}
@@ -54,9 +56,11 @@ const HabitDayBlock = React.memo(
         </View>
         <View
           style={{
-            backgroundColor: COLORS.white,
+            backgroundColor: theme === "dark" ? COLORS.darkBlue : COLORS.white,
             borderRadius: 10,
             paddingHorizontal: wp("5%"),
+            borderWidth: theme === "dark" ? 1 : 0,
+            borderColor: COLORS.gray,
           }}
         >
           {times.map((time, i) => (
@@ -77,7 +81,7 @@ HabitDayBlock.displayName = "HabitDayBlock";
 
 const CheckinCard = React.memo(({ time, currentHabit, isLast }) => {
   const icon = currentHabit?.icon;
-
+  const { theme } = useContext(ThemeContext);
   const isValidIcon = icon && MaterialIconsGlyphs?.[icon];
 
   return (
@@ -90,15 +94,25 @@ const CheckinCard = React.memo(({ time, currentHabit, isLast }) => {
         alignItems: "center",
         gap: wp("3%"),
         borderBottomWidth: isLast ? 0 : 1,
-        borderColor: "#E6E6E8",
+        borderColor: theme === "dark" ? COLORS.darkGray : "#E6E6E8",
       }}
     >
       {isValidIcon ? (
-        <MaterialIcons name={icon} size={wp("6%")} color={COLORS.darkGreen} />
+        <MaterialIcons
+          name={icon}
+          size={wp("6%")}
+          color={theme === "dark" ? COLORS.white : COLORS.darkGreen}
+        />
       ) : (
         <Text style={{ fontSize: wp("6%") }}>{icon || "❓"}</Text>
       )}
-      <Text style={{ fontFamily: FontFamily.Poppins.Medium, fontSize: 18 }}>
+      <Text
+        style={{
+          fontFamily: FontFamily.Poppins.Medium,
+          fontSize: 18,
+          color: theme === "dark" ? COLORS.white : COLORS.darkGreen,
+        }}
+      >
         {time}
       </Text>
     </View>

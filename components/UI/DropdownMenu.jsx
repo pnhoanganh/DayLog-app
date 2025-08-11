@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { ThemeContext } from "@/contexts/ThemeContext";
 
 const DropdownMenu = ({ data, label, color, onSelect, selectedValue }) => {
   const [value, setValue] = useState(selectedValue || null);
@@ -10,13 +11,17 @@ const DropdownMenu = ({ data, label, color, onSelect, selectedValue }) => {
   useEffect(() => {
     setValue(selectedValue);
   }, [selectedValue]);
+  const { theme } = useContext(ThemeContext);
 
   return (
     <View style={styles.container}>
       <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: "blue" }]}
+        style={[styles.dropdown, isFocus && { borderColor: "gray" }]}
         placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
+        selectedTextStyle={[
+          styles.selectedTextStyle,
+          { color: theme === "dark" ? "white" : "black" },
+        ]}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
         data={data}
@@ -35,7 +40,7 @@ const DropdownMenu = ({ data, label, color, onSelect, selectedValue }) => {
         renderLeftIcon={() => (
           <AntDesign
             style={styles.icon}
-            color={isFocus ? "blue" : "black"}
+            color={isFocus ? "gray" : theme === "dark" ? "white" : "black"}
             name="Safety"
             size={24}
           />
